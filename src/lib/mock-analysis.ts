@@ -143,7 +143,7 @@ export const MOCK_ANALYSES: Record<string, AnalysisResult> = {
     ],
     nextViews: ["Subxiphoid Cardiac (effusion)", "PLAX (cardiac function)"],
     labels: [
-      { id: "ivc", name: "IVC", x: 50, y: 45, color: "#60a5fa" },
+      { id: "ivc", name: "IVC", x: 50, y: 45, color: "#a78bfa" },
       { id: "ra", name: "RA", x: 65, y: 35, color: "#f87171" },
       { id: "liver", name: "Liver", x: 30, y: 40, color: "#fbbf24" },
     ],
@@ -220,7 +220,7 @@ export const MOCK_ANALYSES: Record<string, AnalysisResult> = {
     nextViews: ["PLAPS point (bilateral)", "Pleural effusion quantification", "Cardiac PLAX (if CHF suspected)"],
     labels: [
       { id: "blines", name: "B-lines ⚠️", x: 45, y: 40, color: "#ef4444" },
-      { id: "pleura", name: "Pleural Line", x: 50, y: 30, color: "#60a5fa" },
+      { id: "pleura", name: "Pleural Line", x: 50, y: 30, color: "#a78bfa" },
       { id: "effusion", name: "Effusion", x: 70, y: 65, color: "#f97316" },
     ],
   },
@@ -253,7 +253,7 @@ export const MOCK_ANALYSES: Record<string, AnalysisResult> = {
     nextViews: ["Distal aorta to bifurcation", "Iliac vessels"],
     labels: [
       { id: "aorta", name: "Aorta", x: 50, y: 48, color: "#ef4444" },
-      { id: "ivc", name: "IVC", x: 62, y: 48, color: "#60a5fa" },
+      { id: "ivc", name: "IVC", x: 62, y: 48, color: "#a78bfa" },
       { id: "spine", name: "Spine", x: 50, y: 75, color: "#94a3b8" },
     ],
   },

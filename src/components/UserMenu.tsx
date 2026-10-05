@@ -47,7 +47,7 @@ export default function UserMenu() {
 
         {/* Avatar */}
         <div className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white"
-          style={{ background: isPaid ? "#2563eb" : "#94a3b8" }}>
+          style={{ background: isPaid ? "#7c3aed" : "#94a3b8" }}>
           {initials}
         </div>
 
@@ -60,7 +60,7 @@ export default function UserMenu() {
         )}
         {isPaid && (
           <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold text-white"
-            style={{ background: "#2563eb" }}>
+            style={{ background: "#7c3aed" }}>
             {profile.tier === "clinic" ? "CLINIC" : "PRO"}
           </span>
         )}
@@ -96,7 +96,7 @@ export default function UserMenu() {
               <button
                 onClick={() => { setOpen(false); setShowUpgrade(true); }}
                 className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors hover:bg-slate-50"
-                style={{ color: "#2563eb" }}>
+                style={{ color: "#7c3aed" }}>
                 <CreditCard size={14} />
                 Upgrade to Pro
               </button>

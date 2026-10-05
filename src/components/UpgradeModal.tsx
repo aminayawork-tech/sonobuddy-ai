@@ -98,7 +98,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
 
         {/* Header */}
         <div className="px-6 pt-4 pb-4 sm:pt-6"
-          style={{ background: "linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)" }}>
+          style={{ background: "linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%)" }}>
           <button
             onClick={onClose}
             className="absolute right-4 top-4 rounded-full p-1.5 transition-colors hover:bg-slate-100"
@@ -108,7 +108,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
 
           <div className="flex items-center gap-2.5 mb-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl"
-              style={{ background: "#2563eb" }}>
+              style={{ background: "#7c3aed" }}>
               <Zap size={15} className="text-white" />
             </div>
             <span className="font-bold" style={{ color: "#0f172a" }}>Upgrade SonoBuddy AI</span>
@@ -179,7 +179,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
         {/* Pro plan card */}
         <div className="px-6 pb-6">
           <div className="rounded-xl border p-4"
-            style={{ borderColor: "#2563eb", background: "#eff6ff" }}>
+            style={{ borderColor: "#7c3aed", background: "#f5f3ff" }}>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
@@ -204,7 +204,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
                 onClick={handleUpgrade}
                 disabled={loading}
                 className="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold text-white disabled:opacity-60 transition-all hover:opacity-90"
-                style={{ background: "#2563eb", minWidth: 80 }}>
+                style={{ background: "#7c3aed", minWidth: 80 }}>
                 {loading ? <Loader2 size={12} className="animate-spin" /> : null}
                 {loading ? "Loading…" : "Upgrade"}
               </button>
@@ -213,7 +213,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
             <ul className="space-y-1.5">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-xs" style={{ color: "#374151" }}>
-                  <Check size={12} className="mt-0.5 shrink-0" style={{ color: "#2563eb" }} />
+                  <Check size={12} className="mt-0.5 shrink-0" style={{ color: "#7c3aed" }} />
                   {f}
                 </li>
               ))}
@@ -227,16 +227,16 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
             onClick={handleRestore}
             disabled={restoring}
             className="font-medium underline disabled:opacity-60"
-            style={{ color: "#2563eb" }}>
+            style={{ color: "#7c3aed" }}>
             {restoring ? "Restoring…" : "Restore Purchases"}
           </button>
           <p>
             By subscribing, you agree to our{" "}
             <a href="/terms" target="_blank" rel="noopener noreferrer"
-              style={{ color: "#2563eb", textDecoration: "underline" }}>Terms of Use</a>
+              style={{ color: "#7c3aed", textDecoration: "underline" }}>Terms of Use</a>
             {" "}and{" "}
             <a href="/privacy" target="_blank" rel="noopener noreferrer"
-              style={{ color: "#2563eb", textDecoration: "underline" }}>Privacy Policy</a>.
+              style={{ color: "#7c3aed", textDecoration: "underline" }}>Privacy Policy</a>.
           </p>
         </div>
       </div>

@@ -72,8 +72,8 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
         {protocol.steps && protocol.steps.length > 0 && (
           <div className="mb-5 rounded-2xl border p-5" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
             <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#eff6ff" }}>
-                <ListOrdered size={15} style={{ color: "#2563eb" }} />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#f5f3ff" }}>
+                <ListOrdered size={15} style={{ color: "#7c3aed" }} />
               </div>
               <h2 className="font-semibold" style={{ color: "#0f172a" }}>How to Perform</h2>
             </div>
@@ -81,7 +81,7 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
               {protocol.steps.map((step, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ background: "#2563eb" }}>
+                    style={{ background: "#7c3aed" }}>
                     {i + 1}
                   </span>
                   <p className="text-sm leading-relaxed" style={{ color: "#374151" }}>{step}</p>
@@ -147,15 +147,15 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
         {/* What to Look For */}
         <div className="mb-5 rounded-2xl border p-5" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
           <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#eff6ff" }}>
-              <Search size={15} style={{ color: "#2563eb" }} />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#f5f3ff" }}>
+              <Search size={15} style={{ color: "#7c3aed" }} />
             </div>
             <h2 className="font-semibold" style={{ color: "#0f172a" }}>What to Look For</h2>
           </div>
           <ul className="space-y-2">
             {protocol.keyFindings.map((finding, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: "#374151" }}>
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "#2563eb" }} />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "#7c3aed" }} />
                 {finding}
               </li>
             ))}
@@ -195,8 +195,8 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
         {protocol.anomaliesDetected.length > 0 && (
           <div className="mb-8 rounded-2xl border p-5" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
             <div className="mb-3 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#eff6ff" }}>
-                <Zap size={15} style={{ color: "#2563eb" }} />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#f5f3ff" }}>
+                <Zap size={15} style={{ color: "#7c3aed" }} />
               </div>
               <h2 className="font-semibold" style={{ color: "#0f172a" }}>AI Detects</h2>
             </div>
@@ -215,7 +215,7 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
         <Link
           href={`/scan?protocol=${protocol.id}`}
           className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95"
-          style={{ background: "#2563eb" }}>
+          style={{ background: "#7c3aed" }}>
           <Camera size={20} />
           Start Scan — {protocol.shortName}
         </Link>

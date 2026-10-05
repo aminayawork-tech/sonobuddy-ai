@@ -14,8 +14,8 @@ const HOW_IT_WORKS = [
   {
     step: "01",
     icon: Upload,
-    iconBg: "#eff6ff",
-    iconColor: "#2563eb",
+    iconBg: "#f5f3ff",
+    iconColor: "#7c3aed",
     title: "Snap or upload",
     desc: "Photograph your ultrasound screen or upload an image from your device. No special equipment needed.",
   },
@@ -71,7 +71,7 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
             <MenuItem icon={LogIn} label="Sign Out" sublabel={user.email ?? undefined}
               iconColor="#dc2626" labelColor="#dc2626" onClick={handleSignOut} />
           ) : (
-            <MenuItem icon={LogIn} label="Sign In" iconColor="#2563eb" labelColor="#2563eb"
+            <MenuItem icon={LogIn} label="Sign In" iconColor="#7c3aed" labelColor="#7c3aed"
               onClick={() => { onClose(); onSignIn(); }} />
           )}
         </MenuSection>
@@ -98,7 +98,7 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
                       <Icon size={18} style={{ color: iconColor }} />
                     </div>
                     <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold text-white"
-                      style={{ background: "#2563eb" }}>
+                      style={{ background: "#7c3aed" }}>
                       {step}
                     </span>
                   </div>
@@ -114,7 +114,7 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
           {/* Start Scanning CTA */}
           <Link href="/scan" onClick={onClose}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold text-white shadow-sm transition-all active:scale-95"
-            style={{ background: "#2563eb" }}>
+            style={{ background: "#7c3aed" }}>
             <Camera size={16} />
             Start Scanning Now
           </Link>
@@ -148,7 +148,7 @@ function MenuSection({ title, children }: { title: string; children: ReactNode }
 }
 
 function MenuItem({
-  icon: Icon, label, sublabel, iconColor = "#2563eb", labelColor = "#1a2235",
+  icon: Icon, label, sublabel, iconColor = "#7c3aed", labelColor = "#1a2235",
   onClick, href, onClose, last,
 }: {
   icon: ElementType; label: string; sublabel?: string;
@@ -157,7 +157,7 @@ function MenuItem({
 }) {
   const inner = (
     <div className="flex items-center gap-3.5 px-4 py-4">
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl shrink-0" style={{ background: "#eff6ff" }}>
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl shrink-0" style={{ background: "#f5f3ff" }}>
         <Icon size={18} style={{ color: iconColor }} />
       </div>
       <div className="flex-1 min-w-0">

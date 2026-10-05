@@ -20,7 +20,7 @@ function AuthErrorContent() {
       >
         {/* Logo */}
         <div className="mb-6 select-none">
-          <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#2563eb" }}>Pilot</span>
+          <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Pilot</span>
         </div>
 
         <div
@@ -48,7 +48,7 @@ function AuthErrorContent() {
           <a
             href="/?auth=forgot"
             className="w-full rounded-xl py-2.5 text-sm font-bold text-white inline-block"
-            style={{ background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)" }}
+            style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #8b5cf6 100%)" }}
           >
             Request a new reset link
           </a>

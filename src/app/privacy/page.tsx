@@ -59,7 +59,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="8. HIPAA Notice">
-          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-blue-600 underline">support@sonobuddyai.app</a> before proceeding.
+          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a> before proceeding.
         </Section>
 
         <Section title="9. Children's Privacy">
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="10. Your Rights">
-          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-blue-600 underline">support@sonobuddyai.app</a>.
+          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>.
         </Section>
 
         <Section title="11. Changes to This Policy">
@@ -76,11 +76,11 @@ export default function PrivacyPage() {
 
         <Section title="12. Contact Us">
           Questions about this Privacy Policy? Contact us at:<br />
-          <a href="mailto:support@sonobuddyai.app" className="text-blue-600 underline">support@sonobuddyai.app</a>
+          <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>
         </Section>
 
         <div className="mt-10 text-center">
-          <Link href="/" className="text-sm font-medium" style={{ color: "#2563eb" }}>← Back to SonoBuddy AI</Link>
+          <Link href="/" className="text-sm font-medium" style={{ color: "#7c3aed" }}>← Back to SonoBuddy AI</Link>
         </div>
       </div>
     </div>

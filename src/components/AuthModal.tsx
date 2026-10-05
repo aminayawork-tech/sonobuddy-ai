@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Eye, EyeOff, Loader2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -84,14 +83,13 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Buddy </span>
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
           </span>
-          <Image src="/sonobuddy-logo.png" alt="" width={20} height={20} style={{ objectFit: "contain" }} />
         </div>
 
         {sent ? (
           /* ── Email sent state (signup confirm OR password reset) ── */
           <div className="py-4 text-center">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full"
-              style={{ background: "#eff6ff" }}>
+              style={{ background: "#f5f3ff" }}>
               <span className="text-xl">📧</span>
             </div>
             <p className="font-semibold" style={{ color: "#0f172a" }}>Check your email</p>
@@ -103,7 +101,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
             <button
               onClick={onClose}
               className="mt-5 w-full rounded-xl py-2.5 text-sm font-bold text-white"
-              style={{ background: "#2563eb" }}>
+              style={{ background: "#7c3aed" }}>
               Got it
             </button>
           </div>
@@ -111,7 +109,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
           <>
             {reason && mode !== "forgot" && (
               <div className="mb-4 rounded-xl border px-3 py-2.5 text-sm"
-                style={{ borderColor: "#bfdbfe", background: "#eff6ff", color: "#1d4ed8" }}>
+                style={{ borderColor: "#ddd6fe", background: "#f5f3ff", color: "#6d28d9" }}>
                 {reason}
               </div>
             )}
@@ -141,7 +139,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-blue-400"
+                className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-400"
                 style={{ borderColor: "#dde4ee", color: "#0f172a" }}
               />
 
@@ -154,7 +152,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="w-full rounded-xl border px-4 py-2.5 pr-10 text-sm outline-none transition-colors focus:border-blue-400"
+                    className="w-full rounded-xl border px-4 py-2.5 pr-10 text-sm outline-none transition-colors focus:border-purple-400"
                     style={{ borderColor: "#dde4ee", color: "#0f172a" }}
                   />
                   <button
@@ -184,7 +182,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
                 type="submit"
                 disabled={loading}
                 className="flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-bold text-white disabled:opacity-60"
-                style={{ background: "#2563eb" }}>
+                style={{ background: "#7c3aed" }}>
                 {loading && <Loader2 size={14} className="animate-spin" />}
                 {mode === "signin" ? "Sign in" : mode === "signup" ? "Create account" : "Send reset link"}
               </button>
@@ -197,7 +195,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
                   <button
                     onClick={() => { setMode("signin"); setError(null); }}
                     className="font-semibold underline"
-                    style={{ color: "#2563eb" }}>
+                    style={{ color: "#7c3aed" }}>
                     Sign in
                   </button>
                 </>
@@ -207,7 +205,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
                   <button
                     onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); }}
                     className="font-semibold underline"
-                    style={{ color: "#2563eb" }}>
+                    style={{ color: "#7c3aed" }}>
                     {mode === "signin" ? "Sign up free" : "Sign in"}
                   </button>
                 </>

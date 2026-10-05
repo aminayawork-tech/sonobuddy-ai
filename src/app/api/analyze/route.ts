@@ -116,7 +116,7 @@ Rules:
 - labels: 3-6 anatomical labels (x=0 left, x=100 right, y=0 top, y=100 bottom)
   CRITICAL: label names MUST be specific anatomical terms — e.g. "Gallbladder", "Liver", "Common Bile Duct", "Kidney", "Aorta", "IVC", "Bladder", "Uterus" etc.
   NEVER use generic names like "Structure 1", "Structure 2", "Region A". Always name the actual anatomy you see.
-- Label colors: normal structures #6ee7b7, abnormal #ef4444, info #60a5fa, uncertain #fbbf24
+- Label colors: normal structures #6ee7b7, abnormal #ef4444, info #a78bfa, uncertain #fbbf24
 - alertLevel: none=no abnormality, low=minor, moderate=clinically relevant, high=urgent, critical=immediate action`;
 
     const messageContent: Anthropic.MessageParam["content"] = hasImage

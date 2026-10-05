@@ -71,11 +71,11 @@ export default function TermsPage() {
         </Section>
 
         <Section title="13. Contact">
-          Questions? Contact us at <a href="mailto:support@sonobuddyai.app" className="text-blue-600 underline">support@sonobuddyai.app</a>.
+          Questions? Contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>.
         </Section>
 
         <div className="mt-10 text-center">
-          <Link href="/" className="text-sm font-medium" style={{ color: "#2563eb" }}>← Back to SonoBuddy AI</Link>
+          <Link href="/" className="text-sm font-medium" style={{ color: "#7c3aed" }}>← Back to SonoBuddy AI</Link>
         </div>
       </div>
     </div>

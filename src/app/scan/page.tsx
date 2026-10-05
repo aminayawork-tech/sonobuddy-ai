@@ -106,7 +106,7 @@ function ProtocolSheet({
               placeholder="Search protocols..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-xl border py-2.5 pl-9 pr-4 outline-none focus:border-blue-300"
+              className="w-full rounded-xl border py-2.5 pl-9 pr-4 outline-none focus:border-purple-300"
               style={{ borderColor: "#e2e8f0", color: "#0f172a", background: "#f8fafc", fontSize: "16px" }}
             />
           </div>
@@ -136,16 +136,16 @@ function ProtocolSheet({
                   key={p.id}
                   onClick={() => { onSelect(p.id); onClose(); }}
                   className="flex w-full items-center gap-3 rounded-xl px-4 py-2.5 text-left transition-colors hover:bg-slate-50"
-                  style={{ background: active ? "#eff6ff" : undefined }}>
+                  style={{ background: active ? "#f5f3ff" : undefined }}>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <p className="truncate text-sm font-semibold" style={{ color: active ? "#2563eb" : "#0f172a" }}>
+                    <p className="truncate text-sm font-semibold" style={{ color: active ? "#7c3aed" : "#0f172a" }}>
                       {p.name}
                     </p>
                     <p className="truncate text-xs mt-0.5" style={{ color: "#94a3b8" }}>
                       {p.indication}
                     </p>
                   </div>
-                  {active && <CheckCircle size={16} style={{ color: "#2563eb", flexShrink: 0 }} />}
+                  {active && <CheckCircle size={16} style={{ color: "#7c3aed", flexShrink: 0 }} />}
                 </button>
               );
             })
@@ -377,7 +377,7 @@ function ScanContent() {
                   background:  scansLeft <= 1 ? "#fef2f2" : "#ffffff",
                   color:       scansLeft <= 1 ? "#dc2626" : "#5a6a85",
                 }}>
-                <span className="font-bold" style={{ color: scansLeft <= 1 ? "#dc2626" : "#2563eb" }}>
+                <span className="font-bold" style={{ color: scansLeft <= 1 ? "#dc2626" : "#7c3aed" }}>
                   {scansLeft}/{FREE_SCAN_LIMIT}
                 </span>
                 free scans left this month
@@ -385,7 +385,7 @@ function ScanContent() {
               </button>
             ) : (
               <span className="flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium"
-                style={{ borderColor: "#bfdbfe", background: "#eff6ff", color: "#1d4ed8" }}>
+                style={{ borderColor: "#ddd6fe", background: "#f5f3ff", color: "#6d28d9" }}>
                 <Zap size={11} />
                 {profile.tier === "clinic" ? "Clinic" : "Pro"} — unlimited scans
               </span>
@@ -468,13 +468,13 @@ function ScanContent() {
               onClick={() => openNativeGallery()}
               className="cursor-pointer p-10 text-center transition-all select-none"
               style={{
-                background: isDragging ? "#eff6ff" : "#ffffff",
-                border: isDragging ? "2px dashed #2563eb" : "2px dashed #cbd5e1",
+                background: isDragging ? "#f5f3ff" : "#ffffff",
+                border: isDragging ? "2px dashed #7c3aed" : "2px dashed #cbd5e1",
                 borderRadius: "1rem",
               }}>
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-                style={{ background: isDragging ? "#dbeafe" : "#f1f5f9" }}>
-                <ImageIcon size={28} style={{ color: isDragging ? "#2563eb" : "#94a3b8" }} />
+                style={{ background: isDragging ? "#ede9fe" : "#f1f5f9" }}>
+                <ImageIcon size={28} style={{ color: isDragging ? "#7c3aed" : "#94a3b8" }} />
               </div>
               <p className="mb-1 text-base font-semibold" style={{ color: "#0f172a" }}>
                 Tap to photograph your ultrasound
@@ -525,7 +525,7 @@ function ScanContent() {
         <div className="mt-5">
           {isAnalyzing ? (
             <div className="overflow-hidden rounded-2xl border"
-              style={{ borderColor: "#bfdbfe", background: "#eff6ff" }}>
+              style={{ borderColor: "#ddd6fe", background: "#f5f3ff" }}>
               {image && (
                 <div className="relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -535,7 +535,7 @@ function ScanContent() {
                     style={{ background: "rgba(10,16,32,0.55)" }}>
                     <div className="rounded-2xl px-6 py-4 text-center"
                       style={{ background: "rgba(0,0,0,0.7)", border: "1px solid rgba(37,99,235,0.4)" }}>
-                      <Loader2 size={24} className="mx-auto mb-2 animate-spin" style={{ color: "#60a5fa" }} />
+                      <Loader2 size={24} className="mx-auto mb-2 animate-spin" style={{ color: "#a78bfa" }} />
                       <p className="text-sm font-semibold text-white">
                         {analysisStep < ANALYSIS_STEPS.length
                           ? ANALYSIS_STEPS[analysisStep]
@@ -548,7 +548,7 @@ function ScanContent() {
               <div className="px-6 py-5">
                 {!image && (
                   <>
-                    <Loader2 size={28} className="mx-auto mb-2 animate-spin" style={{ color: "#2563eb" }} />
+                    <Loader2 size={28} className="mx-auto mb-2 animate-spin" style={{ color: "#7c3aed" }} />
                     <p className="text-center font-semibold" style={{ color: "#0f172a" }}>
                       {analysisStep < ANALYSIS_STEPS.length ? ANALYSIS_STEPS[analysisStep] : "Almost done…"}
                     </p>
@@ -565,7 +565,7 @@ function ScanContent() {
                         className={`h-1.5 rounded-full transition-all duration-500 ${active ? "animate-pulse" : ""}`}
                         style={{
                           width:      done || active ? "2rem" : "0.5rem",
-                          background: done ? "#2563eb" : active ? "#60a5fa" : pending ? "#dde4ee" : "#dde4ee",
+                          background: done ? "#7c3aed" : active ? "#a78bfa" : pending ? "#dde4ee" : "#dde4ee",
                           opacity:    pending ? 0.5 : 1,
                         }}
                       />
@@ -613,7 +613,7 @@ function ScanContent() {
                 <div className="space-y-3">
                   <button onClick={() => setShowAuthModal(true)}
                     className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95"
-                    style={{ background: "#2563eb" }}>
+                    style={{ background: "#7c3aed" }}>
                     <Zap size={19} /> Sign in to Start Scanning
                   </button>
                   <p className="text-center text-xs" style={{ color: "#94a3b8" }}>
@@ -626,7 +626,7 @@ function ScanContent() {
                     onClick={() => { setAnalysisError(null); runAnalysis(); }}
                     disabled={!image || isFreeAtLimit}
                     className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-                    style={{ background: "#2563eb" }}>
+                    style={{ background: "#7c3aed" }}>
                     <Zap size={19} />
                     {isFreeAtLimit ? "Upgrade to Continue" : image ? "Analyze Now" : "Upload an image to start"}
                   </button>
@@ -634,7 +634,7 @@ function ScanContent() {
                   {isFreeAtLimit && (
                     <button onClick={() => { setUpgradeReason("limit"); setShowUpgradeModal(true); }}
                       className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border py-3 text-sm font-bold"
-                      style={{ borderColor: "#2563eb", color: "#2563eb" }}>
+                      style={{ borderColor: "#7c3aed", color: "#7c3aed" }}>
                       View upgrade plans →
                     </button>
                   )}
@@ -643,7 +643,7 @@ function ScanContent() {
                     <button onClick={() => { setAnalysisError(null); runAnalysis(); }}
                       className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border py-3 text-sm font-medium hover:bg-white"
                       style={{ borderColor: "#e2e8f0", color: "#64748b" }}>
-                      <CheckCircle size={14} style={{ color: "#2563eb" }} />
+                      <CheckCircle size={14} style={{ color: "#7c3aed" }} />
                       Try a demo analysis without uploading
                     </button>
                   )}
@@ -686,7 +686,7 @@ export default function ScanPage() {
   return (
     <Suspense fallback={
       <div className="flex min-h-screen items-center justify-center" style={{ background: "#f8fafc" }}>
-        <Loader2 size={28} className="animate-spin" style={{ color: "#2563eb" }} />
+        <Loader2 size={28} className="animate-spin" style={{ color: "#7c3aed" }} />
       </div>
     }>
       <ScanContent />

@@ -53,7 +53,7 @@ export default function ResetPasswordPage() {
       >
         {/* Logo */}
         <div className="mb-6 select-none">
-          <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#2563eb" }}>Pilot</span>
+          <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Pilot</span>
         </div>
 
         {done ? (
@@ -148,7 +148,7 @@ export default function ResetPasswordPage() {
                 type="submit"
                 disabled={loading}
                 className="w-full rounded-lg py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
-                style={{ background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)" }}
+                style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #8b5cf6 100%)" }}
               >
                 {loading ? "Updating…" : "Update password"}
               </button>

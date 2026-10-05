@@ -36,7 +36,7 @@ const ALERT_CONFIG: Record<string, {
   critical: { border: "#fca5a5", bg: "#fef2f2", labelBg: "#fee2e2", labelText: "#dc2626", icon: XCircle, iconColor: "#dc2626", label: "CRITICAL FINDING" },
   high:     { border: "#fdba74", bg: "#fff7ed", labelBg: "#fed7aa", labelText: "#ea580c", icon: AlertTriangle, iconColor: "#ea580c", label: "SIGNIFICANT FINDING" },
   moderate: { border: "#fcd34d", bg: "#fefce8", labelBg: "#fef9c3", labelText: "#ca8a04", icon: AlertTriangle, iconColor: "#ca8a04", label: "NOTABLE FINDING" },
-  low:      { border: "#93c5fd", bg: "#eff6ff", labelBg: "#dbeafe", labelText: "#2563eb", icon: Info, iconColor: "#2563eb", label: "NOTE" },
+  low:      { border: "#c4b5fd", bg: "#f5f3ff", labelBg: "#ede9fe", labelText: "#7c3aed", icon: Info, iconColor: "#7c3aed", label: "NOTE" },
   none:     { border: "#6ee7b7", bg: "#f0fdf4", labelBg: "#d1fae5", labelText: "#059669", icon: CheckCircle, iconColor: "#059669", label: "NORMAL" },
 };
 
@@ -44,7 +44,7 @@ const FINDING_STYLES: Record<string, { bg: string; border: string; label: string
   critical: { bg: "#fef2f2", border: "#fca5a5", label: "#dc2626", value: "#991b1b" },
   warning:  { bg: "#fefce8", border: "#fcd34d", label: "#ca8a04", value: "#92400e" },
   normal:   { bg: "#f0fdf4", border: "#6ee7b7", label: "#059669", value: "#065f46" },
-  info:     { bg: "#eff6ff", border: "#93c5fd", label: "#2563eb", value: "#1e40af" },
+  info:     { bg: "#f5f3ff", border: "#c4b5fd", label: "#7c3aed", value: "#5b21b6" },
 };
 
 const MEASURE_STATUS: Record<string, string> = {
@@ -55,7 +55,7 @@ const MEASURE_STATUS: Record<string, string> = {
 
 const QUALITY_COLOR: Record<string, string> = {
   excellent: "#059669",
-  good:      "#2563eb",
+  good:      "#7c3aed",
   fair:      "#d97706",
   poor:      "#dc2626",
 };
@@ -242,7 +242,7 @@ function ResultsContent() {
           style={{ borderColor: "#e2e8f0" }}>
           <div>
             <span className="text-xl font-extrabold" style={{ color: "#0f172a" }}>Sono</span>
-            <span className="text-xl font-extrabold" style={{ color: "#2563eb" }}>Pilot</span>
+            <span className="text-xl font-extrabold" style={{ color: "#7c3aed" }}>Pilot</span>
             <p className="text-xs mt-0.5" style={{ color: "#94a3b8" }}>AI Ultrasound Report</p>
           </div>
           <div className="text-right text-xs" style={{ color: "#94a3b8" }}>
@@ -330,8 +330,8 @@ function ResultsContent() {
             <ConfidenceBadge score={analysis.confidence} size="sm" />
           </div>
           {analysis.imageQualityNote && (
-            <div className="border-t px-4 py-2" style={{ borderColor: "#dde4ee", background: "#eff6ff" }}>
-              <p className="flex items-start gap-1.5 text-xs" style={{ color: "#2563eb" }}>
+            <div className="border-t px-4 py-2" style={{ borderColor: "#dde4ee", background: "#f5f3ff" }}>
+              <p className="flex items-start gap-1.5 text-xs" style={{ color: "#7c3aed" }}>
                 <Info size={11} className="mt-0.5 shrink-0" />
                 {analysis.imageQualityNote}
               </p>
@@ -409,7 +409,7 @@ function ResultsContent() {
           <ul className="space-y-2">
             {analysis.recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: "#5a6a85" }}>
-                <ChevronRight size={14} className="mt-0.5 shrink-0" style={{ color: "#2563eb" }} />
+                <ChevronRight size={14} className="mt-0.5 shrink-0" style={{ color: "#7c3aed" }} />
                 {rec}
               </li>
             ))}
@@ -418,13 +418,13 @@ function ResultsContent() {
 
         {/* Next views */}
         {analysis.nextViews.length > 0 && (
-          <div className="mb-5 rounded-2xl border p-5" style={{ borderColor: "#bfdbfe", background: "#eff6ff" }}>
+          <div className="mb-5 rounded-2xl border p-5" style={{ borderColor: "#ddd6fe", background: "#f5f3ff" }}>
             <h2 className="mb-3 font-semibold" style={{ color: "#1a2235" }}>Suggested Next Views</h2>
             <div className="flex flex-wrap gap-2">
               {analysis.nextViews.map((view) => (
                 <Link key={view} href={`/scan?protocol=${protocolId}`}
                   className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all hover:opacity-80"
-                  style={{ borderColor: "#93c5fd", background: "#dbeafe", color: "#1d4ed8" }}>
+                  style={{ borderColor: "#c4b5fd", background: "#ede9fe", color: "#6d28d9" }}>
                   {view} <ArrowRight size={10} />
                 </Link>
               ))}
@@ -460,7 +460,7 @@ function ResultsContent() {
           {/* Primary: New Scan */}
           <Link href="/scan"
             className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold text-white transition-all hover:opacity-90 active:scale-95"
-            style={{ background: "#2563eb" }}>
+            style={{ background: "#7c3aed" }}>
             <Camera size={17} /> New Scan
           </Link>
           {/* Secondary actions */}
@@ -492,12 +492,12 @@ function ResultsContent() {
               {protocol.views.map((view, i) => (
                 <div key={view} className="flex items-center gap-3 text-sm">
                   {i === 0
-                    ? <CheckCircle size={15} className="shrink-0" style={{ color: "#2563eb" }} />
+                    ? <CheckCircle size={15} className="shrink-0" style={{ color: "#7c3aed" }} />
                     : <div className="h-4 w-4 shrink-0 rounded-full border-2" style={{ borderColor: "#dde4ee" }} />}
                   <span style={{ color: i === 0 ? "#1a2235" : "#94a3b8" }}>{view}</span>
                   {i === 0 && (
                     <span className="ml-auto rounded-full px-2 py-0.5 text-xs font-semibold"
-                      style={{ background: "#dbeafe", color: "#2563eb" }}>
+                      style={{ background: "#ede9fe", color: "#7c3aed" }}>
                       Complete
                     </span>
                   )}
@@ -506,7 +506,7 @@ function ResultsContent() {
             </div>
             <div className="mt-3 flex items-center justify-between text-xs" style={{ color: "#94a3b8" }}>
               <span>1 of {protocol.views.length} views complete</span>
-              <Link href={`/scan?protocol=${protocolId}`} className="font-medium" style={{ color: "#2563eb" }}>
+              <Link href={`/scan?protocol=${protocolId}`} className="font-medium" style={{ color: "#7c3aed" }}>
                 Continue exam →
               </Link>
             </div>
@@ -518,7 +518,7 @@ function ResultsContent() {
           <div className="fixed inset-0 z-50 flex flex-col" style={{ background: "#f8fafc" }}>
             {/* Header */}
             <div className="flex items-center gap-2.5 border-b px-4 py-3 shrink-0" style={{ borderColor: "#dde4ee", background: "#ffffff" }}>
-              <MessageCircle size={16} style={{ color: "#2563eb" }} />
+              <MessageCircle size={16} style={{ color: "#7c3aed" }} />
               <div className="flex-1">
                 <p className="text-sm font-semibold" style={{ color: "#1a2235" }}>Ask a Follow-up Question</p>
                 <p className="text-xs" style={{ color: "#94a3b8" }}>Ask anything about this scan</p>
@@ -535,7 +535,7 @@ function ResultsContent() {
                   {["What does this finding mean?", "Should I be concerned?", "What view should I get next?", "Explain the measurements"].map((q) => (
                     <button key={q} onClick={() => { setChatInput(q); setTimeout(() => chatExpandedInputRef.current?.focus(), 50); }}
                       className="rounded-full border px-3 py-1.5 text-sm font-medium"
-                      style={{ borderColor: "#bfdbfe", color: "#2563eb", background: "#eff6ff" }}>
+                      style={{ borderColor: "#ddd6fe", color: "#7c3aed", background: "#f5f3ff" }}>
                       {q}
                     </button>
                   ))}
@@ -545,7 +545,7 @@ function ResultsContent() {
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed"
                     style={msg.role === "user"
-                      ? { background: "#2563eb", color: "#ffffff", borderBottomRightRadius: "4px" }
+                      ? { background: "#7c3aed", color: "#ffffff", borderBottomRightRadius: "4px" }
                       : { background: "#ffffff", color: "#1a2235", borderBottomLeftRadius: "4px", border: "1px solid #e2e8f0" }}>
                     {msg.role === "assistant"
                       ? stripMarkdown(msg.content).split(/\n\n+/).filter(Boolean).map((para, pi, arr) => (
@@ -580,7 +580,7 @@ function ResultsContent() {
                 />
                 <button onClick={sendChatMessage} disabled={!chatInput.trim() || chatLoading}
                   className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white transition-all hover:opacity-90 disabled:opacity-40"
-                  style={{ background: "#2563eb" }}>
+                  style={{ background: "#7c3aed" }}>
                   <Send size={16} />
                 </button>
               </div>
@@ -591,7 +591,7 @@ function ResultsContent() {
         {/* Follow-up chat — inline card */}
         <div ref={chatSectionRef} className="mt-5 rounded-2xl border shadow-sm overflow-hidden" data-print="hide" style={{ borderColor: "#dde4ee", background: "#ffffff" }}>
           <div className="flex items-center gap-2.5 border-b px-5 py-4" style={{ borderColor: "#dde4ee", background: "#f8fafc" }}>
-            <MessageCircle size={16} style={{ color: "#2563eb" }} />
+            <MessageCircle size={16} style={{ color: "#7c3aed" }} />
             <div className="flex-1">
               <p className="text-sm font-semibold" style={{ color: "#1a2235" }}>Ask a Follow-up Question</p>
               <p className="text-xs" style={{ color: "#94a3b8" }}>Ask anything about this scan or protocol</p>
@@ -610,7 +610,7 @@ function ResultsContent() {
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div className="max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
                     style={msg.role === "user"
-                      ? { background: "#2563eb", color: "#ffffff", borderBottomRightRadius: "4px" }
+                      ? { background: "#7c3aed", color: "#ffffff", borderBottomRightRadius: "4px" }
                       : { background: "#f1f5f9", color: "#1a2235", borderBottomLeftRadius: "4px" }}>
                     {msg.role === "assistant"
                       ? stripMarkdown(msg.content)
@@ -647,8 +647,8 @@ function ResultsContent() {
                   "Explain the measurements",
                 ].map((q) => (
                   <button key={q} onClick={() => setChatInput(q)}
-                    className="rounded-full border px-3 py-1 text-xs font-medium transition-all hover:bg-blue-50"
-                    style={{ borderColor: "#bfdbfe", color: "#2563eb", background: "#eff6ff" }}>
+                    className="rounded-full border px-3 py-1 text-xs font-medium transition-all hover:bg-purple-50"
+                    style={{ borderColor: "#ddd6fe", color: "#7c3aed", background: "#f5f3ff" }}>
                     {q}
                   </button>
                 ))}
@@ -670,7 +670,7 @@ function ResultsContent() {
               />
               <button onClick={sendChatMessage} disabled={!chatInput.trim() || chatLoading}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white transition-all hover:opacity-90 disabled:opacity-40"
-                style={{ background: "#2563eb" }}>
+                style={{ background: "#7c3aed" }}>
                 <Send size={15} />
               </button>
             </div>
@@ -769,7 +769,7 @@ function ResultsContent() {
               </button>
               <button onClick={handleExportPDF}
                 className="flex-1 rounded-xl py-2.5 text-sm font-bold text-white"
-                style={{ background: "#2563eb" }}>
+                style={{ background: "#7c3aed" }}>
                 Download PDF
               </button>
             </div>
@@ -795,7 +795,7 @@ export default function ResultsPage() {
   return (
     <Suspense fallback={
       <div className="flex min-h-screen items-center justify-center" style={{ background: "#eef3f8" }}>
-        <Loader2 size={28} className="animate-spin" style={{ color: "#2563eb" }} />
+        <Loader2 size={28} className="animate-spin" style={{ color: "#7c3aed" }} />
       </div>
     }>
       <ResultsContent />

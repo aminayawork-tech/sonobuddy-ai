@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Camera, Home, Library, LogIn, Menu } from "lucide-react";
 import { useAuth } from "./AuthProvider";
@@ -16,7 +15,6 @@ const desktopNavItems = [
 ];
 
 function SonoLogo({ size = "md" }: { size?: "sm" | "md" }) {
-  const imgSize = size === "sm" ? 26 : 22;
   const textCls = size === "sm"
     ? "text-2xl font-extrabold tracking-tight"
     : "text-xl font-extrabold tracking-tight";
@@ -27,7 +25,6 @@ function SonoLogo({ size = "md" }: { size?: "sm" | "md" }) {
         <span className={textCls} style={{ color: "#7c3aed" }}>Buddy </span>
         <span className={textCls} style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
       </span>
-      <Image src="/sonobuddy-logo.png" alt="" width={imgSize} height={imgSize} priority style={{ objectFit: "contain" }} />
     </Link>
   );
 }
@@ -80,7 +77,7 @@ function NavBarInner() {
               return (
                 <Link key={href} href={href}
                   className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all"
-                  style={active ? { color: "#2563eb", background: "#eff6ff" } : { color: "#64748b" }}>
+                  style={active ? { color: "#7c3aed", background: "#f5f3ff" } : { color: "#64748b" }}>
                   <Icon size={15} />
                   {label}
                 </Link>
@@ -103,7 +100,7 @@ function NavBarInner() {
             )}
             <Link href="/scan"
               className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "#2563eb" }}>
+              style={{ background: "#7c3aed" }}>
               <Camera size={15} />
               Start Scanning
             </Link>

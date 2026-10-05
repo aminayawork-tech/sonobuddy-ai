@@ -39,7 +39,7 @@ function ProtocolCard({ protocol }: { protocol: Protocol }) {
         </span>
       </div>
 
-      <h3 className="mb-1 font-semibold transition-colors group-hover:text-blue-600"
+      <h3 className="mb-1 font-semibold transition-colors group-hover:text-purple-600"
         style={{ color: "#1a2235" }}>
         {protocol.name}
       </h3>
@@ -56,7 +56,7 @@ function ProtocolCard({ protocol }: { protocol: Protocol }) {
             {protocol.difficulty}
           </span>
         </div>
-        <ChevronRight size={14} className="transition-colors group-hover:text-blue-500"
+        <ChevronRight size={14} className="transition-colors group-hover:text-purple-500"
           style={{ color: "#cbd5e1" }} />
       </div>
     </Link>
@@ -132,7 +132,7 @@ export default function ProtocolsPage() {
               color: "#1a2235",
               fontSize: "16px",
             }}
-            onFocus={(e) => (e.target.style.borderColor = "#2563eb")}
+            onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
             onBlur={(e) => (e.target.style.borderColor = "#dde4ee")}
           />
         </div>
@@ -144,7 +144,7 @@ export default function ProtocolsPage() {
             className="shrink-0 rounded-full px-4 py-1.5 text-sm font-semibold transition-all"
             style={
               activeCategory === "All"
-                ? { background: "#2563eb", color: "#ffffff" }
+                ? { background: "#7c3aed", color: "#ffffff" }
                 : { background: "#ffffff", color: "#5a6a85", border: "1px solid #dde4ee" }
             }
           >
@@ -161,7 +161,7 @@ export default function ProtocolsPage() {
                 className="shrink-0 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-all"
                 style={
                   active
-                    ? { background: "#2563eb", color: "#ffffff" }
+                    ? { background: "#7c3aed", color: "#ffffff" }
                     : { background: "#ffffff", color: "#5a6a85", border: "1px solid #dde4ee" }
                 }
               >
@@ -209,7 +209,7 @@ export default function ProtocolsPage() {
             <div className="py-20 text-center">
               <p style={{ color: "#94a3b8" }}>No protocols found for &ldquo;{search}&rdquo;</p>
               <button onClick={() => setSearch("")} className="mt-2 text-sm font-medium"
-                style={{ color: "#2563eb" }}>
+                style={{ color: "#7c3aed" }}>
                 Clear search
               </button>
             </div>
@@ -240,7 +240,7 @@ export default function ProtocolsPage() {
 
         {/* Quick start */}
         <div className="mt-12 rounded-2xl border p-6 text-center"
-          style={{ background: "#eff6ff", borderColor: "#bfdbfe" }}>
+          style={{ background: "#f5f3ff", borderColor: "#ddd6fe" }}>
           <h3 className="mb-1.5 font-semibold" style={{ color: "#1a2235" }}>
             Not sure where to start?
           </h3>
@@ -253,7 +253,7 @@ export default function ProtocolsPage() {
               return (
                 <Link key={id} href={`/protocols/${id}`}
                   className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all hover:opacity-80"
-                  style={{ borderColor: "#93c5fd", background: "#dbeafe", color: "#1d4ed8" }}>
+                  style={{ borderColor: "#c4b5fd", background: "#ede9fe", color: "#6d28d9" }}>
                   {p.shortName} <ArrowRight size={10} />
                 </Link>
               );

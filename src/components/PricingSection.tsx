@@ -20,7 +20,7 @@ function PaidButton({ label }: { label: string }) {
       <button
         onClick={() => setShowModal(true)}
         className="flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold text-white transition-all hover:opacity-90"
-        style={{ background: "#2563eb" }}>
+        style={{ background: "#7c3aed" }}>
         {label}
       </button>
     </>
@@ -88,12 +88,12 @@ export default function PricingSection() {
 
           {/* Pro */}
           <div className="relative flex flex-col rounded-2xl border p-6 shadow-lg"
-            style={{ borderColor: "#93c5fd", background: "#eff6ff" }}>
+            style={{ borderColor: "#c4b5fd", background: "#f5f3ff" }}>
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold text-white"
-              style={{ background: "#2563eb" }}>
+              style={{ background: "#7c3aed" }}>
               Most Popular
             </div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide" style={{ color: "#2563eb" }}>Pro</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide" style={{ color: "#7c3aed" }}>Pro</p>
             {billing === "monthly" ? (
               <p className="mb-5 text-3xl font-extrabold" style={{ color: "#0f172a" }}>
                 $9.99<span className="text-sm font-normal" style={{ color: "#64748b" }}>/mo</span>
@@ -113,10 +113,10 @@ export default function PricingSection() {
                 <p className="mb-5 text-xs" style={{ color: "#64748b" }}>~$5.83/mo</p>
               </>
             )}
-            <ul className="mb-6 flex-1 space-y-2.5 text-xs" style={{ color: "#1e40af" }}>
+            <ul className="mb-6 flex-1 space-y-2.5 text-xs" style={{ color: "#5b21b6" }}>
               {["Unlimited AI study sessions", "All 31 protocols", "Full reference measurements", "AI chat", "PDF study export", "PHI auto-redaction", "Priority AI queue"].map((f) => (
                 <li key={f} className="flex items-center gap-2">
-                  <CheckCircle size={13} style={{ color: "#2563eb", flexShrink: 0 }} />
+                  <CheckCircle size={13} style={{ color: "#7c3aed", flexShrink: 0 }} />
                   {f}
                 </li>
               ))}

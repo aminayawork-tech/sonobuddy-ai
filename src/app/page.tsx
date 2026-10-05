@@ -15,13 +15,13 @@ export default function HomePage() {
         {/* Soft radial glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute left-1/2 top-0 -translate-x-1/2 rounded-full opacity-30"
-            style={{ width: 700, height: 500, background: "radial-gradient(ellipse, #bfdbfe 0%, transparent 70%)" }} />
+            style={{ width: 700, height: 500, background: "radial-gradient(ellipse, #ddd6fe 0%, transparent 70%)" }} />
         </div>
 
         {/* Badge */}
         <div className="relative mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium"
-          style={{ borderColor: "#bfdbfe", background: "#eff6ff", color: "#2563eb" }}>
-          <span className="h-2 w-2 animate-pulse rounded-full" style={{ background: "#2563eb" }} />
+          style={{ borderColor: "#ddd6fe", background: "#f5f3ff", color: "#7c3aed" }}>
+          <span className="h-2 w-2 animate-pulse rounded-full" style={{ background: "#7c3aed" }} />
           AI-Guided Ultrasound Study Companion
         </div>
 
@@ -29,7 +29,7 @@ export default function HomePage() {
         <h1 className="relative mb-5 max-w-3xl text-5xl font-extrabold leading-[1.1] tracking-tight md:text-7xl"
           style={{ color: "#0f172a" }}>
           Snap a photo.{" "}
-          <span style={{ color: "#2563eb" }}>Study<br />in seconds.</span>
+          <span style={{ color: "#7c3aed" }}>Study<br />in seconds.</span>
         </h1>
 
         {/* Subheadline */}
@@ -44,7 +44,7 @@ export default function HomePage() {
         <Link
           href="/scan"
           className="relative inline-flex items-center gap-3 rounded-2xl px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:opacity-90 hover:shadow-xl active:scale-95"
-          style={{ background: "#2563eb" }}>
+          style={{ background: "#7c3aed" }}>
           <Camera size={20} />
           Start Studying Now
           <ArrowRight size={18} />
@@ -59,7 +59,7 @@ export default function HomePage() {
             "Educational use only",
           ].map((item) => (
             <span key={item} className="flex items-center gap-1.5">
-              <CheckCircle size={13} style={{ color: "#2563eb" }} />
+              <CheckCircle size={13} style={{ color: "#7c3aed" }} />
               {item}
             </span>
           ))}
@@ -78,8 +78,8 @@ export default function HomePage() {
               {
                 step: "01",
                 icon: Upload,
-                iconBg: "#eff6ff",
-                iconColor: "#2563eb",
+                iconBg: "#f5f3ff",
+                iconColor: "#7c3aed",
                 title: "Snap or upload",
                 desc: "Photograph your ultrasound screen or upload an image from your device. No special equipment needed.",
               },
@@ -103,7 +103,7 @@ export default function HomePage() {
               <div key={step} className="relative rounded-2xl border p-8 text-center shadow-sm"
                 style={{ background: "#ffffff", borderColor: "#e2e8f0" }}>
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-bold text-white"
-                  style={{ background: "#2563eb" }}>
+                  style={{ background: "#7c3aed" }}>
                   {step}
                 </div>
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
@@ -151,8 +151,8 @@ export default function HomePage() {
               <div key={title} className="rounded-2xl border p-6 shadow-sm"
                 style={{ background: "#ffffff", borderColor: "#e2e8f0" }}>
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl"
-                  style={{ background: "#eff6ff" }}>
-                  <Icon size={20} style={{ color: "#2563eb" }} />
+                  style={{ background: "#f5f3ff" }}>
+                  <Icon size={20} style={{ color: "#7c3aed" }} />
                 </div>
                 <h3 className="mb-2 font-semibold" style={{ color: "#0f172a" }}>{title}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: "#64748b" }}>{desc}</p>
@@ -178,7 +178,7 @@ export default function HomePage() {
           <Link
             href="/scan"
             className="inline-flex items-center gap-2 rounded-2xl px-8 py-4 font-bold text-white shadow-lg transition-all hover:opacity-90"
-            style={{ background: "#2563eb" }}>
+            style={{ background: "#7c3aed" }}>
             <Camera size={18} />
             Start Your First Study Session Free
             <ArrowRight size={17} />
@@ -194,11 +194,11 @@ export default function HomePage() {
             treatment. Always consult a licensed physician for medical decisions.
           </p>
           <p className="mb-2">
-            <Link href="/privacy" className="hover:underline" style={{ color: "#2563eb" }}>
+            <Link href="/privacy" className="hover:underline" style={{ color: "#7c3aed" }}>
               Privacy Policy
             </Link>
             {" • "}
-            <Link href="/terms" className="hover:underline" style={{ color: "#2563eb" }}>
+            <Link href="/terms" className="hover:underline" style={{ color: "#7c3aed" }}>
               Terms of Use
             </Link>
           </p>

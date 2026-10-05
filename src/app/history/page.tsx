@@ -193,7 +193,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
                 <ul className="space-y-1.5">
                   {scan.recommendations.map((r, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm leading-relaxed" style={{ color: "#334155" }}>
-                      <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#2563eb" }} />
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#7c3aed" }} />
                       {r}
                     </li>
                   ))}
@@ -231,7 +231,7 @@ export default function HistoryPage() {
       <div className="min-h-screen pt-14 pb-28" style={{ background: "#f8fafc" }}>
         <NavBar />
         <div className="flex items-center justify-center pt-32">
-          <div className="w-6 h-6 rounded-full border-2 border-blue-200 border-t-blue-600 animate-spin" />
+          <div className="w-6 h-6 rounded-full border-2 border-purple-200 border-t-purple-600 animate-spin" />
         </div>
       </div>
     );
@@ -242,15 +242,15 @@ export default function HistoryPage() {
       <div className="min-h-screen pt-14 pb-28 flex flex-col" style={{ background: "#f8fafc" }}>
         <NavBar />
         <div className="flex flex-col items-center justify-center flex-1 px-6 text-center">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "#eff6ff" }}>
-            <Clock size={28} color="#2563eb" />
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "#f5f3ff" }}>
+            <Clock size={28} color="#7c3aed" />
           </div>
           <h2 className="text-xl font-bold mb-2" style={{ color: "#1e293b" }}>Scan History</h2>
           <p className="text-sm mb-6" style={{ color: "#64748b" }}>Sign in to view your previous scans. No images or patient data are ever stored.</p>
           <Link
             href="/app"
             className="flex items-center gap-2 rounded-2xl px-6 py-3 font-bold text-white text-sm"
-            style={{ background: "#2563eb" }}
+            style={{ background: "#7c3aed" }}
           >
             <LogIn size={16} />
             Sign In
@@ -266,14 +266,14 @@ export default function HistoryPage() {
 
       <div className="mx-auto max-w-lg px-4 py-6">
         <div className="flex items-center gap-2 mb-4">
-          <Clock size={20} color="#2563eb" />
+          <Clock size={20} color="#7c3aed" />
           <h1 className="text-xl font-bold" style={{ color: "#1e293b" }}>Scan History</h1>
         </div>
 
         {/* Privacy banner */}
-        <div className="rounded-xl px-4 py-3 mb-5 flex items-start gap-2" style={{ background: "#eff6ff", border: "1px solid #bfdbfe" }}>
-          <CheckCircle size={15} color="#2563eb" className="mt-0.5 flex-shrink-0" />
-          <p className="text-xs" style={{ color: "#1d4ed8" }}>
+        <div className="rounded-xl px-4 py-3 mb-5 flex items-start gap-2" style={{ background: "#f5f3ff", border: "1px solid #ddd6fe" }}>
+          <CheckCircle size={15} color="#7c3aed" className="mt-0.5 flex-shrink-0" />
+          <p className="text-xs" style={{ color: "#6d28d9" }}>
             <strong>Privacy-first:</strong> Only AI analysis text is saved — no ultrasound images, no patient name or ID.
           </p>
         </div>
@@ -285,7 +285,7 @@ export default function HistoryPage() {
             <Link
               href="/scan"
               className="inline-flex items-center gap-1.5 rounded-xl px-5 py-2.5 text-sm font-bold text-white"
-              style={{ background: "#2563eb" }}
+              style={{ background: "#7c3aed" }}
             >
               Start a Scan
             </Link>
