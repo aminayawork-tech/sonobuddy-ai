@@ -1,20 +1,21 @@
 -- ============================================================
 -- SonoBuddy AI – User Profiles + Billing Schema
 -- Run this in: Supabase Dashboard → SQL Editor
--- Subscriptions are sold via Apple In-App Purchase (RevenueCat).
+-- Subscriptions are sold via Apple In-App Purchase (StoreKit directly —
+-- no third-party billing service).
 -- ============================================================
 
 -- 1. Profiles table -------------------------------------------
 create table public.profiles (
-  id                      uuid        references auth.users(id) on delete cascade primary key,
-  email                   text,
-  tier                    text        not null default 'free'
-                            check (tier in ('free', 'pro', 'clinic')),
-  scans_used_this_month   integer     not null default 0,
-  current_period_start    timestamptz not null default now(),
-  revenuecat_app_user_id  text        unique,
-  created_at              timestamptz not null default now(),
-  updated_at              timestamptz not null default now()
+  id                          uuid        references auth.users(id) on delete cascade primary key,
+  email                       text,
+  tier                        text        not null default 'free'
+                                check (tier in ('free', 'pro', 'clinic')),
+  scans_used_this_month       integer     not null default 0,
+  current_period_start        timestamptz not null default now(),
+  apple_original_transaction_id text      unique,
+  created_at                  timestamptz not null default now(),
+  updated_at                  timestamptz not null default now()
 );
 
 -- 2. RLS ------------------------------------------------------
@@ -67,7 +68,7 @@ create trigger profiles_updated_at
 
 -- 5. Atomic scan-status check (handles lazy monthly reset) ---
 -- Called server-side before every scan attempt.
--- Returns JSON: { tier, scans_used, limit_reached, revenuecat_app_user_id }
+-- Returns JSON: { tier, scans_used, limit_reached, apple_original_transaction_id }
 create or replace function public.check_scan_status(p_user_id uuid)
 returns json
 language plpgsql
@@ -93,10 +94,10 @@ begin
   end if;
 
   return json_build_object(
-    'tier',                   rec.tier,
-    'scans_used',             rec.scans_used_this_month,
-    'limit_reached',          (rec.tier = 'free' and rec.scans_used_this_month >= free_limit),
-    'revenuecat_app_user_id', rec.revenuecat_app_user_id
+    'tier',                           rec.tier,
+    'scans_used',                     rec.scans_used_this_month,
+    'limit_reached',                  (rec.tier = 'free' and rec.scans_used_this_month >= free_limit),
+    'apple_original_transaction_id',  rec.apple_original_transaction_id
   );
 end;
 $$;

@@ -43,9 +43,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UIDocumentInteract
         initWebView()
         initToolbarView()
         loadRootUrl()
-    
+        startIAPTransactionListener()
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification , object: nil)
-        
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -278,28 +279,52 @@ extension ViewController: WKScriptMessageHandler {
             let productID = message.body as? String ?? "sonobuddyai_pro_monthly"
             handleIAPPurchase(productID: productID)
         }
+        if message.name == "restorePurchases" {
+            handleRestorePurchases()
+        }
   }
 }
 
 extension ViewController {
+    /// Dispatches a CustomEvent back into the web app — shared by live
+    /// purchases, restores, and the background transaction listener so
+    /// every path updates the web layer the same way.
+    func notifyWeb(success: Bool, payload: String?) {
+        DispatchQueue.main.async {
+            if success, let payload = payload {
+                let js = "window.dispatchEvent(new CustomEvent('iap-purchase-complete', { detail: '\(payload)' }));"
+                SonoPilot.webView.evaluateJavaScript(js) { _, _ in }
+            } else if let payload = payload {
+                // payload is an error message when success == false
+                let escaped = payload.replacingOccurrences(of: "'", with: "\\'")
+                let js = "window.dispatchEvent(new CustomEvent('iap-purchase-error', { detail: '\(escaped)' }));"
+                SonoPilot.webView.evaluateJavaScript(js) { _, _ in }
+            }
+            // nil payload = user cancelled — do nothing
+        }
+    }
+
     func handleIAPPurchase(productID: String) {
         Task { @MainActor in
             await StoreManager.shared.loadProducts()
-            StoreManager.shared.purchase(productID: productID) { success, payload in
-                DispatchQueue.main.async {
-                    if success, let payload = payload {
-                        // Notify web app and sync with server
-                        let js = "window.dispatchEvent(new CustomEvent('iap-purchase-complete', { detail: '\(payload)' }));"
-                        SonoPilot.webView.evaluateJavaScript(js) { _, _ in }
-                    } else if let payload = payload {
-                        // payload is error message when success == false
-                        let escaped = payload.replacingOccurrences(of: "'", with: "\\'")
-                        let js = "window.dispatchEvent(new CustomEvent('iap-purchase-error', { detail: '\(escaped)' }));"
-                        SonoPilot.webView.evaluateJavaScript(js) { _, _ in }
-                    }
-                    // nil payload = user cancelled — do nothing
-                }
+            StoreManager.shared.purchase(productID: productID) { [weak self] success, payload in
+                self?.notifyWeb(success: success, payload: payload)
             }
+        }
+    }
+
+    func handleRestorePurchases() {
+        StoreManager.shared.restorePurchases { [weak self] success, payload in
+            self?.notifyWeb(success: success, payload: payload)
+        }
+    }
+
+    /// Starts listening for transactions that complete outside an explicit
+    /// purchase — renewals, refunds, cancellations, Family Sharing. Call
+    /// once, after the web view exists.
+    func startIAPTransactionListener() {
+        StoreManager.shared.startTransactionListener { [weak self] payload in
+            self?.notifyWeb(success: true, payload: payload)
         }
     }
 }

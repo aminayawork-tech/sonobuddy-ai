@@ -13,6 +13,7 @@ type BillingCycle = "monthly" | "yearly";
 
 export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProps) {
   const [loading,  setLoading]  = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [billing,  setBilling]  = useState<BillingCycle>("monthly");
 
@@ -20,20 +21,9 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
   const plan = PLANS[planKey];
   const isYearly = billing === "yearly";
 
-  async function handleUpgrade() {
-    setLoading(true);
-    setErrorMsg(null);
-
-    const iapProductID = plan.iapProductId;
-    const nativeMH = typeof window !== "undefined" ? (window as any).webkit?.messageHandlers : null;
-
-    if (!nativeMH?.openPurchase) {
-      setErrorMsg("Subscriptions are only available in the SonoBuddy AI app. Please download it from the App Store.");
-      setLoading(false);
-      return;
-    }
-
-    // Native iOS — trigger RevenueCat purchase sheet
+  // Shared by both a live purchase and a restore — both end with the native
+  // side firing iap-purchase-complete/error once StoreKit resolves.
+  function awaitNativeResult(onDone: () => void) {
     const onComplete = async (e: Event) => {
       window.removeEventListener("iap-purchase-complete", onComplete);
       window.removeEventListener("iap-purchase-error", onError);
@@ -48,18 +38,47 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
         window.location.reload();
       } catch {
         setErrorMsg("Purchase succeeded but sync failed. Please restart the app.");
-        setLoading(false);
+        onDone();
       }
     };
     const onError = (e: Event) => {
       window.removeEventListener("iap-purchase-complete", onComplete);
       window.removeEventListener("iap-purchase-error", onError);
-      setErrorMsg((e as CustomEvent).detail ?? "Purchase failed.");
-      setLoading(false);
+      setErrorMsg((e as CustomEvent).detail ?? "Something went wrong.");
+      onDone();
     };
     window.addEventListener("iap-purchase-complete", onComplete);
     window.addEventListener("iap-purchase-error", onError);
-    nativeMH.openPurchase.postMessage(iapProductID);
+  }
+
+  function handleUpgrade() {
+    setLoading(true);
+    setErrorMsg(null);
+
+    const nativeMH = typeof window !== "undefined" ? (window as any).webkit?.messageHandlers : null;
+    if (!nativeMH?.openPurchase) {
+      setErrorMsg("Subscriptions are only available in the SonoBuddy AI app. Please download it from the App Store.");
+      setLoading(false);
+      return;
+    }
+
+    awaitNativeResult(() => setLoading(false));
+    nativeMH.openPurchase.postMessage(plan.iapProductId);
+  }
+
+  function handleRestore() {
+    setRestoring(true);
+    setErrorMsg(null);
+
+    const nativeMH = typeof window !== "undefined" ? (window as any).webkit?.messageHandlers : null;
+    if (!nativeMH?.restorePurchases) {
+      setErrorMsg("Restore is only available in the SonoBuddy AI app.");
+      setRestoring(false);
+      return;
+    }
+
+    awaitNativeResult(() => setRestoring(false));
+    nativeMH.restorePurchases.postMessage("");
   }
 
   return (
@@ -204,6 +223,13 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
 
         <div className="pb-4 px-6 text-center text-xs space-y-2" style={{ color: "#94a3b8" }}>
           <p>Billed via Apple In-App Purchase. Cancel anytime in Settings.</p>
+          <button
+            onClick={handleRestore}
+            disabled={restoring}
+            className="font-medium underline disabled:opacity-60"
+            style={{ color: "#2563eb" }}>
+            {restoring ? "Restoring…" : "Restore Purchases"}
+          </button>
           <p>
             By subscribing, you agree to our{" "}
             <a href="/terms" target="_blank" rel="noopener noreferrer"

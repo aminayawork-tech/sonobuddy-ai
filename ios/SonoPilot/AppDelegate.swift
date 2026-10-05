@@ -1,5 +1,4 @@
 import UIKit
-import RevenueCat
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,12 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().delegate = self
-
-        // TODO: replace with the real RevenueCat public API key from
-        // app.revenuecat.com → Project settings → API keys (Apple platform key).
-        Purchases.logLevel = .warn
-        Purchases.configure(withAPIKey: "REVENUECAT_API_KEY_PLACEHOLDER")
-
         return true
     }
 

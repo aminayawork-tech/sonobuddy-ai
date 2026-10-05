@@ -17,7 +17,7 @@ export interface Profile {
   email: string | null;
   tier: "free" | "pro" | "clinic";
   scans_used_this_month: number;
-  revenuecat_app_user_id: string | null;
+  apple_original_transaction_id: string | null;
 }
 
 interface AuthContextValue {
@@ -52,7 +52,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = useCallback(async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("id, email, tier, scans_used_this_month, revenuecat_app_user_id")
+      .select("id, email, tier, scans_used_this_month, apple_original_transaction_id")
       .eq("id", uid)
       .single();
     if (data) setProfile(data as Profile);

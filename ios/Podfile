@@ -3,7 +3,7 @@ platform :ios, '15.0'
 
 target 'SonoPilot' do
   use_frameworks!
-  pod 'RevenueCat'
+  # No external pods required — subscriptions use StoreKit directly.
 end
 
 post_install do |installer|

@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const { payload } = await req.json() as { payload: string };
     if (!payload) return NextResponse.json({ error: "Missing payload" }, { status: 400 });
 
-    const [, productId] = payload.split("|");
+    const [transactionId, productId] = payload.split("|");
     const tier = productId?.includes("pro") ? "pro" : "free";
 
     const supabase = await createClient();
@@ -16,7 +16,10 @@ export async function POST(req: NextRequest) {
 
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
-    await supabase.from("profiles").update({ tier }).eq("id", user.id);
+    await supabase
+      .from("profiles")
+      .update({ tier, apple_original_transaction_id: transactionId ?? null })
+      .eq("id", user.id);
 
     return NextResponse.json({ success: true, tier });
   } catch (err) {

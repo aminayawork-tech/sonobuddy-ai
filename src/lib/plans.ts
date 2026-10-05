@@ -1,6 +1,6 @@
-// Subscription plans — sold exclusively via Apple In-App Purchase (RevenueCat).
-// Product IDs here MUST match the products configured in App Store Connect and
-// attached to the RevenueCat "pro" entitlement/offering.
+// Subscription plans — sold exclusively via Apple In-App Purchase (StoreKit).
+// Product IDs here MUST match the auto-renewable subscription products
+// configured in App Store Connect exactly.
 export type PlanKey = "pro_monthly" | "pro_yearly";
 
 export const PLANS: Record<PlanKey, {
