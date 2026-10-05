@@ -1,0 +1,153 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  APPLE APP STORE — LISTING COPY
+  Paste each section directly into App Store Connect
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+APP NAME  (30 chars max)
+────────────────────────
+SonoBuddy AI
+
+
+SUBTITLE  (30 chars max)
+────────────────────────
+AI Ultrasound Guide
+
+
+DESCRIPTION  (4000 chars max — Apple shows ~250 chars before "More")
+────────────────────────────────────────────────────────────────────
+SonoBuddy AI is an educational reference app that helps students and
+learners study ultrasound imaging. Point your camera at any ultrasound
+screen — AI labels anatomy, walks through reference measurements, and
+highlights areas worth a closer look, purely for learning purposes.
+
+SonoBuddy AI is an educational tool only. It does not provide medical
+advice, diagnosis, or treatment, and it is not a substitute for
+professional medical care. Always consult a licensed physician or
+qualified healthcare provider for any medical questions or before
+making any medical decisions.
+
+── HOW IT WORKS ──
+1. Snap a photo of any ultrasound screen (no special equipment needed)
+2. AI walks through the image for learning purposes — labeling
+   structures and showing reference measurements
+3. Review the annotated walkthrough, or export a one-tap study summary
+
+── 31+ PROTOCOLS COVERED (EDUCATIONAL REFERENCE) ──
+• Emergency / eFAST (FAST, extended FAST)
+• Cardiac Echo (parasternal, apical, subcostal views)
+• OB/GYN (first trimester, biophysical profile)
+• Vascular (DVT, aorta, IVC)
+• Musculoskeletal (MSK)
+• Lung / Pleural
+• Renal & Bladder
+• Soft Tissue
+• And more
+
+── KEY FEATURES ──
+• AI-guided structure labeling for study purposes
+• Reference measurement walkthroughs
+• Educational highlights on areas worth further study
+• AI chat — ask study questions about an image
+• One-tap PDF study summary export
+• Automatic patient data redaction (PHI protection)
+• HIPAA-ready privacy architecture
+• Works offline — view past study sessions without connectivity
+
+── BUILT FOR LEARNERS ──
+Designed as a study companion for medical students, residents, and
+sonography students learning to recognize ultrasound anatomy and
+point-of-care ultrasound (POCUS) concepts.
+
+IMPORTANT: SonoBuddy AI is an educational tool only. It is NOT FDA-cleared,
+does not provide medical advice, diagnosis, or treatment, and must never
+be used as the basis for any clinical or medical decision. Always seek
+the advice of a licensed physician or other qualified healthcare
+provider with any questions regarding a medical condition.
+
+── PLANS ──
+Free: 5 AI study sessions per month, all 31 protocols
+Pro: Unlimited study sessions — $9.99/month or $69.99/year
+
+
+KEYWORDS  (100 chars max, comma-separated, no spaces after commas)
+────────────────────────────────────────────────────────────────────
+ultrasound,POCUS,echo,eFAST,AI,bedside,sonography,clinical,medical,anatomy
+
+
+PROMOTIONAL TEXT  (170 chars max — can be updated without a new build)
+────────────────────────────────────────────────────────────────────
+Snap. Study. Learn. An AI-guided study companion for ultrasound
+learners — 31 protocols, reference measurements, one-tap study PDFs.
+
+
+WHAT'S NEW  (version 1.0)
+─────────────────────────
+Initial release. AI-guided ultrasound study companion with 31+
+educational protocols, reference measurement walkthroughs, and
+one-tap PDF study summary export. Educational use only — not for
+diagnosis or treatment.
+
+
+APP STORE CONNECT — GENERAL INFO
+─────────────────────────────────
+Category (Primary):   Education
+Category (Secondary): Medical
+
+Age Rating:           4+ (no objectionable content)
+
+Price:                Free (with in-app purchases)
+
+In-App Purchase 1:    SonoBuddy AI Pro Monthly
+  Type:               Auto-Renewable Subscription
+  Duration:           1 Month
+  Price:              $9.99 USD
+
+In-App Purchase 2:    SonoBuddy AI Pro Annual
+  Type:               Auto-Renewable Subscription
+  Duration:           1 Year
+  Price:              $69.99 USD
+
+Privacy Policy URL:   https://sonobuddyai.app/privacy
+Support URL:          https://sonobuddyai.app
+Marketing URL:        https://sonobuddyai.app
+
+
+REVIEW NOTES  (for App Store reviewers)
+────────────────────────────────────────
+SonoBuddy AI is an educational study tool for medical and sonography
+students learning to recognize ultrasound anatomy. It does not provide
+medical advice, diagnosis, or treatment of any kind, and is not
+intended for use on real patients to guide clinical decisions. The
+camera is used only to photograph ultrasound machine screens (e.g. in
+a classroom or training lab setting) so the AI can generate an
+educational walkthrough of the image for study purposes.
+
+Test account:
+  Email:    (create a free test account before submission)
+  Password: (set before submission)
+
+The app requires an internet connection to generate the AI study
+walkthrough (processed server-side). Past study sessions are viewable
+offline.
+
+
+SCREENSHOT CAPTIONS  (optional — appears below screenshot in store)
+────────────────────────────────────────────────────────────────────
+Screenshot 1: "Welcome to SonoBuddy AI — Your AI Study Companion"
+Screenshot 2: "Snap or Upload Any Ultrasound Screen to Study"
+Screenshot 3: "AI Labels Structures for Learning"
+Screenshot 4: "Educational Walkthroughs & Study PDFs"
+Screenshot 5: "31+ POCUS Protocols to Study"
+Screenshot 6: "Your Personal Study Library"
+Screenshot 7: "One-Tap PDF Study Summary Export"
+
+
+REQUIRED SCREENSHOT SIZES  (App Store Connect — use iPhone 15 Pro Max)
+────────────────────────────────────────────────────────────────────────
+iPhone 6.7"  (required):  1290 × 2796 px
+iPhone 6.5"  (optional):  1242 × 2688 px
+iPad 12.9"   (optional):  2048 × 2732 px
+
+Minimum required: 1 screenshot per device class you support.
+Recommended: 6–8 screenshots to maximize conversion.
