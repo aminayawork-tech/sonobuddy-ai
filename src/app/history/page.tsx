@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info, LogIn } from "lucide-react";
+import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
@@ -232,29 +232,6 @@ export default function HistoryPage() {
         <NavBar />
         <div className="flex items-center justify-center pt-32">
           <div className="w-6 h-6 rounded-full border-2 border-purple-200 border-t-purple-600 animate-spin" />
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen pt-14 pb-28 flex flex-col" style={{ background: "#f8fafc" }}>
-        <NavBar />
-        <div className="flex flex-col items-center justify-center flex-1 px-6 text-center">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "#f5f3ff" }}>
-            <Clock size={28} color="#7c3aed" />
-          </div>
-          <h2 className="text-xl font-bold mb-2" style={{ color: "#1e293b" }}>Scan History</h2>
-          <p className="text-sm mb-6" style={{ color: "#64748b" }}>Sign in to view your previous scans. No images or patient data are ever stored.</p>
-          <Link
-            href="/app"
-            className="flex items-center gap-2 rounded-2xl px-6 py-3 font-bold text-white text-sm"
-            style={{ background: "#7c3aed" }}
-          >
-            <LogIn size={16} />
-            Sign In
-          </Link>
         </div>
       </div>
     );

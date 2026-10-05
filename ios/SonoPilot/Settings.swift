@@ -8,11 +8,11 @@ struct Cookie {
 let gcmMessageIDKey = "00000000000" // update this with actual ID if using Firebase 
 
 // URL for first launch
-let rootUrl = URL(string: "https://www.sonopilot.app/app")!
+let rootUrl = URL(string: "https://www.sonobuddyai.app/")!
 
 // allowed origin is for what we are sticking to pwa domain
 // This should also appear in Info.plist
-let allowedOrigins: [String] = ["www.sonopilot.app"]
+let allowedOrigins: [String] = ["www.sonobuddyai.app"]
 
 // auth origins will open in modal and show toolbar for back into the main origin.
 // These should also appear in Info.plist

@@ -7,11 +7,9 @@ import {
   Camera,
   ChevronRight,
   Clock,
-  LogIn,
   Sparkles,
 } from "lucide-react";
 import NavBar from "@/components/NavBar";
-import AuthModal from "@/components/AuthModal";
 import UpgradeModal from "@/components/UpgradeModal";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
@@ -51,7 +49,6 @@ function relativeDate(iso: string) {
 export default function HomePage() {
   const { user, profile } = useAuth();
   const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
-  const [showAuth, setShowAuth] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
 
   useEffect(() => {
@@ -72,17 +69,16 @@ export default function HomePage() {
   return (
     <div className="min-h-screen pt-14 pb-24 md:pt-16 md:pb-8" style={{ background: "#eef3f8" }}>
       <NavBar />
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
       {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
         {/* ── Greeting ─────────────────────────────────────────── */}
         <div>
           <h1 className="text-2xl font-extrabold" style={{ color: "#1a2235" }}>
-            {user ? `Welcome back${firstName ? `, ${firstName}` : ""}` : "Welcome to SonoBuddy ai"}
+            Welcome back{firstName ? `, ${firstName}` : ""}
           </h1>
           <p className="mt-1 text-sm" style={{ color: "#5a6a85" }}>
-            {user ? "Ready for your next study session?" : "Your AI-guided ultrasound study companion."}
+            Ready for your next study session?
           </p>
         </div>
 
@@ -104,60 +100,41 @@ export default function HomePage() {
         </Link>
 
         {/* ── Stats / account status ───────────────────────────── */}
-        {user ? (
-          <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
+              This Month
+            </p>
+            <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
+              {isPaid ? "∞" : `${scansUsed}/${FREE_SCAN_LIMIT}`}
+            </p>
+            <p className="text-xs" style={{ color: "#5a6a85" }}>study sessions</p>
+          </div>
+          {isPaid ? (
             <div className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
               <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-                This Month
+                Plan
               </p>
-              <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
-                {isPaid ? "∞" : `${scansUsed}/${FREE_SCAN_LIMIT}`}
+              <p className="mt-1 flex items-center gap-1.5 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
+                Pro
+                <Sparkles size={16} style={{ color: "#7c3aed" }} />
               </p>
-              <p className="text-xs" style={{ color: "#5a6a85" }}>study sessions</p>
+              <p className="text-xs" style={{ color: "#5a6a85" }}>Unlimited sessions</p>
             </div>
-            {isPaid ? (
-              <div className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
-                <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-                  Plan
-                </p>
-                <p className="mt-1 flex items-center gap-1.5 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
-                  Pro
-                  <Sparkles size={16} style={{ color: "#7c3aed" }} />
-                </p>
-                <p className="text-xs" style={{ color: "#5a6a85" }}>Unlimited sessions</p>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowUpgrade(true)}
-                className="rounded-2xl border p-4 text-left transition-all hover:bg-slate-50"
-                style={{ background: "#ffffff", borderColor: "#dde4ee" }}
-              >
-                <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-                  Plan
-                </p>
-                <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>Free</p>
-                <p className="text-xs font-semibold" style={{ color: "#7c3aed" }}>Upgrade for unlimited →</p>
-              </button>
-            )}
-          </div>
-        ) : (
-          <button
-            onClick={() => setShowAuth(true)}
-            className="flex w-full items-center justify-between rounded-2xl border p-4 text-left transition-all hover:bg-slate-50"
-            style={{ background: "#ffffff", borderColor: "#dde4ee" }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
-                <LogIn size={18} style={{ color: "#7c3aed" }} />
-              </div>
-              <div>
-                <p className="text-sm font-bold" style={{ color: "#1a2235" }}>Sign in to save your progress</p>
-                <p className="text-xs" style={{ color: "#5a6a85" }}>Track study sessions across devices</p>
-              </div>
-            </div>
-            <ChevronRight size={16} style={{ color: "#94a3b8" }} />
-          </button>
-        )}
+          ) : (
+            <button
+              onClick={() => setShowUpgrade(true)}
+              className="rounded-2xl border p-4 text-left transition-all hover:bg-slate-50"
+              style={{ background: "#ffffff", borderColor: "#dde4ee" }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
+                Plan
+              </p>
+              <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>Free</p>
+              <p className="text-xs font-semibold" style={{ color: "#7c3aed" }}>Upgrade for unlimited →</p>
+            </button>
+          )}
+        </div>
 
         {/* ── Quick start protocols ────────────────────────────── */}
         <section>
@@ -195,19 +172,14 @@ export default function HomePage() {
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold" style={{ color: "#5a6a85" }}>Recent Activity</h2>
-            {user && recentScans.length > 0 && (
+            {recentScans.length > 0 && (
               <Link href="/history" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
                 View all <ArrowRight size={12} />
               </Link>
             )}
           </div>
 
-          {!user ? (
-            <div className="rounded-2xl border p-6 text-center" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
-              <Clock size={20} className="mx-auto mb-2" style={{ color: "#94a3b8" }} />
-              <p className="text-sm" style={{ color: "#5a6a85" }}>Sign in to see your study history</p>
-            </div>
-          ) : recentScans.length === 0 ? (
+          {recentScans.length === 0 ? (
             <div className="rounded-2xl border p-6 text-center" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
               <Clock size={20} className="mx-auto mb-2" style={{ color: "#94a3b8" }} />
               <p className="text-sm" style={{ color: "#5a6a85" }}>No study sessions yet — start your first one above</p>

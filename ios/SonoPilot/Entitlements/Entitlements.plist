@@ -6,8 +6,8 @@
 	<string>production</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:www.sonopilot.app</string>
-		<string>webcredentials:www.sonopilot.app</string>
+		<string>applinks:www.sonobuddyai.app</string>
+		<string>webcredentials:www.sonobuddyai.app</string>
 	</array>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>

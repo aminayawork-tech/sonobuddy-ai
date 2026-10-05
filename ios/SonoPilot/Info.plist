@@ -98,7 +98,7 @@
 	<true/>
 	<key>WKAppBoundDomains</key>
 	<array>
-		<string>www.sonopilot.app</string>
+		<string>www.sonobuddyai.app</string>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>

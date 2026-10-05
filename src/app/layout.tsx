@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
+import AuthGate from "@/components/AuthGate";
 import BottomNav from "@/components/BottomNav";
 import PwaInit from "@/components/PwaInit";
 import OnboardingFlow from "@/components/OnboardingFlow";
@@ -72,9 +73,11 @@ export default function RootLayout({
         <AuthProvider>
           <PwaInit />
           <OnboardingFlow />
-          {children}
-          <Footer />
-          <BottomNav />
+          <AuthGate>
+            {children}
+            <Footer />
+            <BottomNav />
+          </AuthGate>
         </AuthProvider>
       </body>
     </html>
