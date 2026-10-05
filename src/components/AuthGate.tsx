@@ -11,6 +11,12 @@ import AuthModal from "@/components/AuthModal";
 // requires to be viewable pre-login, and the auth flow's own callback routes.
 const PUBLIC_PREFIXES = ["/privacy", "/terms", "/auth/"];
 
+const BG = "#f3f1ec";
+const INK = "#0a0a0a";
+const MUTED = "#78716c";
+const ACCENT = "#7c3aed";
+const ACCENT_LIGHT = "#f3eafe";
+
 export default function AuthGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
@@ -30,21 +36,17 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col" style={{ background: "linear-gradient(160deg, #4c1d95 0%, #7c3aed 60%, #8b5cf6 100%)" }}>
+    <div className="flex min-h-screen flex-col" style={{ background: BG }}>
       <div className="flex flex-col items-center pt-20 pb-6 px-6 text-center">
-        <img
-          src="/icon-192.png"
-          alt="SonoBuddy ai"
-          width={88}
-          height={88}
-          className="rounded-[22px] mb-5 shadow-xl"
-          style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3)" }}
-        />
-        <h1 className="text-4xl font-extrabold text-white tracking-tight">SonoBuddy ai</h1>
-        <p className="mt-3 text-lg font-medium" style={{ color: "#ddd6fe" }}>
+        <h1 className="text-4xl font-extrabold tracking-tight">
+          <span style={{ color: INK }}>Sono</span>
+          <span style={{ color: ACCENT }}>Buddy </span>
+          <span style={{ color: ACCENT, fontStyle: "italic" }}>ai</span>
+        </h1>
+        <p className="mt-3 text-lg font-medium" style={{ color: "#44403c" }}>
           AI-Guided Ultrasound Study Companion
         </p>
-        <p className="mt-2 text-sm" style={{ color: "#c4b5fd" }}>
+        <p className="mt-2 text-sm" style={{ color: MUTED }}>
           Sign in to continue
         </p>
       </div>
@@ -55,7 +57,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
           { icon: Shield, label: "HIPAA-ready" },
         ].map(({ icon: Icon, label }) => (
           <span key={label} className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#e0f2fe" }}>
+            style={{ background: ACCENT_LIGHT, color: ACCENT }}>
             <Icon size={12} />
             {label}
           </span>
@@ -66,7 +68,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
         <button
           onClick={() => openAuth("signup")}
           className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-lg transition-all active:scale-95"
-          style={{ background: "#ffffff", color: "#6d28d9" }}>
+          style={{ background: ACCENT, color: "#ffffff" }}>
           <UserPlus size={20} />
           Create Free Account
         </button>
@@ -74,17 +76,17 @@ export default function AuthGate({ children }: { children: ReactNode }) {
         <button
           onClick={() => openAuth("signin")}
           className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl font-bold text-lg border-2 transition-all active:scale-95"
-          style={{ borderColor: "rgba(255,255,255,0.6)", color: "#ffffff", background: "rgba(255,255,255,0.1)" }}>
+          style={{ borderColor: "#ddd6fe", color: ACCENT, background: "#ffffff" }}>
           <LogIn size={20} />
           Sign In
         </button>
       </div>
 
       <div className="mt-auto px-6 pb-32 pt-10 text-center">
-        <p className="text-xs" style={{ color: "#c4b5fd" }}>
+        <p className="text-xs" style={{ color: MUTED }}>
           5 free AI study sessions/month · No credit card required
         </p>
-        <p className="text-xs mt-1" style={{ color: "#a78bfa" }}>
+        <p className="text-xs mt-1" style={{ color: "#a8a29e" }}>
           Not FDA-cleared · For educational use only
         </p>
       </div>
