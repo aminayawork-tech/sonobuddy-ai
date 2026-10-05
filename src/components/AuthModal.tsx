@@ -16,6 +16,7 @@ interface AuthModalProps {
 export default function AuthModal({ onClose, reason, initialMode = "signin" }: AuthModalProps) {
   const router = useRouter();
   const [mode,     setMode]     = useState<"signin" | "signup" | "forgot">(initialMode);
+  const [fullName, setFullName] = useState("");
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
   const [showPw,   setShowPw]   = useState(false);
@@ -34,7 +35,10 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email, password,
-          options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+          options: {
+            data: { full_name: fullName.trim() },
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
         });
         if (error) throw error;
         setSent(true);
@@ -133,6 +137,18 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
             )}
 
             <form onSubmit={handleSubmit} className="space-y-3">
+              {mode === "signup" && (
+                <input
+                  type="text"
+                  placeholder="Full name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  className="w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors focus:border-purple-400"
+                  style={{ borderColor: "#dde4ee", color: "#0f172a" }}
+                />
+              )}
+
               <input
                 type="email"
                 placeholder="Email address"

@@ -64,7 +64,7 @@ export default function HomePage() {
 
   const isPaid = profile?.tier === "pro" || profile?.tier === "clinic";
   const scansUsed = profile?.scans_used_this_month ?? 0;
-  const firstName = user?.email?.split("@")[0];
+  const firstName = profile?.full_name?.trim().split(" ")[0];
 
   return (
     <div className="min-h-screen pt-14 pb-24 md:pt-16 md:pb-8" style={{ background: "#eef3f8" }}>
