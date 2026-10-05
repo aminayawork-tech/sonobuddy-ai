@@ -6,19 +6,17 @@ import { Home, Camera, ClipboardList, Clock } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 
 const ALL_TABS = [
-  { href: "/",          label: "Home",      Icon: Home,          guestOnly: true  },
-  { href: "/scan",      label: "Scan",      Icon: Camera,        guestOnly: false },
-  { href: "/protocols", label: "Protocols", Icon: ClipboardList, guestOnly: false },
-  { href: "/history",   label: "History",   Icon: Clock,         guestOnly: false, authOnly: true },
+  { href: "/",          label: "Home",      Icon: Home,          authOnly: false },
+  { href: "/scan",      label: "Scan",      Icon: Camera,        authOnly: false },
+  { href: "/protocols", label: "Protocols", Icon: ClipboardList, authOnly: false },
+  { href: "/history",   label: "History",   Icon: Clock,         authOnly: true  },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  const tabs = user
-    ? ALL_TABS.filter((t) => !t.guestOnly)
-    : ALL_TABS.filter((t) => !t.authOnly);
+  const tabs = user ? ALL_TABS : ALL_TABS.filter((t) => !t.authOnly);
 
   return (
     <nav
