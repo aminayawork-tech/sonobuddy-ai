@@ -79,7 +79,11 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
 
         {/* Logo */}
         <div className="mb-5 flex items-center gap-1.5 select-none">
-          <span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#2563eb" }}>Buddy AI</span></span>
+          <span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Buddy </span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
+          </span>
           <Image src="/sonobuddy-logo.png" alt="" width={20} height={20} style={{ objectFit: "contain" }} />
         </div>
 

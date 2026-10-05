@@ -22,7 +22,11 @@ function SonoLogo({ size = "md" }: { size?: "sm" | "md" }) {
     : "text-xl font-extrabold tracking-tight";
   return (
     <Link href="/" className="flex items-center gap-2 select-none leading-none">
-      <span><span className={textCls} style={{ color: "#0f172a" }}>Sono</span><span className={textCls} style={{ color: "#2563eb" }}>Buddy AI</span></span>
+      <span>
+        <span className={textCls} style={{ color: "#0f172a" }}>Sono</span>
+        <span className={textCls} style={{ color: "#7c3aed" }}>Buddy </span>
+        <span className={textCls} style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
+      </span>
       <Image src="/sonobuddy-logo.png" alt="" width={imgSize} height={imgSize} priority style={{ objectFit: "contain" }} />
     </Link>
   );
