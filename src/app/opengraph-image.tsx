@@ -24,7 +24,7 @@ export default async function Image() {
         <div style={{ display: "flex", fontSize: 96, fontWeight: 800, letterSpacing: "-2px" }}>
           <span style={{ color: "#0a0a0a" }}>Sono</span>
           <span style={{ color: "#7c3aed" }}>Buddy </span>
-          <span style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
+          <span style={{ color: "#7c3aed", fontStyle: "italic" }}>ai</span>
         </div>
 
         {/* Tagline */}

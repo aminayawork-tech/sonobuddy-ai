@@ -23,7 +23,7 @@ function SonoLogo({ size = "md" }: { size?: "sm" | "md" }) {
       <span>
         <span className={textCls} style={{ color: "#0f172a" }}>Sono</span>
         <span className={textCls} style={{ color: "#7c3aed" }}>Buddy </span>
-        <span className={textCls} style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
+        <span className={textCls} style={{ color: "#7c3aed", fontStyle: "italic" }}>ai</span>
       </span>
     </Link>
   );

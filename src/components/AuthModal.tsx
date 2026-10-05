@@ -81,7 +81,7 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
           <span>
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span>
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Buddy </span>
-            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed", fontStyle: "italic" }}>AI</span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed", fontStyle: "italic" }}>ai</span>
           </span>
         </div>
 

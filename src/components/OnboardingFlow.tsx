@@ -28,7 +28,7 @@ function MiniLogo() {
     <span className="flex items-baseline text-base font-extrabold tracking-tight">
       <span style={{ color: INK }}>Sono</span>
       <span style={{ color: ACCENT }}>Buddy </span>
-      <span style={{ color: ACCENT, fontStyle: "italic" }}>AI</span>
+      <span style={{ color: ACCENT, fontStyle: "italic" }}>ai</span>
     </span>
   );
 }
@@ -294,7 +294,7 @@ function Screen1({ onNext, onSkip }: ScreenProps) {
       label="AI-Guided Ultrasound Study"
       headline="Welcome to"
       accent="Sono"
-      accentItalicSuffix="Buddy AI"
+      accentItalicSuffix="Buddy ai"
       ctaLabel="Start Scanning Now"
       onNext={onNext}
       onSkip={onSkip}
