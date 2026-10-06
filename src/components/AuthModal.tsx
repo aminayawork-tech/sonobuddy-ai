@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Eye, EyeOff, Loader2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -81,7 +82,8 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
         </button>
 
         {/* Logo */}
-        <div className="mb-5 flex items-center gap-1.5 select-none">
+        <div className="mb-5 flex items-center gap-2 select-none">
+          <Image src="/sonobuddy-favicon.png" alt="" width={24} height={24} className="rounded-lg" />
           <span>
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span>
             <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Buddy </span>

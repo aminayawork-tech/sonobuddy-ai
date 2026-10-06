@@ -242,7 +242,8 @@ function ResultsContent() {
           style={{ borderColor: "#e2e8f0" }}>
           <div>
             <span className="text-xl font-extrabold" style={{ color: "#0f172a" }}>Sono</span>
-            <span className="text-xl font-extrabold" style={{ color: "#7c3aed" }}>Pilot</span>
+            <span className="text-xl font-extrabold" style={{ color: "#7c3aed" }}>Buddy </span>
+            <span className="text-xl font-extrabold" style={{ color: "#7c3aed", fontStyle: "italic" }}>ai</span>
             <p className="text-xs mt-0.5" style={{ color: "#94a3b8" }}>AI Ultrasound Report</p>
           </div>
           <div className="text-right text-xs" style={{ color: "#94a3b8" }}>

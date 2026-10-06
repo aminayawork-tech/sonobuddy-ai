@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Camera,
   Zap,
@@ -25,10 +26,13 @@ const DARK = "#0f172a";
 
 function MiniLogo() {
   return (
-    <span className="flex items-baseline text-base font-extrabold tracking-tight">
-      <span style={{ color: INK }}>Sono</span>
-      <span style={{ color: ACCENT }}>Buddy </span>
-      <span style={{ color: ACCENT, fontStyle: "italic" }}>ai</span>
+    <span className="flex items-center gap-1.5">
+      <Image src="/sonobuddy-favicon.png" alt="" width={22} height={22} className="rounded-md" />
+      <span className="flex items-baseline text-base font-extrabold tracking-tight">
+        <span style={{ color: INK }}>Sono</span>
+        <span style={{ color: ACCENT }}>Buddy </span>
+        <span style={{ color: ACCENT, fontStyle: "italic" }}>ai</span>
+      </span>
     </span>
   );
 }

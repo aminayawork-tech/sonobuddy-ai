@@ -5,7 +5,12 @@ export const alt = "SonoBuddy AI — AI Ultrasound Guide";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://sonobuddyai.app";
+
 export default async function Image() {
+  const iconData = await fetch(`${APP_URL}/sonobuddy-favicon.png`).then((r) => r.arrayBuffer());
+  const iconBase64 = `data:image/png;base64,${Buffer.from(iconData).toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -20,6 +25,8 @@ export default async function Image() {
           gap: 0,
         }}
       >
+        <img src={iconBase64} alt="" width={120} height={120} style={{ borderRadius: 26, marginBottom: 24 }} />
+
         {/* Wordmark */}
         <div style={{ display: "flex", fontSize: 96, fontWeight: 800, letterSpacing: "-2px" }}>
           <span style={{ color: "#0a0a0a" }}>Sono</span>

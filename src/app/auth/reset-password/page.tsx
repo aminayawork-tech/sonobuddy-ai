@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { Lock, Eye, EyeOff, CheckCircle } from "lucide-react";
 
@@ -52,8 +53,13 @@ export default function ResetPasswordPage() {
         style={{ background: "#fff" }}
       >
         {/* Logo */}
-        <div className="mb-6 select-none">
-          <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span><span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Pilot</span>
+        <div className="mb-6 flex items-center gap-2 select-none">
+          <Image src="/sonobuddy-favicon.png" alt="" width={24} height={24} className="rounded-lg" />
+          <span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Sono</span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed" }}>Buddy </span>
+            <span className="text-xl font-extrabold tracking-tight" style={{ color: "#7c3aed", fontStyle: "italic" }}>ai</span>
+          </span>
         </div>
 
         {done ? (

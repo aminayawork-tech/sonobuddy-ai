@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { LogIn, Shield, UserPlus, Zap } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { supabaseConfigured } from "@/lib/supabase/client";
@@ -38,6 +39,14 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col" style={{ background: BG }}>
       <div className="flex flex-col items-center pt-20 pb-6 px-6 text-center">
+        <Image
+          src="/sonobuddy-favicon.png"
+          alt=""
+          width={88}
+          height={88}
+          className="rounded-[22px] mb-5 shadow-xl"
+          priority
+        />
         <h1 className="text-4xl font-extrabold tracking-tight">
           <span style={{ color: INK }}>Sono</span>
           <span style={{ color: ACCENT }}>Buddy </span>
