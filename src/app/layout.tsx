@@ -5,7 +5,6 @@ import AuthGate from "@/components/AuthGate";
 import BottomNav from "@/components/BottomNav";
 import PwaInit from "@/components/PwaInit";
 import OnboardingFlow from "@/components/OnboardingFlow";
-import Footer from "@/components/Footer";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://sonobuddyai.app";
 
@@ -75,7 +74,6 @@ export default function RootLayout({
           <OnboardingFlow />
           <AuthGate>
             {children}
-            <Footer />
             <BottomNav />
           </AuthGate>
         </AuthProvider>
