@@ -219,7 +219,7 @@ export default function HomePage() {
             Need a quick reference?
           </p>
           <h3 className="mt-1 text-lg font-bold text-white">
-            Try SonoBuddy, our ultrasound reference app
+            Try <span style={{ color: "#60a5fa" }}>SonoBuddy</span>, our ultrasound reference app
           </h3>
           <p className="mt-1 text-sm" style={{ color: "#cbd5e1" }}>
             Normal values, protocols, and calculators — fast, offline, no AI needed.
