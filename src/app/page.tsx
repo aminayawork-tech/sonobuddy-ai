@@ -222,7 +222,7 @@ export default function HomePage() {
             Try <span style={{ color: "#60a5fa" }}>SonoBuddy</span>, our ultrasound reference app
           </h3>
           <p className="mt-1 text-sm" style={{ color: "#cbd5e1" }}>
-            Normal values, protocols, and calculators — fast, offline, no AI needed.
+            Normal values, protocols, and calculators — a fast offline companion for the exam room.
           </p>
           <p className="mt-3 flex items-center gap-1 text-sm font-semibold" style={{ color: "#c4b5fd" }}>
             Download on the App Store
