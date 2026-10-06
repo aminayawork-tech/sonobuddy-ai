@@ -207,6 +207,29 @@ export default function HomePage() {
           )}
         </section>
 
+        {/* ── Cross-promo: SonoBuddy reference app ─────────────────── */}
+        <a
+          href="https://apps.apple.com/us/app/sonobuddy-ultrasound-reference/id6761020726"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-2xl p-5 transition-all hover:opacity-95"
+          style={{ background: "#0f172a" }}
+        >
+          <p className="text-xs font-bold uppercase tracking-wide" style={{ color: "#a78bfa" }}>
+            Need a quick reference?
+          </p>
+          <h3 className="mt-1 text-lg font-bold text-white">
+            Try SonoBuddy, our ultrasound reference app
+          </h3>
+          <p className="mt-1 text-sm" style={{ color: "#cbd5e1" }}>
+            Normal values, protocols, and calculators — fast, offline, no AI needed.
+          </p>
+          <p className="mt-3 flex items-center gap-1 text-sm font-semibold" style={{ color: "#c4b5fd" }}>
+            Download on the App Store
+            <ArrowRight size={14} />
+          </p>
+        </a>
+
         {/* ── Disclaimer ────────────────────────────────────────── */}
         <p className="pt-2 text-center text-xs" style={{ color: "#94a3b8" }}>
           Educational use only. SonoBuddy ai does not provide medical advice, diagnosis, or treatment.
