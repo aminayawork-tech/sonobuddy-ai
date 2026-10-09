@@ -15,7 +15,6 @@ import {
   Zap,
   Camera,
 } from "lucide-react";
-import NavBar from "@/components/NavBar";
 import { CATEGORY_PILL, getProtocolById } from "@/lib/protocols";
 
 const DIFFICULTY_COLOR: Record<string, string> = {
@@ -32,10 +31,8 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
   const pill = CATEGORY_PILL[protocol.category];
 
   return (
-    <div className="min-h-screen pt-14 pb-28 md:pb-10 md:pt-16" style={{ background: "#f8fafc" }}>
-      <NavBar />
-
-      <div className="mx-auto max-w-2xl px-4 py-8">
+    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#f8fafc" }}>
+      <div className="mx-auto max-w-2xl px-4 pt-8 pb-8">
 
         {/* Back */}
         <Link

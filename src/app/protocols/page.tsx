@@ -9,7 +9,6 @@ import {
   Search,
   Star,
 } from "lucide-react";
-import NavBar from "@/components/NavBar";
 import {
   CATEGORIES,
   CATEGORY_PILL,
@@ -102,10 +101,8 @@ export default function ProtocolsPage() {
   }
 
   return (
-    <div className="min-h-screen pt-14 pb-24 md:pb-8 md:pt-16" style={{ background: "#eef3f8" }}>
-      <NavBar />
-
-      <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className="min-h-screen pb-24 md:pb-8" style={{ background: "#eef3f8" }}>
+      <div className="mx-auto max-w-5xl px-4 pt-8 pb-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="mb-1.5 text-3xl font-extrabold" style={{ color: "#1a2235" }}>

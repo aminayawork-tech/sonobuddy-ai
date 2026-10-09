@@ -17,7 +17,6 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
 import DisclaimerBanner from "@/components/DisclaimerBanner";
 import AuthModal from "@/components/AuthModal";
 import UpgradeModal from "@/components/UpgradeModal";
@@ -352,9 +351,7 @@ function ScanContent() {
   const isFreeAtLimit = profile?.tier === "free" && profile.scans_used_this_month >= FREE_SCAN_LIMIT;
 
   return (
-    <div className="min-h-screen pt-14 pb-28 md:pb-10 md:pt-16" style={{ background: "#f8fafc" }}>
-      <NavBar />
-
+    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#f8fafc" }}>
       <div className="mx-auto max-w-lg px-4 py-8">
 
         {/* Header */}

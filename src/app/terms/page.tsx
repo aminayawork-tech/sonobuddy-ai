@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import NavBar from "@/components/NavBar";
 
 export const metadata = {
   title: "Terms of Use — SonoBuddy AI",
@@ -9,9 +8,8 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen pt-14 pb-24 md:pt-16 md:pb-8" style={{ background: "#f8fafc" }}>
-      <NavBar />
-      <div className="mx-auto max-w-2xl px-5 py-8">
+    <div className="min-h-screen pb-24 md:pb-8" style={{ background: "#f8fafc" }}>
+      <div className="mx-auto max-w-2xl px-5 pt-8 pb-8">
         <h1 className="mb-1 text-3xl font-extrabold" style={{ color: "#1a2235" }}>Terms of Use</h1>
         <p className="mb-8 text-sm" style={{ color: "#94a3b8" }}>Last updated: May 2025</p>
 

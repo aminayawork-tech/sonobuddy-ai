@@ -24,7 +24,6 @@ import {
   XCircle,
 } from "lucide-react";
 import type { ChatMessage } from "@/app/api/chat/route";
-import NavBar from "@/components/NavBar";
 import ConfidenceBadge from "@/components/ConfidenceBadge";
 import { getProtocolById } from "@/lib/protocols";
 import { getMockAnalysis, type AnalysisResult } from "@/lib/mock-analysis";
@@ -232,10 +231,8 @@ function ResultsContent() {
   );
 
   return (
-    <div className="min-h-screen pt-14 pb-52 md:pb-8 md:pt-16" style={{ background: "#f8fafc" }}>
-      <NavBar />
-
-      <div className="mx-auto max-w-2xl px-4 py-8 print-container">
+    <div className="min-h-screen pb-52 md:pb-8" style={{ background: "#f8fafc" }}>
+      <div className="mx-auto max-w-2xl px-4 pt-8 pb-8 print-container">
 
         {/* Print-only header — hidden on screen */}
         <div data-print="header" className="mb-6 hidden items-center justify-between border-b pb-4"

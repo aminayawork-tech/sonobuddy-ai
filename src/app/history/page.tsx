@@ -5,7 +5,6 @@ import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
-import NavBar from "@/components/NavBar";
 
 interface ScanRecord {
   id: string;
@@ -228,8 +227,7 @@ export default function HistoryPage() {
 
   if (loading || fetching) {
     return (
-      <div className="min-h-screen pt-14 pb-28" style={{ background: "#f8fafc" }}>
-        <NavBar />
+      <div className="min-h-screen pb-28" style={{ background: "#f8fafc" }}>
         <div className="flex items-center justify-center pt-32">
           <div className="w-6 h-6 rounded-full border-2 border-purple-200 border-t-purple-600 animate-spin" />
         </div>
@@ -238,10 +236,8 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="min-h-screen pt-14 pb-28" style={{ background: "#f8fafc" }}>
-      <NavBar />
-
-      <div className="mx-auto max-w-lg px-4 py-6">
+    <div className="min-h-screen pb-28" style={{ background: "#f8fafc" }}>
+      <div className="mx-auto max-w-lg px-4 pt-8 pb-6">
         <div className="flex items-center gap-2 mb-4">
           <Clock size={20} color="#7c3aed" />
           <h1 className="text-xl font-bold" style={{ color: "#1e293b" }}>Scan History</h1>
