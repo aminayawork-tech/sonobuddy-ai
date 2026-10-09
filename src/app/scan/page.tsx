@@ -331,12 +331,17 @@ function ScanContent() {
       if (compressedDataUrl) sessionStorage.setItem("lastImage", compressedDataUrl);
       else sessionStorage.removeItem("lastImage");
 
-      // Fire-and-forget: save AI result to history (no image, no PHI)
+      // Fire-and-forget: save AI result to history (no image, no PHI).
+      // keepalive keeps the request alive through the router.push() below —
+      // without it, some browsers can drop an in-flight fetch mid-navigation.
       fetch("/api/scans/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(analysis),
-      });
+        keepalive: true,
+      }).then(async (res) => {
+        if (!res.ok) console.error("[scans/save] failed:", res.status, await res.text());
+      }).catch((err) => console.error("[scans/save] network error:", err));
 
       refreshProfile();
       router.push(`/results?protocol=${effectiveProtocolId}`);
