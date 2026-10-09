@@ -360,9 +360,12 @@ function ScanContent() {
       <div className="mx-auto max-w-lg px-4 py-8">
 
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-extrabold" style={{ color: "#0f172a" }}>New Scan</h1>
-          <p className="mt-1 text-sm" style={{ color: "#64748b" }}>
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-1.5">
+            <Camera size={20} color="#7c3aed" />
+            <h1 className="text-xl font-bold" style={{ color: "#0f172a" }}>New Scan</h1>
+          </div>
+          <p className="text-sm" style={{ color: "#64748b" }}>
             Upload your ultrasound image — AI analyzes it instantly
           </p>
         </div>

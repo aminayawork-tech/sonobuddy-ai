@@ -6,6 +6,7 @@ import {
   ArrowRight,
   ChevronRight,
   Clock,
+  ClipboardList,
   Search,
   Star,
 } from "lucide-react";
@@ -105,9 +106,12 @@ export default function ProtocolsPage() {
       <div className="mx-auto max-w-5xl px-4 pt-8 pb-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-1.5 text-3xl font-extrabold" style={{ color: "#1a2235" }}>
-            Protocol Library
-          </h1>
+          <div className="flex items-center gap-2 mb-1.5">
+            <ClipboardList size={20} color="#7c3aed" />
+            <h1 className="text-xl font-bold" style={{ color: "#1a2235" }}>
+              Protocol Library
+            </h1>
+          </div>
           <p style={{ color: "#5a6a85" }}>
             Select a protocol to begin your AI-guided ultrasound analysis.
           </p>
