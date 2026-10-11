@@ -31,7 +31,7 @@ export default function ProtocolDetailPage({ params }: { params: Promise<{ id: s
   const pill = CATEGORY_PILL[protocol.category];
 
   return (
-    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#f8fafc" }}>
+    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-2xl px-4 pt-8 pb-8">
 
         {/* Back */}

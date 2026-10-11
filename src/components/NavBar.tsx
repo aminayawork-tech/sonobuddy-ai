@@ -70,8 +70,8 @@ function NavBarInner() {
       )}
       {/* ── Desktop top nav ── */}
       <header
-        className="hidden md:block fixed top-0 left-0 right-0 z-50 border-b"
-        style={{ background: "rgba(255,255,255,0.95)", borderColor: "#e2e8f0", backdropFilter: "blur(8px)" }}>
+        className="hidden md:block fixed top-0 left-0 right-0 z-50"
+        style={{ background: "#eef3f8" }}>
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <SonoLogo />
 
@@ -114,8 +114,8 @@ function NavBarInner() {
 
       {/* ── Mobile top bar (logo + hamburger) ── */}
       <header
-        className="md:hidden fixed top-0 left-0 right-0 z-50 border-b"
-        style={{ background: "rgba(255,255,255,0.97)", borderColor: "#e2e8f0" }}>
+        className="md:hidden fixed top-0 left-0 right-0 z-50"
+        style={{ background: "#eef3f8" }}>
         <div className="flex items-center justify-between px-4 py-3">
           <SonoLogo size="sm" />
           <button

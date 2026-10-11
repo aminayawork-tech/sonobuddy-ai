@@ -144,7 +144,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
                 <p className="text-xs font-semibold uppercase tracking-wide mb-2.5" style={{ color: "#94a3b8" }}>Findings</p>
                 <div className="space-y-3">
                   {scan.findings.map((f, i) => {
-                    const sevColor = f.severity === "critical" ? "#dc2626" : f.severity === "warning" ? "#ea580c" : f.severity === "normal" ? "#16a34a" : "#0284c7";
+                    const sevColor = f.severity === "critical" ? "#dc2626" : f.severity === "warning" ? "#ea580c" : f.severity === "normal" ? "#059669" : "#0284c7";
                     return (
                       <div key={i}>
                         <p className="text-xs font-semibold mb-0.5" style={{ color: "#475569" }}>{f.label}</p>
@@ -163,7 +163,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
                   {scan.measurements.map((m, i) => (
                     <div key={i} className="flex items-baseline justify-between gap-3 text-sm">
                       <span className="flex-1 min-w-0 break-words" style={{ color: "#475569" }}>{m.name}</span>
-                      <span className="font-semibold flex-shrink-0" style={{ color: m.status === "abnormal" ? "#dc2626" : m.status === "borderline" ? "#ea580c" : "#16a34a" }}>
+                      <span className="font-semibold flex-shrink-0" style={{ color: m.status === "abnormal" ? "#dc2626" : m.status === "borderline" ? "#ea580c" : "#059669" }}>
                         {m.value}
                       </span>
                     </div>
@@ -227,7 +227,7 @@ export default function HistoryPage() {
 
   if (loading || fetching) {
     return (
-      <div className="min-h-screen pb-28" style={{ background: "#f8fafc" }}>
+      <div className="min-h-screen pb-28" style={{ background: "#eef3f8" }}>
         <div className="flex items-center justify-center pt-32">
           <div className="w-6 h-6 rounded-full border-2 border-purple-200 border-t-purple-600 animate-spin" />
         </div>
@@ -236,7 +236,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#f8fafc" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-lg px-4 pt-8 pb-6">
         <div className="flex items-center gap-2 mb-4">
           <Clock size={20} color="#7c3aed" />

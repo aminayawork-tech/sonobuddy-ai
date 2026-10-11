@@ -231,7 +231,7 @@ function ResultsContent() {
   );
 
   return (
-    <div className="min-h-screen pb-52 md:pb-8" style={{ background: "#f8fafc" }}>
+    <div className="min-h-screen pb-52 md:pb-8" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-2xl px-4 pt-8 pb-8 print-container">
 
         {/* Print-only header — hidden on screen */}

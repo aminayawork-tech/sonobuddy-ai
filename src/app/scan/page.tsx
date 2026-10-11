@@ -356,7 +356,7 @@ function ScanContent() {
   const isFreeAtLimit = profile?.tier === "free" && profile.scans_used_this_month >= FREE_SCAN_LIMIT;
 
   return (
-    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#f8fafc" }}>
+    <div className="min-h-screen pb-28 md:pb-10" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-lg px-4 py-8">
 
         {/* Header */}
@@ -690,7 +690,7 @@ function ScanContent() {
 export default function ScanPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center" style={{ background: "#f8fafc" }}>
+      <div className="flex min-h-screen items-center justify-center" style={{ background: "#eef3f8" }}>
         <Loader2 size={28} className="animate-spin" style={{ color: "#7c3aed" }} />
       </div>
     }>
