@@ -303,7 +303,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SonoPilot/Entitlements/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "SonoPilot/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -312,8 +312,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.sonopilot.www";
-				PRODUCT_NAME = "SonoPilot";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.sonobuddy.ai";
+				PRODUCT_NAME = "SonoBuddy AI";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -329,7 +329,7 @@
 				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = "SonoPilot/Entitlements/Entitlements.plist";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "SonoPilot/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -338,8 +338,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.sonopilot.www";
-				PRODUCT_NAME = "SonoPilot";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.sonobuddy.ai";
+				PRODUCT_NAME = "SonoBuddy AI";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Osize";
 				SWIFT_VERSION = 5.0;

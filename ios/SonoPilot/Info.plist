@@ -2,16 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Capture Audio by user request</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Track current location by user request</string>
 	<key>NSCameraUsageDescription</key>
-	<string>SonoPilot uses your camera to photograph ultrasound machine screens for AI-powered image analysis. For example, you can point your camera at a bedside ultrasound display to capture the image and receive an instant AI interpretation of the findings.</string>
+	<string>SonoBuddy AI uses your camera to photograph ultrasound screens so the app can generate an educational study walkthrough of the image. This is for learning purposes only and is not medical advice, diagnosis, or treatment.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>SonoBuddy AI accesses your photo library so you can select a saved ultrasound image for an educational study walkthrough.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SonoPilot</string>
+	<string>SonoBuddy AI</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
