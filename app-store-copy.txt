@@ -108,9 +108,9 @@ In-App Purchase 2:    SonoBuddy AI Pro Annual
   Duration:           1 Year
   Price:              $69.99 USD
 
-Privacy Policy URL:   https://sonobuddyai.app/privacy
-Support URL:          https://sonobuddyai.app
-Marketing URL:        https://sonobuddyai.app
+Privacy Policy URL:   https://sonobuddy-ai.vercel.app/privacy
+Support URL:          https://sonobuddy-ai.vercel.app
+Marketing URL:        https://sonobuddy-ai.vercel.app
 
 
 REVIEW NOTES  (for App Store reviewers)

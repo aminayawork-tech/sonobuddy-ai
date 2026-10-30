@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
   server: {
     // Production Vercel deployment — all API routes and auth stay server-side.
     // Subscriptions are sold exclusively via Apple In-App Purchase (StoreKit).
-    url: 'https://sonobuddyai.app',
+    url: 'https://sonobuddy-ai.vercel.app',
     cleartext: false,
     androidScheme: 'https',
   },
@@ -35,7 +35,7 @@ const config: CapacitorConfig = {
     backgroundColor: '#ffffff',
     allowsLinkPreview: false,
     scrollEnabled: true,
-    // Restricts WebView navigation to sonobuddyai.app only — required for limitsNavigationsToAppBoundDomains
+    // Restricts WebView navigation to sonobuddy-ai.vercel.app only — required for limitsNavigationsToAppBoundDomains
     limitsNavigationsToAppBoundDomains: true,
   },
   android: {

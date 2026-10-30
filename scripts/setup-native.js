@@ -30,7 +30,7 @@ const iosEntries = [
    '<false/>'],
   // Restrict WebView navigation to our domain (pairs with limitsNavigationsToAppBoundDomains)
   ['WKAppBoundDomains',
-   '<array>\n\t\t<string>sonobuddyai.app</string>\n\t</array>'],
+   '<array>\n\t\t<string>sonobuddy-ai.vercel.app</string>\n\t</array>'],
   // Prevent accidental phone/FaceTime link interception
   ['LSApplicationQueriesSchemes',
    '<array>\n\t\t<string>mailto</string>\n\t</array>'],
