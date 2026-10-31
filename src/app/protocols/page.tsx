@@ -10,6 +10,7 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import { CATEGORY_ICON } from "@/lib/categoryIcons";
 import {
   CATEGORIES,
   CATEGORY_PILL,
@@ -26,15 +27,18 @@ const DIFFICULTY_COLOR: Record<string, string> = {
 
 function ProtocolCard({ protocol }: { protocol: Protocol }) {
   const pill = CATEGORY_PILL[protocol.category];
+  const Icon = CATEGORY_ICON[protocol.category];
   return (
     <Link
       href={`/protocols/${protocol.id}`}
-      className="group flex flex-col rounded-2xl border p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-      style={{ background: "#ffffff", borderColor: "#dde4ee" }}
+      className="group flex flex-col rounded-2xl p-5 transition-all hover:shadow-md hover:-translate-y-0.5"
+      style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}
     >
-      <div className="mb-3 flex items-center">
-        <span className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
-          style={{ background: pill.bg, color: pill.text }}>
+      <div className="mb-3 flex items-center gap-2.5 pr-8">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
+          <Icon size={17} style={{ color: pill.text }} />
+        </span>
+        <span className="text-xs font-semibold" style={{ color: pill.text }}>
           {protocol.category}
         </span>
       </div>
@@ -105,14 +109,16 @@ export default function ProtocolsPage() {
     <div className="min-h-screen pb-24 md:pb-8" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-5xl px-4 pt-8 pb-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-1.5">
-            <ClipboardList size={20} color="#7c3aed" />
-            <h1 className="text-xl font-bold" style={{ color: "#1a2235" }}>
+        <div className="mb-6">
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
+              <ClipboardList size={18} className="text-white" />
+            </span>
+            <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>
               Protocol Library
             </h1>
           </div>
-          <p style={{ color: "#5a6a85" }}>
+          <p className="text-sm" style={{ color: "#5a6a85" }}>
             Select a protocol to begin your AI-guided ultrasound analysis.
           </p>
         </div>
@@ -126,12 +132,13 @@ export default function ProtocolsPage() {
             placeholder="Search protocols or indications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border py-3 pl-10 pr-4 outline-none transition-all"
+            className="w-full rounded-2xl border py-3.5 pl-10 pr-4 outline-none transition-all"
             style={{
               background: "#ffffff",
               borderColor: "#dde4ee",
               color: "#1a2235",
               fontSize: "16px",
+              boxShadow: "0 1px 3px rgba(15,23,42,0.06)",
             }}
             onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
             onBlur={(e) => (e.target.style.borderColor = "#dde4ee")}
@@ -146,7 +153,7 @@ export default function ProtocolsPage() {
             style={
               activeCategory === "All"
                 ? { background: "#7c3aed", color: "#ffffff" }
-                : { background: "#ffffff", color: "#5a6a85", border: "1px solid #dde4ee" }
+                : { background: "#ffffff", color: "#5a6a85", boxShadow: "0 1px 2px rgba(15,23,42,0.06)" }
             }
           >
             All ({PROTOCOLS.length})
@@ -163,7 +170,7 @@ export default function ProtocolsPage() {
                 style={
                   active
                     ? { background: "#7c3aed", color: "#ffffff" }
-                    : { background: "#ffffff", color: "#5a6a85", border: "1px solid #dde4ee" }
+                    : { background: "#ffffff", color: "#5a6a85", boxShadow: "0 1px 2px rgba(15,23,42,0.06)" }
                 }
               >
                 <span className="h-2 w-2 rounded-full"
@@ -179,7 +186,7 @@ export default function ProtocolsPage() {
           <section className="mb-8">
             <div className="mb-3 flex items-center gap-1.5">
               <Star size={14} style={{ color: "#f59e0b", fill: "#f59e0b" }} />
-              <h2 className="text-sm font-semibold" style={{ color: "#5a6a85" }}>Favorites</h2>
+              <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>Favorites</h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
               {favoriteProtocols.map((p) => (
@@ -201,7 +208,7 @@ export default function ProtocolsPage() {
         {/* Protocol grid */}
         <section>
           <div className="mb-3">
-            <h2 className="text-sm font-semibold" style={{ color: "#5a6a85" }}>
+            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>
               {activeCategory === "All" ? "All Protocols" : activeCategory} ({filtered.length})
             </h2>
           </div>
@@ -240,12 +247,12 @@ export default function ProtocolsPage() {
         </section>
 
         {/* Quick start */}
-        <div className="mt-12 rounded-2xl border p-6 text-center"
-          style={{ background: "#f5f3ff", borderColor: "#ddd6fe" }}>
-          <h3 className="mb-1.5 font-semibold" style={{ color: "#1a2235" }}>
+        <div className="mt-12 rounded-3xl p-6 text-center"
+          style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 14px 34px rgba(124,58,237,0.3)" }}>
+          <h3 className="mb-1.5 text-lg font-extrabold text-white">
             Not sure where to start?
           </h3>
-          <p className="mb-4 text-sm" style={{ color: "#5a6a85" }}>
+          <p className="mb-4 text-sm" style={{ color: "#ede9fe" }}>
             Try eFAST for trauma, PLAX for cardiac, or OB First Trimester for pregnancy dating.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
@@ -253,8 +260,8 @@ export default function ProtocolsPage() {
               const p = PROTOCOLS.find((x) => x.id === id)!;
               return (
                 <Link key={id} href={`/protocols/${id}`}
-                  className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all hover:opacity-80"
-                  style={{ borderColor: "#c4b5fd", background: "#ede9fe", color: "#6d28d9" }}>
+                  className="flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold transition-all hover:opacity-90"
+                  style={{ color: "#6d28d9" }}>
                   {p.shortName} <ArrowRight size={10} />
                 </Link>
               );

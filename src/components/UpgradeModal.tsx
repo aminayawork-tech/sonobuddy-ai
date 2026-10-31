@@ -142,12 +142,12 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-stretch justify-center sm:items-center sm:p-4"
+      className="fixed inset-0 z-[200] flex items-stretch justify-center sm:items-center sm:p-4"
       style={{ background: "rgba(0,0,0,0.6)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
 
       <div
-        className="relative flex w-full max-w-md flex-col overflow-y-auto sm:rounded-3xl sm:shadow-2xl"
+        className="relative flex h-[100dvh] w-full max-w-md flex-col overflow-y-auto sm:h-auto sm:rounded-3xl sm:shadow-2xl"
         style={{
           background: "radial-gradient(120% 60% at 50% 0%, #3b1a78 0%, #170b33 45%, #0b0718 100%)",
           maxHeight: "100dvh",

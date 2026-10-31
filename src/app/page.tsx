@@ -3,18 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
+  Activity,
   ArrowRight,
   Camera,
   ChevronRight,
   Clock,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import NavBar from "@/components/NavBar";
-import UpgradeModal from "@/components/UpgradeModal";
+import ProBanner from "@/components/ProBanner";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import { FREE_SCAN_LIMIT } from "@/lib/plans";
 import { PROTOCOLS, CATEGORY_PILL } from "@/lib/protocols";
+import { CATEGORY_ICON } from "@/lib/categoryIcons";
 
 const QUICK_START_IDS = ["efast", "cardiac-plax", "ob-first-trimester", "renal", "dvt"];
 
@@ -46,13 +49,20 @@ function relativeDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 18) return "Good afternoon";
+  return "Good evening";
+}
+
 export default function HomePage() {
   const { user, profile } = useAuth();
   const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
-  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [totalScans, setTotalScans] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!user) { setRecentScans([]); return; }
+    if (!user) { setRecentScans([]); setTotalScans(null); return; }
     const supabase = createClient();
     supabase
       .from("scan_history")
@@ -60,21 +70,28 @@ export default function HomePage() {
       .order("created_at", { ascending: false })
       .limit(3)
       .then(({ data }) => setRecentScans((data as RecentScan[]) ?? []));
+    supabase
+      .from("scan_history")
+      .select("id", { count: "exact", head: true })
+      .then(({ count }) => setTotalScans(count ?? 0));
   }, [user]);
 
   const isPaid = profile?.tier === "pro" || profile?.tier === "clinic";
   const scansUsed = profile?.scans_used_this_month ?? 0;
   const firstName = profile?.full_name?.trim().split(" ")[0];
+  const usedPct = Math.min(100, (scansUsed / FREE_SCAN_LIMIT) * 100);
 
   return (
     <div className="min-h-screen pt-14 pb-24 md:pt-16 md:pb-8" style={{ background: "#eef3f8" }}>
       <NavBar />
-      {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
 
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
         {/* ── Greeting ─────────────────────────────────────────── */}
         <div>
-          <h1 className="text-2xl font-extrabold" style={{ color: "#1a2235" }}>
+          <p suppressHydrationWarning className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7c3aed" }}>
+            {greeting()}
+          </p>
+          <h1 className="mt-1 text-[26px] font-extrabold leading-tight tracking-tight" style={{ color: "#0f172a" }}>
             Welcome back{firstName ? `, ${firstName}` : ""}
           </h1>
           <p className="mt-1 text-sm" style={{ color: "#5a6a85" }}>
@@ -85,82 +102,91 @@ export default function HomePage() {
         {/* ── Primary action ───────────────────────────────────── */}
         <Link
           href="/scan"
-          className="flex items-center justify-between rounded-2xl p-6 shadow-sm transition-all hover:opacity-95 active:scale-[0.99]"
-          style={{ background: "#7c3aed" }}
+          className="relative block overflow-hidden rounded-3xl p-6 transition-all hover:opacity-95 active:scale-[0.99]"
+          style={{
+            background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 45%, #6d28d9 100%)",
+            boxShadow: "0 14px 34px rgba(124,58,237,0.35)",
+          }}
         >
-          <div>
-            <p className="text-lg font-bold text-white">Start a Study Session</p>
-            <p className="mt-0.5 text-sm" style={{ color: "#ede9fe" }}>
-              Snap or upload an ultrasound image
-            </p>
-          </div>
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl" style={{ background: "rgba(255,255,255,0.18)" }}>
+          {/* Decorative sound-wave rings */}
+          <span className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full" style={{ border: "1.5px solid rgba(255,255,255,0.14)" }} />
+          <span className="pointer-events-none absolute -right-2 -top-2 h-28 w-28 rounded-full" style={{ border: "1.5px solid rgba(255,255,255,0.18)" }} />
+          <span className="pointer-events-none absolute right-6 top-6 h-12 w-12 rounded-full" style={{ background: "rgba(255,255,255,0.12)" }} />
+
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: "rgba(255,255,255,0.2)" }}>
             <Camera size={22} className="text-white" />
           </div>
+          <p className="relative mt-4 text-xl font-extrabold text-white">Start a Study Session</p>
+          <p className="relative mt-1 text-sm" style={{ color: "#ede9fe" }}>
+            Snap or upload an ultrasound image for an AI walkthrough
+          </p>
+          <span className="relative mt-5 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold" style={{ color: "#6d28d9" }}>
+            Open camera <ArrowRight size={14} />
+          </span>
         </Link>
 
-        {/* ── Stats / account status ───────────────────────────── */}
+        {/* ── Premium ─────────────────────────────────────────── */}
+        <ProBanner />
+
+        {/* ── Stats ───────────────────────────────────────────── */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
-            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-              This Month
-            </p>
-            <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
+          <div className="rounded-2xl p-4" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#f5f3ff" }}>
+                <Activity size={14} style={{ color: "#7c3aed" }} />
+              </span>
+              <p className="text-xs font-semibold" style={{ color: "#5a6a85" }}>This Month</p>
+            </div>
+            <p className="mt-3 text-2xl font-extrabold" style={{ color: "#0f172a" }}>
               {isPaid ? "∞" : `${scansUsed}/${FREE_SCAN_LIMIT}`}
             </p>
-            <p className="text-xs" style={{ color: "#5a6a85" }}>study sessions</p>
-          </div>
-          {isPaid ? (
-            <div className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
-              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-                Plan
-              </p>
-              <p className="mt-1 flex items-center gap-1.5 text-2xl font-extrabold" style={{ color: "#1a2235" }}>
-                Pro
-                <Sparkles size={16} style={{ color: "#7c3aed" }} />
-              </p>
+            {isPaid ? (
               <p className="text-xs" style={{ color: "#5a6a85" }}>Unlimited sessions</p>
+            ) : (
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: "#ede9fe" }}>
+                <div className="h-full rounded-full" style={{ width: `${usedPct}%`, background: "linear-gradient(90deg, #8b5cf6, #c026d3)" }} />
+              </div>
+            )}
+          </div>
+          <Link href="/history" className="rounded-2xl p-4 transition-all active:scale-[0.99]" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#ecfdf5" }}>
+                <TrendingUp size={14} style={{ color: "#059669" }} />
+              </span>
+              <p className="text-xs font-semibold" style={{ color: "#5a6a85" }}>All Time</p>
             </div>
-          ) : (
-            <button
-              onClick={() => setShowUpgrade(true)}
-              className="rounded-2xl border p-4 text-left transition-all hover:bg-slate-50"
-              style={{ background: "#ffffff", borderColor: "#dde4ee" }}
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#94a3b8" }}>
-                Plan
-              </p>
-              <p className="mt-1 text-2xl font-extrabold" style={{ color: "#1a2235" }}>Free</p>
-              <p className="text-xs font-semibold" style={{ color: "#7c3aed" }}>Upgrade for unlimited →</p>
-            </button>
-          )}
+            <p className="mt-3 text-2xl font-extrabold" style={{ color: "#0f172a" }}>{totalScans ?? "–"}</p>
+            <p className="text-xs" style={{ color: "#5a6a85" }}>sessions studied</p>
+          </Link>
         </div>
 
         {/* ── Quick start protocols ────────────────────────────── */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold" style={{ color: "#5a6a85" }}>Quick Start</h2>
+            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>Quick Start</h2>
             <Link href="/protocols" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
               See all <ArrowRight size={12} />
             </Link>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-1">
+          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
             {QUICK_START_IDS.map((id) => {
               const p = PROTOCOLS.find((x) => x.id === id);
               if (!p) return null;
               const pill = CATEGORY_PILL[p.category];
+              const Icon = CATEGORY_ICON[p.category];
               return (
                 <Link
                   key={id}
                   href={`/scan?protocol=${id}`}
-                  className="flex shrink-0 flex-col gap-2 rounded-2xl border p-4 transition-all hover:shadow-sm"
-                  style={{ background: "#ffffff", borderColor: "#dde4ee", width: 140 }}
+                  className="flex shrink-0 flex-col gap-3 rounded-2xl p-4 transition-all active:scale-[0.98]"
+                  style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)", width: 136 }}
                 >
-                  <span className="w-fit rounded-full px-2 py-0.5 text-[10px] font-semibold" style={{ background: pill.bg, color: pill.text }}>
-                    {p.category}
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
+                    <Icon size={19} style={{ color: pill.text }} />
                   </span>
-                  <span className="text-sm font-bold leading-snug" style={{ color: "#1a2235" }}>
-                    {p.shortName}
+                  <span>
+                    <span className="block text-sm font-bold leading-snug" style={{ color: "#0f172a" }}>{p.shortName}</span>
+                    <span className="block text-[11px] font-medium" style={{ color: "#94a3b8" }}>{p.category}</span>
                   </span>
                 </Link>
               );
@@ -171,7 +197,7 @@ export default function HomePage() {
         {/* ── Recent activity ──────────────────────────────────── */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold" style={{ color: "#5a6a85" }}>Recent Activity</h2>
+            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>Recent Activity</h2>
             {recentScans.length > 0 && (
               <Link href="/history" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
                 View all <ArrowRight size={12} />
@@ -180,29 +206,37 @@ export default function HomePage() {
           </div>
 
           {recentScans.length === 0 ? (
-            <div className="rounded-2xl border p-6 text-center" style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
-              <Clock size={20} className="mx-auto mb-2" style={{ color: "#94a3b8" }} />
+            <div className="rounded-2xl p-6 text-center" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+              <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full" style={{ background: "#f5f3ff" }}>
+                <Clock size={18} style={{ color: "#7c3aed" }} />
+              </span>
               <p className="text-sm" style={{ color: "#5a6a85" }}>No study sessions yet — start your first one above</p>
             </div>
           ) : (
-            <div className="space-y-2">
-              {recentScans.map((scan) => (
-                <Link
-                  key={scan.id}
-                  href="/history"
-                  className="flex items-center justify-between rounded-2xl border p-4 transition-all hover:bg-slate-50"
-                  style={{ background: "#ffffff", borderColor: "#dde4ee" }}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: ALERT_DOT[scan.alert_level] ?? ALERT_DOT.none }} />
-                    <div>
-                      <p className="text-sm font-semibold" style={{ color: "#1a2235" }}>{scan.protocol_name}</p>
+            <div className="overflow-hidden rounded-2xl" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+              {recentScans.map((scan, i) => {
+                const proto = PROTOCOLS.find((x) => x.id === scan.protocol_id);
+                const pill = proto ? CATEGORY_PILL[proto.category] : { bg: "#f5f3ff", text: "#7c3aed" };
+                const Icon = proto ? CATEGORY_ICON[proto.category] : Sparkles;
+                return (
+                  <Link
+                    key={scan.id}
+                    href="/history"
+                    className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-slate-50"
+                    style={i > 0 ? { borderTop: "1px solid #f1f5f9" } : undefined}
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
+                      <Icon size={16} style={{ color: pill.text }} />
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="truncate text-sm font-semibold" style={{ color: "#0f172a" }}>{scan.protocol_name}</p>
                       <p className="text-xs" style={{ color: "#94a3b8" }}>{relativeDate(scan.created_at)}</p>
                     </div>
-                  </div>
-                  <ChevronRight size={16} style={{ color: "#cbd5e1" }} />
-                </Link>
-              ))}
+                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: ALERT_DOT[scan.alert_level] ?? ALERT_DOT.none }} />
+                    <ChevronRight size={16} style={{ color: "#cbd5e1" }} />
+                  </Link>
+                );
+              })}
             </div>
           )}
         </section>

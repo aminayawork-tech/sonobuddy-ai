@@ -4,6 +4,7 @@ import type { ReactNode, ElementType } from "react";
 import Link from "next/link";
 import { X, LogIn, CreditCard, Shield, FileText, ChevronRight, Upload, Zap, ClipboardList, Camera } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
+import ProBanner from "@/components/ProBanner";
 
 interface Props {
   onSignIn: () => void;
@@ -52,18 +53,19 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col" style={{ background: "#f8fafc" }}>
+    <div className="fixed inset-0 z-[100] flex flex-col" style={{ background: "#eef3f8" }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b shrink-0"
-        style={{ borderColor: "#e2e8f0", background: "#ffffff" }}>
-        <span className="text-base font-bold" style={{ color: "#1a2235" }}>Menu</span>
-        <button onClick={onClose} className="rounded-full p-2 transition-colors hover:bg-slate-100">
+      <div className="flex items-center justify-between px-5 py-4 shrink-0">
+        <span className="text-xl font-extrabold" style={{ color: "#0f172a" }}>Menu</span>
+        <button onClick={onClose} className="rounded-full p-2 transition-colors hover:bg-slate-200" style={{ background: "#ffffff" }}>
           <X size={20} style={{ color: "#64748b" }} />
         </button>
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 pb-5 pt-1 space-y-6">
+
+        <ProBanner />
 
         {/* Account */}
         <MenuSection title="ACCOUNT">
@@ -90,7 +92,7 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
           </p>
           <div className="space-y-3">
             {HOW_IT_WORKS.map(({ step, icon: Icon, iconBg, iconColor, title, desc }) => (
-              <div key={step} className="rounded-2xl border p-4" style={{ background: "#ffffff", borderColor: "#e2e8f0" }}>
+              <div key={step} className="rounded-2xl p-4" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
                 <div className="flex items-start gap-3">
                   <div className="relative shrink-0">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl"
@@ -113,8 +115,8 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
 
           {/* Start Scanning CTA */}
           <Link href="/scan" onClick={onClose}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold text-white shadow-sm transition-all active:scale-95"
-            style={{ background: "#7c3aed" }}>
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold text-white transition-all active:scale-95"
+            style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 8px 24px rgba(124,58,237,0.3)" }}>
             <Camera size={16} />
             Start Scanning Now
           </Link>
@@ -140,7 +142,7 @@ function MenuSection({ title, children }: { title: string; children: ReactNode }
   return (
     <div>
       <p className="mb-2 px-1 text-xs font-semibold tracking-widest" style={{ color: "#94a3b8" }}>{title}</p>
-      <div className="rounded-2xl overflow-hidden border divide-y" style={{ borderColor: "#e2e8f0", background: "#ffffff" }}>
+      <div className="rounded-2xl overflow-hidden divide-y divide-slate-100" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
         {children}
       </div>
     </div>

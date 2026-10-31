@@ -20,6 +20,7 @@ import Link from "next/link";
 import DisclaimerBanner from "@/components/DisclaimerBanner";
 import AuthModal from "@/components/AuthModal";
 import UpgradeModal from "@/components/UpgradeModal";
+import ProBanner from "@/components/ProBanner";
 import { useAuth } from "@/components/AuthProvider";
 import { PROTOCOLS, getProtocolById } from "@/lib/protocols";
 import { FREE_SCAN_LIMIT } from "@/lib/plans";
@@ -159,7 +160,7 @@ function ProtocolSheet({
 function ScanContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, profile, scansLeft, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
 
   const urlProtocolId = searchParams.get("protocol") ?? "";
   const [selectedProtocolId, setSelectedProtocolId] = useState(urlProtocolId);
@@ -360,43 +361,22 @@ function ScanContent() {
       <div className="mx-auto max-w-lg px-4 py-8">
 
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-1.5">
-            <Camera size={20} color="#7c3aed" />
-            <h1 className="text-xl font-bold" style={{ color: "#0f172a" }}>New Scan</h1>
+        <div className="mb-6">
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
+              <Camera size={18} className="text-white" />
+            </span>
+            <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>New Scan</h1>
           </div>
           <p className="text-sm" style={{ color: "#64748b" }}>
             Upload your ultrasound image — AI analyzes it instantly
           </p>
         </div>
 
-        {/* Scan counter badge */}
-        {user && profile && (
-          <div className="mb-4 flex justify-center">
-            {profile.tier === "free" ? (
-              <button
-                onClick={() => { setUpgradeReason("generic"); setShowUpgradeModal(true); }}
-                className="flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all hover:bg-slate-50"
-                style={{
-                  borderColor: scansLeft <= 1 ? "#fca5a5" : "#dde4ee",
-                  background:  scansLeft <= 1 ? "#fef2f2" : "#ffffff",
-                  color:       scansLeft <= 1 ? "#dc2626" : "#5a6a85",
-                }}>
-                <span className="font-bold" style={{ color: scansLeft <= 1 ? "#dc2626" : "#7c3aed" }}>
-                  {scansLeft}/{FREE_SCAN_LIMIT}
-                </span>
-                free scans left this month
-                {scansLeft <= 1 && " · Upgrade"}
-              </button>
-            ) : (
-              <span className="flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium"
-                style={{ borderColor: "#ddd6fe", background: "#f5f3ff", color: "#6d28d9" }}>
-                <Zap size={11} />
-                {profile.tier === "clinic" ? "Clinic" : "Pro"} — unlimited scans
-              </span>
-            )}
-          </div>
-        )}
+        {/* Premium / usage */}
+        <div className="mb-5">
+          <ProBanner compact />
+        </div>
 
         {/* New-account welcome banner (paid without being signed in) */}
         {searchParams.get("welcome") === "1" && (
@@ -474,12 +454,12 @@ function ScanContent() {
               className="cursor-pointer p-10 text-center transition-all select-none"
               style={{
                 background: isDragging ? "#f5f3ff" : "#ffffff",
-                border: isDragging ? "2px dashed #7c3aed" : "2px dashed #cbd5e1",
+                border: isDragging ? "2px dashed #7c3aed" : "2px dashed #c4b5fd",
                 borderRadius: "1rem",
               }}>
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-                style={{ background: isDragging ? "#ede9fe" : "#f1f5f9" }}>
-                <ImageIcon size={28} style={{ color: isDragging ? "#7c3aed" : "#94a3b8" }} />
+                style={{ background: isDragging ? "#ede9fe" : "#f5f3ff" }}>
+                <ImageIcon size={28} style={{ color: "#7c3aed" }} />
               </div>
               <p className="mb-1 text-base font-semibold" style={{ color: "#0f172a" }}>
                 Tap to photograph your ultrasound
@@ -617,8 +597,8 @@ function ScanContent() {
               {!user ? (
                 <div className="space-y-3">
                   <button onClick={() => setShowAuthModal(true)}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95"
-                    style={{ background: "#7c3aed" }}>
+                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white transition-all hover:opacity-90 active:scale-95"
+                    style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 10px 28px rgba(124,58,237,0.32)" }}>
                     <Zap size={19} /> Sign in to Start Scanning
                   </button>
                   <p className="text-center text-xs" style={{ color: "#94a3b8" }}>
@@ -630,8 +610,8 @@ function ScanContent() {
                   <button
                     onClick={() => { setAnalysisError(null); runAnalysis(); }}
                     disabled={!image || isFreeAtLimit}
-                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-                    style={{ background: "#7c3aed" }}>
+                    className="flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-lg font-bold text-white transition-all hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                    style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 10px 28px rgba(124,58,237,0.32)" }}>
                     <Zap size={19} />
                     {isFreeAtLimit ? "Upgrade to Continue" : image ? "Analyze Now" : "Upload an image to start"}
                   </button>

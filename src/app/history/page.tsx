@@ -5,6 +5,7 @@ import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
+import ProBanner from "@/components/ProBanner";
 
 interface ScanRecord {
   id: string;
@@ -75,7 +76,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
   }
 
   return (
-    <div className="relative rounded-2xl overflow-hidden" style={{ background: "#ffffff", border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+    <div className="relative rounded-2xl overflow-hidden" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
       {/* Swipe-to-delete background button */}
       <div
         className="absolute inset-y-0 right-0 flex items-center justify-center"
@@ -238,9 +239,15 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen pb-28" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-lg px-4 pt-8 pb-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Clock size={20} color="#7c3aed" />
-          <h1 className="text-xl font-bold" style={{ color: "#1e293b" }}>Scan History</h1>
+        <div className="flex items-center gap-2.5 mb-4">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
+            <Clock size={18} className="text-white" />
+          </span>
+          <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#0f172a" }}>Scan History</h1>
+        </div>
+
+        <div className="mb-4">
+          <ProBanner compact />
         </div>
 
         {/* Privacy banner */}
@@ -252,13 +259,16 @@ export default function HistoryPage() {
         </div>
 
         {scans.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-sm font-medium mb-1" style={{ color: "#64748b" }}>No scans yet</p>
+          <div className="text-center py-16">
+            <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "#f5f3ff" }}>
+              <Clock size={24} style={{ color: "#7c3aed" }} />
+            </span>
+            <p className="text-base font-bold mb-1" style={{ color: "#0f172a" }}>No scans yet</p>
             <p className="text-xs mb-5" style={{ color: "#94a3b8" }}>Complete a scan to see your history here.</p>
             <Link
               href="/scan"
-              className="inline-flex items-center gap-1.5 rounded-xl px-5 py-2.5 text-sm font-bold text-white"
-              style={{ background: "#7c3aed" }}
+              className="inline-flex items-center gap-1.5 rounded-2xl px-6 py-3 text-sm font-bold text-white"
+              style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 8px 24px rgba(124,58,237,0.3)" }}
             >
               Start a Scan
             </Link>
