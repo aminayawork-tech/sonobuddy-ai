@@ -8,11 +8,11 @@ struct Cookie {
 let gcmMessageIDKey = "00000000000" // update this with actual ID if using Firebase 
 
 // URL for first launch
-let rootUrl = URL(string: "https://sonobuddy-ai.vercel.app/")!
+let rootUrl = URL(string: "https://www.sonobuddyai.com/")!
 
 // allowed origin is for what we are sticking to pwa domain
 // This should also appear in Info.plist
-let allowedOrigins: [String] = ["sonobuddy-ai.vercel.app"]
+let allowedOrigins: [String] = ["www.sonobuddyai.com"]
 
 // auth origins will open in modal and show toolbar for back into the main origin.
 // These should also appear in Info.plist

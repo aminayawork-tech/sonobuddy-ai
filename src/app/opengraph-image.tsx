@@ -5,7 +5,7 @@ export const alt = "SonoBuddy AI — AI Ultrasound Guide";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://sonobuddyai.app";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.sonobuddyai.com";
 
 export default async function Image() {
   const iconData = await fetch(`${APP_URL}/sonobuddy-favicon.png`).then((r) => r.arrayBuffer());

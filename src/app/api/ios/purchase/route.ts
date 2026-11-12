@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 // Called by the iOS app after a successful StoreKit transaction.
 // payload format: "transactionId|productId"
@@ -16,7 +16,8 @@ export async function POST(req: NextRequest) {
 
     if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 
-    await supabase
+    // Billing columns are only writable with the service role (migration 004).
+    await createServiceClient()
       .from("profiles")
       .update({ tier, apple_original_transaction_id: transactionId ?? null })
       .eq("id", user.id);

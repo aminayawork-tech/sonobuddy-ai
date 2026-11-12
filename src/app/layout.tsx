@@ -6,7 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import PwaInit from "@/components/PwaInit";
 import OnboardingFlow from "@/components/OnboardingFlow";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://sonobuddyai.app";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.sonobuddyai.com";
 
 export const metadata: Metadata = {
   title: "SonoBuddy AI — AI Ultrasound Guide",

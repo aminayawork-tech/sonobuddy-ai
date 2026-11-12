@@ -26,7 +26,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="4. Account Responsibilities">
-          You are responsible for maintaining the confidentiality of your login credentials and for all activity under your account. Notify us immediately at support@sonobuddyai.app if you suspect unauthorized access.
+          You are responsible for maintaining the confidentiality of your login credentials and for all activity under your account. Notify us immediately at support@sonobuddyai.com if you suspect unauthorized access.
         </Section>
 
         <Section title="5. Acceptable Use">
@@ -69,7 +69,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="13. Contact">
-          Questions? Contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>.
+          Questions? Contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>.
         </Section>
 
         <div className="mt-10 text-center">

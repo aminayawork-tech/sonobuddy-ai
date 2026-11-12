@@ -7,27 +7,19 @@ const config: CapacitorConfig = {
   server: {
     // Production Vercel deployment — all API routes and auth stay server-side.
     // Subscriptions are sold exclusively via Apple In-App Purchase (StoreKit).
-    url: 'https://sonobuddy-ai.vercel.app',
+    url: 'https://www.sonobuddyai.com',
     cleartext: false,
     androidScheme: 'https',
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2500,
+      launchShowDuration: 1500,
       launchAutoHide: true,
-      backgroundColor: '#ffffff',
-      androidSplashResourceName: 'splash',
+      backgroundColor: '#eef3f8',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true,
-    },
-    PushNotifications: {
-      presentationOptions: ['badge', 'sound', 'alert'],
-    },
-    StatusBar: {
-      style: 'DEFAULT',
-      backgroundColor: '#ffffff',
     },
   },
   ios: {
@@ -35,11 +27,13 @@ const config: CapacitorConfig = {
     backgroundColor: '#ffffff',
     allowsLinkPreview: false,
     scrollEnabled: true,
-    // Restricts WebView navigation to sonobuddy-ai.vercel.app only — required for limitsNavigationsToAppBoundDomains
+    // Restricts WebView navigation to www.sonobuddyai.com only — required for limitsNavigationsToAppBoundDomains
     limitsNavigationsToAppBoundDomains: true,
   },
   android: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#eef3f8',
+    // Lets the web app detect the Android shell (e.g. to hide iOS-only purchases).
+    appendUserAgent: 'SonoBuddyAI-Android',
     allowMixedContent: false,
     captureInput: true,
   },

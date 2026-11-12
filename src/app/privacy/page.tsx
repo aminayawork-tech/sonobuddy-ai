@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         <p className="mb-8 text-sm" style={{ color: "#94a3b8" }}>Last updated: May 2025</p>
 
         <Section title="1. Introduction">
-          SonoBuddy AI ("we," "us," or "our") operates the SonoBuddy AI application and website at sonobuddyai.app. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. By using SonoBuddy AI, you agree to the terms of this policy.
+          SonoBuddy AI ("we," "us," or "our") operates the SonoBuddy AI application and website at sonobuddyai.com. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. By using SonoBuddy AI, you agree to the terms of this policy.
         </Section>
 
         <Section title="2. Information We Collect">
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="8. HIPAA Notice">
-          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a> before proceeding.
+          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a> before proceeding.
         </Section>
 
         <Section title="9. Children's Privacy">
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="10. Your Rights">
-          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>.
+          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>.
         </Section>
 
         <Section title="11. Changes to This Policy">
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
 
         <Section title="12. Contact Us">
           Questions about this Privacy Policy? Contact us at:<br />
-          <a href="mailto:support@sonobuddyai.app" className="text-purple-600 underline">support@sonobuddyai.app</a>
+          <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>
         </Section>
 
         <div className="mt-10 text-center">

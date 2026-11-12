@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight, Crown, Sparkles } from "lucide-react";
 import { useAuth } from "./AuthProvider";
 import UpgradeModal from "./UpgradeModal";
 import { FREE_SCAN_LIMIT } from "@/lib/plans";
+import { isAndroidApp } from "@/lib/platform";
 
 // Premium upsell card shown to free users; collapses to a slim "Pro member"
 // strip for paid users so every page carries the same premium accent.
 export default function ProBanner({ compact = false }: { compact?: boolean }) {
   const { user, profile } = useAuth();
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [android, setAndroid] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setAndroid(isAndroidApp()), []);
 
   if (!user || !profile) return null;
   const isPaid = profile.tier === "pro" || profile.tier === "clinic";
@@ -33,6 +37,21 @@ export default function ProBanner({ compact = false }: { compact?: boolean }) {
   }
 
   const left = Math.max(0, FREE_SCAN_LIMIT - profile.scans_used_this_month);
+
+  if (android) {
+    return (
+      <div className="flex items-center gap-3 rounded-2xl px-4 py-3"
+        style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
+          <Sparkles size={15} style={{ color: "#7c3aed" }} />
+        </span>
+        <p className="flex-1 text-sm font-semibold" style={{ color: "#0f172a" }}>
+          Free plan
+          <span className="ml-1.5 font-medium" style={{ color: "#5a6a85" }}>· {left} of {FREE_SCAN_LIMIT} sessions left this month</span>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>

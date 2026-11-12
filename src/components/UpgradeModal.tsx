@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BookOpen, Check, Crown, FileDown, Infinity as InfinityIcon, Loader2,
   MessageSquare, Ruler, ShieldCheck, X, Zap,
 } from "lucide-react";
 import { PLANS, FREE_SCAN_LIMIT, type PlanKey } from "@/lib/plans";
+import { isAndroidApp } from "@/lib/platform";
 
 interface UpgradeModalProps {
   onClose: () => void;
@@ -76,6 +77,9 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
   const [restoring, setRestoring] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [planKey,  setPlanKey]  = useState<PlanKey>("pro_yearly");
+  const [android,  setAndroid]  = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setAndroid(isAndroidApp()), []);
 
   const plan = PLANS[planKey];
   const isYearly = planKey === "pro_yearly";
@@ -210,6 +214,21 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
           ))}
         </div>
 
+        {android ? (
+          <div className="px-6 pt-6 pb-8 text-center">
+            <p className="text-sm font-semibold text-white">Pro is coming soon on Android.</p>
+            <p className="mt-1 text-xs" style={{ color: "#a1a1aa" }}>
+              Your free plan includes {FREE_SCAN_LIMIT} study sessions every month.
+            </p>
+            <button onClick={onClose}
+              className="mt-5 w-full rounded-2xl py-3.5 text-sm font-bold text-white"
+              style={{ background: "rgba(255,255,255,0.1)" }}>
+              Got it
+            </button>
+            <p className="mt-4 text-[11px]" style={{ color: "#71717a" }}>For educational use only. Not intended for diagnosis or clinical decisions.</p>
+          </div>
+        ) : (
+          <>
         {/* Plans */}
         <div className="mx-5 mt-6 space-y-3">
           <PlanOption
@@ -271,6 +290,8 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
           </div>
           <p>For educational use only. Not intended for diagnosis or clinical decisions.</p>
         </div>
+          </>
+        )}
       </div>
     </div>
   );

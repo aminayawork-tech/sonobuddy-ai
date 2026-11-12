@@ -96,7 +96,7 @@
 	<true/>
 	<key>WKAppBoundDomains</key>
 	<array>
-		<string>sonobuddy-ai.vercel.app</string>
+		<string>www.sonobuddyai.com</string>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
