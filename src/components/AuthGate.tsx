@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { LogIn, Shield, UserPlus, Zap } from "lucide-react";
+import { CheckCircle, LogIn, Shield, UserPlus, Zap } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { supabaseConfigured } from "@/lib/supabase/client";
 import AuthModal from "@/components/AuthModal";
@@ -23,6 +23,18 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signup");
+  const [confirmed, setConfirmed] = useState(false);
+
+  // Arriving from a confirmation email in a browser that can't finish the
+  // sign-in on its own: the email is verified, so go straight to Sign In.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("confirmed")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setConfirmed(true);
+      setAuthMode("signin");
+      setAuthOpen(true);
+    }
+  }, []);
 
   const isPublicPath = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
 
@@ -58,6 +70,12 @@ export default function AuthGate({ children }: { children: ReactNode }) {
         <p className="mt-2 text-sm" style={{ color: MUTED }}>
           Sign in to continue
         </p>
+        {confirmed && (
+          <p className="mt-4 flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold"
+            style={{ background: "#ecfdf5", color: "#059669" }}>
+            <CheckCircle size={15} /> Email confirmed — sign in to get started
+          </p>
+        )}
       </div>
 
       <div className="flex justify-center gap-3 px-6 pb-10 flex-wrap">

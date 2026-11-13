@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useAuth } from "@/components/AuthProvider";
 import {
   Camera,
   Zap,
@@ -437,10 +438,21 @@ export default function OnboardingFlow() {
   const router = useRouter();
   const touchStartX = useRef(0);
 
+  const { user, loading } = useAuth();
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || loading) return;
+    // Anyone signed in, or arriving from a confirmation email, has already
+    // seen the intro (possibly on another device) — go straight into the app.
+    const params = new URLSearchParams(window.location.search);
+    if (user || params.has("welcome") || params.has("confirmed")) {
+      localStorage.setItem(ONBOARDED_KEY, "1");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVisible(false);
+      return;
+    }
     if (!localStorage.getItem(ONBOARDED_KEY)) setVisible(true);
-  }, []);
+  }, [user, loading]);
 
   function complete() {
     localStorage.setItem(ONBOARDED_KEY, "1");

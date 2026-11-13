@@ -43,7 +43,7 @@ function AuthErrorContent() {
         <p className="text-sm mb-2" style={{ color: "#64748b" }}>
           {isReset
             ? "This password reset link has already been used or has expired."
-            : "This confirmation link is no longer valid. It may have already been used or expired."}
+            : "This confirmation link was already used or has expired. If you already confirmed your email, just sign in."}
         </p>
 
         <p className="text-sm mb-6" style={{ color: "#94a3b8" }}>
@@ -52,11 +52,11 @@ function AuthErrorContent() {
 
         <div className="flex flex-col gap-2">
           <a
-            href="/?auth=forgot"
+            href={isReset ? "/?auth=forgot" : "/?confirmed=1"}
             className="w-full rounded-xl py-2.5 text-sm font-bold text-white inline-block"
-            style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #8b5cf6 100%)" }}
+            style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)" }}
           >
-            Request a new reset link
+            {isReset ? "Request a new reset link" : "Sign in"}
           </a>
           <a
             href="/"
