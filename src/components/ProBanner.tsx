@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ChevronRight, Crown, Sparkles } from "lucide-react";
 import { useAuth } from "./AuthProvider";
 import UpgradeModal from "./UpgradeModal";
-import { FREE_SCAN_LIMIT } from "@/lib/plans";
+import { FREE_SCAN_LIMIT, YEARLY_SALE, yearlySaleActive } from "@/lib/plans";
 import { isAndroidApp } from "@/lib/platform";
 
 // Premium upsell card shown to free users; collapses to a slim "Pro member"
@@ -75,9 +75,11 @@ export default function ProBanner({ compact = false }: { compact?: boolean }) {
             Go <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg, #c4b5fd, #f0abfc)" }}>Pro</span>
           </span>
           <span className="block text-xs" style={{ color: "#c4b5fd" }}>
-            {left === 0
-              ? "You're out of free sessions — unlock unlimited"
-              : `${left} of ${FREE_SCAN_LIMIT} free sessions left · Unlock unlimited`}
+            {yearlySaleActive()
+              ? `Black Friday: Pro yearly ${YEARLY_SALE.price} · ${YEARLY_SALE.endsLabel}`
+              : left === 0
+                ? "You're out of free sessions — unlock unlimited"
+                : `${left} of ${FREE_SCAN_LIMIT} free sessions left · Unlock unlimited`}
           </span>
         </span>
         <span className="relative flex items-center gap-0.5 rounded-full px-3 py-1.5 text-xs font-bold text-white"

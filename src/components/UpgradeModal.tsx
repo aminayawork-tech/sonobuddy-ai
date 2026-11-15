@@ -5,7 +5,7 @@ import {
   BookOpen, Check, Crown, FileDown, Infinity as InfinityIcon, Loader2,
   MessageSquare, Ruler, ShieldCheck, X, Zap,
 } from "lucide-react";
-import { PLANS, FREE_SCAN_LIMIT, type PlanKey } from "@/lib/plans";
+import { PLANS, FREE_SCAN_LIMIT, YEARLY_SALE, planPrice, yearlySaleActive, type PlanKey } from "@/lib/plans";
 import { isAndroidApp } from "@/lib/platform";
 
 interface UpgradeModalProps {
@@ -28,14 +28,12 @@ const FEATURES = [
 const MONTHLY = PLANS.pro_monthly;
 const YEARLY  = PLANS.pro_yearly;
 const dollars = (p: string) => parseFloat(p.replace("$", ""));
-const yearlyPerMonth = (dollars(YEARLY.price) / 12).toFixed(2);
-const yearlySavings  = Math.floor((1 - dollars(YEARLY.price) / (dollars(MONTHLY.price) * 12)) * 100);
 
 function PlanOption({
-  selected, onSelect, title, price, period, note, badge,
+  selected, onSelect, title, price, oldPrice, period, note, badge,
 }: {
   selected: boolean; onSelect: () => void; title: string; price: string;
-  period: string; note: string; badge?: string;
+  oldPrice?: string; period: string; note: string; badge?: string;
 }) {
   return (
     <button
@@ -65,6 +63,9 @@ function PlanOption({
         <span className="block text-xs" style={{ color: "#a1a1aa" }}>{note}</span>
       </span>
       <span className="text-right">
+        {oldPrice && (
+          <span className="block text-[11px] font-semibold line-through" style={{ color: "#71717a" }}>{oldPrice}</span>
+        )}
         <span className="block text-base font-extrabold text-white">{price}</span>
         <span className="block text-[11px]" style={{ color: "#a1a1aa" }}>per {period}</span>
       </span>
@@ -82,7 +83,12 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
   useEffect(() => setAndroid(isAndroidApp()), []);
 
   const plan = PLANS[planKey];
+  const price = planPrice(planKey);
   const isYearly = planKey === "pro_yearly";
+  const onSale = yearlySaleActive();
+  const yearlyPrice = planPrice("pro_yearly");
+  const yearlyPerMonth = (dollars(yearlyPrice) / 12).toFixed(2);
+  const yearlySavings  = Math.floor((1 - dollars(yearlyPrice) / (dollars(MONTHLY.price) * 12)) * 100);
 
   // Shared by both a live purchase and a restore — both end with the native
   // side firing iap-purchase-complete/error once StoreKit resolves.
@@ -235,10 +241,15 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
             selected={isYearly}
             onSelect={() => setPlanKey("pro_yearly")}
             title="Yearly"
-            price={YEARLY.price}
+            price={yearlyPrice}
+            oldPrice={onSale ? YEARLY.price : undefined}
             period="year"
-            note={`Just $${yearlyPerMonth}/mo, billed annually`}
-            badge={`BEST VALUE · SAVE ${yearlySavings}%`}
+            note={onSale
+              ? `Just $${yearlyPerMonth}/mo · ${YEARLY_SALE.endsLabel}`
+              : `Just $${yearlyPerMonth}/mo, billed annually`}
+            badge={onSale
+              ? `${YEARLY_SALE.label} · SAVE ${yearlySavings}%`
+              : `BEST VALUE · SAVE ${yearlySavings}%`}
           />
           <PlanOption
             selected={!isYearly}
@@ -268,14 +279,14 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
               boxShadow: "0 8px 30px rgba(147,51,234,0.45)",
             }}>
             {loading && <Loader2 size={18} className="animate-spin" />}
-            {loading ? "Connecting to App Store…" : `Continue — ${plan.price}/${plan.period}`}
+            {loading ? "Connecting to App Store…" : `Continue — ${price}/${plan.period}`}
           </button>
         </div>
 
         {/* Subscription details (required for App Review) */}
         <div className="px-6 pt-4 pb-6 text-center text-[11px] leading-relaxed space-y-3" style={{ color: "#71717a" }}>
           <p>
-            SonoBuddy AI {isYearly ? "Pro Yearly" : "Pro Monthly"} · {isYearly ? "1 year" : "1 month"} · {plan.price}/{plan.period}.
+            SonoBuddy AI {isYearly ? "Pro Yearly" : "Pro Monthly"} · {isYearly ? "1 year" : "1 month"} · {price}/{plan.period}.
             Payment is charged to your Apple ID at confirmation. Subscription auto-renews unless canceled
             at least 24 hours before the end of the current period. Manage or cancel in your App Store account settings.
           </p>

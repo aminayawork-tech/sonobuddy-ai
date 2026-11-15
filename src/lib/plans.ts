@@ -45,3 +45,22 @@ export const PLANS: Record<PlanKey, {
 };
 
 export const FREE_SCAN_LIMIT = 5;
+
+// Black Friday sale on the yearly plan. The app only displays this price —
+// Apple charges whatever App Store Connect has for sonobuddyai_pro_yearly, so
+// schedule the same $49.99 price there for the same dates.
+export const YEARLY_SALE = {
+  price: "$49.99",
+  label: "BLACK FRIDAY",
+  endsLabel: "Ends Nov 30",
+  // Midnight Dec 1 US Eastern — the app falls back to the regular price after this.
+  endsAt: new Date("2026-12-01T05:00:00Z"),
+};
+
+export function yearlySaleActive(now = new Date()) {
+  return now < YEARLY_SALE.endsAt;
+}
+
+export function planPrice(key: PlanKey) {
+  return key === "pro_yearly" && yearlySaleActive() ? YEARLY_SALE.price : PLANS[key].price;
+}
