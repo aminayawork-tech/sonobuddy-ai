@@ -66,6 +66,9 @@ export default function PrivacyPage() {
 
         <Section title="10. Your Rights">
           Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>.
+          <span id="delete-account" className="mt-3 block">
+            <strong>Deleting your account:</strong> in the app, open the menu (☰) on the Home screen and tap <strong>Delete Account</strong>. This immediately and permanently deletes your account, profile, and all saved scan history. You can also email <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a> from your account email and we will delete it within 30 days. App Store subscriptions must be canceled separately in your Apple ID settings.
+          </span>
         </Section>
 
         <Section title="11. Changes to This Policy">

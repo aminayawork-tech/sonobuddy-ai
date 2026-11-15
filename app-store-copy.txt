@@ -106,7 +106,7 @@ In-App Purchase 1:    SonoBuddy AI Pro Monthly
 In-App Purchase 2:    SonoBuddy AI Pro Annual
   Type:               Auto-Renewable Subscription
   Duration:           1 Year
-  Price:              $69.99 USD
+  Price:              $69.99 USD  (schedule $49.99 now → Dec 1 for Black Friday)
 
 Privacy Policy URL:   https://www.sonobuddyai.com/privacy
 Support URL:          https://www.sonobuddyai.com
@@ -127,9 +127,16 @@ Test account:
   Email:    (create a free test account before submission)
   Password: (set before submission)
 
-The app requires an internet connection to generate the AI study
-walkthrough (processed server-side). Past study sessions are viewable
-offline.
+The app requires an internet connection (study walkthroughs are
+generated server-side).
+
+Where to find things:
+  • Subscriptions: Home → "Go Pro" card (or the Plan box). Monthly and
+    yearly auto-renewable subscriptions via Apple In-App Purchase, with
+    Restore Purchases, Terms of Use and Privacy Policy links on the same
+    screen.
+  • Account deletion: Home → menu (☰, top right) → Delete Account.
+    Deletes the account, profile and all scan history immediately.
 
 
 SCREENSHOT CAPTIONS  (optional — appears below screenshot in store)
@@ -143,11 +150,10 @@ Screenshot 6: "Your Personal Study Library"
 Screenshot 7: "One-Tap PDF Study Summary Export"
 
 
-REQUIRED SCREENSHOT SIZES  (App Store Connect — use iPhone 15 Pro Max)
+REQUIRED SCREENSHOT SIZES  (App Store Connect — iPhone only app)
 ────────────────────────────────────────────────────────────────────────
-iPhone 6.7"  (required):  1290 × 2796 px
+iPhone 6.9"  (required):  1320 × 2868 px  (iPhone 16/17 Pro Max simulator)
 iPhone 6.5"  (optional):  1242 × 2688 px
-iPad 12.9"   (optional):  2048 × 2732 px
 
 Minimum required: 1 screenshot per device class you support.
 Recommended: 6–8 screenshots to maximize conversion.
