@@ -87,7 +87,7 @@ PRIVACY BUILT IN
 
 FREE AND PRO
 Free accounts get 5 AI study sessions every month, with all 34 protocols.
-SonoBuddy AI Pro unlocks unlimited study sessions and follow-up questions:
+SonoBuddy AI Pro unlocks unlimited AI study sessions:
 • Pro Monthly: $9.99 per month
 • Pro Yearly: $69.99 per year
 Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Payment is charged to your Apple ID account at confirmation of purchase. Manage or cancel anytime in your App Store account settings.
