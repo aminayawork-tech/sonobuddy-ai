@@ -168,6 +168,7 @@ function ScanContent() {
   const [protocolSheetOpen,  setProtocolSheetOpen]  = useState(false);
 
   const [image,       setImage]       = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
   const [isDragging,  setIsDragging]  = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep,setAnalysisStep]= useState(0);
@@ -204,9 +205,18 @@ function ScanContent() {
     function onNativeImage(e: Event) {
       const dataUrl = (e as CustomEvent<string>).detail;
       if (dataUrl) setImage(dataUrl);
+      setImageLoading(false);
     }
+    const onLoading = () => setImageLoading(true);
+    const onCancelled = () => setImageLoading(false);
     window.addEventListener("native-image-selected", onNativeImage);
-    return () => window.removeEventListener("native-image-selected", onNativeImage);
+    window.addEventListener("native-image-loading", onLoading);
+    window.addEventListener("native-image-cancelled", onCancelled);
+    return () => {
+      window.removeEventListener("native-image-selected", onNativeImage);
+      window.removeEventListener("native-image-loading", onLoading);
+      window.removeEventListener("native-image-cancelled", onCancelled);
+    };
   }, []);
 
   // Use native iOS message handler if available (bypasses action sheet popup),
@@ -225,11 +235,14 @@ function ScanContent() {
   function handleFile(file: File) {
     // iOS Safari reports empty MIME type for HEIC/iCloud gallery photos — allow those through
     if (file.type && !file.type.startsWith("image/")) return;
+    setImageLoading(true);
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
       if (dataUrl) setImage(dataUrl);
+      setImageLoading(false);
     };
+    reader.onerror = () => setImageLoading(false);
     reader.readAsDataURL(file);
   }
 
@@ -412,7 +425,12 @@ function ScanContent() {
         {/* ── Upload Zone ── */}
         <div className="mb-5 overflow-hidden rounded-2xl border shadow-sm"
           style={{ background: "#ffffff", borderColor: "#e2e8f0" }}>
-          {image ? (
+          {imageLoading && !image ? (
+            <div className="flex flex-col items-center justify-center gap-3 p-10" style={{ minHeight: 260 }}>
+              <Loader2 size={28} className="animate-spin" style={{ color: "#7c3aed" }} />
+              <p className="text-sm font-semibold" style={{ color: "#5a6a85" }}>Loading image…</p>
+            </div>
+          ) : image ? (
             <div>
               <div className="relative" style={{ background: "#000" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}

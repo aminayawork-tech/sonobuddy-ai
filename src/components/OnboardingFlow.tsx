@@ -329,7 +329,7 @@ export default function OnboardingFlow() {
                 { icon: Camera, gradient: "linear-gradient(135deg,#a78bfa,#7c3aed)", title: "Snap or upload any scan", sub: "Photo of the screen or a saved image \u2014 patient info is redacted" },
                 { icon: Sparkles, gradient: "linear-gradient(135deg,#f0abfc,#c026d3)", title: "AI walks you through it", sub: "Structures labeled, measurements explained, key findings highlighted" },
                 { icon: MessageCircle, gradient: "linear-gradient(135deg,#60a5fa,#2563eb)", title: "Ask follow-up questions", sub: "\u201cWhat view should I get next?\u201d \u2014 get an answer about your image" },
-                { icon: FileText, gradient: "linear-gradient(135deg,#34d399,#059669)", title: "31 protocols to study", sub: "Step-by-step views, normal values and common pitfalls" },
+                { icon: FileText, gradient: "linear-gradient(135deg,#34d399,#059669)", title: "34 protocols to study", sub: "Step-by-step views, normal values and common pitfalls" },
               ].map((f) => (
                 <div key={f.title} className="flex items-center gap-3.5 rounded-[20px] bg-white p-3.5" style={{ boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
                   <GradientTile icon={f.icon} gradient={f.gradient} />

@@ -17,7 +17,7 @@ const PURPLE_LIGHT = "#a78bfa";
 
 const FEATURES = [
   { icon: InfinityIcon,   title: "Unlimited AI study sessions", sub: `No ${FREE_SCAN_LIMIT}-per-month cap` },
-  { icon: BookOpen,       title: "All 31 protocols",            sub: "Cardiac, OB, abdominal & more" },
+  { icon: BookOpen,       title: "All 34 protocols",            sub: "Cardiac, OB, abdominal & more" },
   { icon: Ruler,          title: "Full reference measurements", sub: "Normal values for every structure" },
   { icon: MessageSquare,  title: "AI study chat",               sub: "Ask follow-up questions on any image" },
   { icon: FileDown,       title: "PDF study export",            sub: "Save walkthroughs for review" },

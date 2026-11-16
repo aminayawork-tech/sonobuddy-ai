@@ -274,7 +274,7 @@ extension ViewController: WKScriptMessageHandler {
             presentImagePicker(sourceType: .camera)
         }
         if message.name == "openGallery" {
-            presentImagePicker(sourceType: .photoLibrary)
+            presentPhotoPicker()
         }
         if message.name == "openPurchase" {
             let productID = message.body as? String ?? "sonobuddyai_pro_monthly"

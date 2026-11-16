@@ -18,7 +18,7 @@ export const PLANS: Record<PlanKey, {
     iapProductId: "sonobuddyai_pro_monthly",
     features: [
       "Unlimited AI study sessions",
-      "All 31 protocols",
+      "All 34 protocols",
       "Full reference measurements",
       "AI chat",
       "PDF study export",
@@ -34,7 +34,7 @@ export const PLANS: Record<PlanKey, {
     iapProductId: "sonobuddyai_pro_yearly",
     features: [
       "Unlimited AI study sessions",
-      "All 31 protocols",
+      "All 34 protocols",
       "Full reference measurements",
       "AI chat",
       "PDF study export",

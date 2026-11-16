@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import AuthenticationServices
 import SafariServices
+import PhotosUI
 
 
 func createWebView(container: UIView, WKSMH: WKScriptMessageHandler, WKND: WKNavigationDelegate, NSO: NSObject, VC: ViewController) -> WKWebView{
@@ -360,13 +361,25 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
             })
         }
         alert.addAction(UIAlertAction(title: "Photo Library", style: .default) { [weak self] _ in
-            self?.presentImagePicker(sourceType: .photoLibrary)
+            self?.presentPhotoPicker()
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
             self?.filePickerCompletion?(nil)
             self?.filePickerCompletion = nil
         })
         present(alert, animated: true)
+    }
+
+    // The system photo picker (PHPicker) opens much faster than
+    // UIImagePickerController's library mode and needs no Photos permission.
+    func presentPhotoPicker() {
+        var config = PHPickerConfiguration()
+        config.filter = .images
+        config.selectionLimit = 1
+        config.preferredAssetRepresentationMode = .current
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
     func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
@@ -398,40 +411,48 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
 }
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // Resize to ≤1200px on the longest side and encode as a JPEG data URL.
+    // Safe to call off the main thread.
+    static func webDataURL(for image: UIImage) -> String? {
+        let maxPx: CGFloat = 1200
+        let s = min(1.0, maxPx / max(image.size.width, image.size.height))
+        let sz = CGSize(width: image.size.width * s, height: image.size.height * s)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let resized = UIGraphicsImageRenderer(size: sz, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: sz))
+        }
+        guard let data = resized.jpegData(compressionQuality: 0.85) else { return nil }
+        return "data:image/jpeg;base64,\(data.base64EncodedString())"
+    }
+
+    // Tell the page an image is on its way (shows a spinner), then deliver it
+    // via a JS event — bypasses WKWebView sandbox file access.
+    func sendImageLoadingToWeb() {
+        SonoPilot.webView.evaluateJavaScript("window.dispatchEvent(new Event('native-image-loading'));") { _, _ in }
+    }
+
+    func sendImageToWeb(_ dataURL: String?) {
+        let js = dataURL.map { "window.dispatchEvent(new CustomEvent('native-image-selected',{detail:'\($0)'}));" }
+            ?? "window.dispatchEvent(new Event('native-image-cancelled'));"
+        SonoPilot.webView.evaluateJavaScript(js) { _, _ in }
+    }
+
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let uiImage = (info[.editedImage] ?? info[.originalImage]) as? UIImage else {
-            picker.dismiss(animated: true)
-            filePickerCompletion?(nil)
-            filePickerCompletion = nil
-            return
-        }
-
-        // Resize to ≤1200px on longest side before encoding
-        let maxPx: CGFloat = 1200
-        let s = min(1.0, maxPx / max(uiImage.size.width, uiImage.size.height))
-        let sz = CGSize(width: uiImage.size.width * s, height: uiImage.size.height * s)
-        let renderer = UIGraphicsImageRenderer(size: sz)
-        let resized = renderer.image { _ in uiImage.draw(in: CGRect(origin: .zero, size: sz)) }
-
-        guard let data = resized.jpegData(compressionQuality: 0.85) else {
-            picker.dismiss(animated: true)
-            filePickerCompletion?(nil)
-            filePickerCompletion = nil
-            return
-        }
-
-        let base64 = data.base64EncodedString()
-        // Capture and clear before async block to avoid retain issues
         let completion = filePickerCompletion
         filePickerCompletion = nil
-
-        // Dismiss, then inject image via JS event — bypasses WKWebView sandbox file access
-        picker.dismiss(animated: true) {
-            SonoPilot.webView.evaluateJavaScript(
-                "window.dispatchEvent(new CustomEvent('native-image-selected',{detail:'data:image/jpeg;base64,\(base64)'}));"
-            ) { _, _ in }
-            completion?(nil)
+        let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage
+        // Dismiss right away; resize/encode in the background so the UI never freezes.
+        picker.dismiss(animated: true)
+        guard let image = image else { completion?(nil); return }
+        sendImageLoadingToWeb()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let dataURL = ViewController.webDataURL(for: image)
+            DispatchQueue.main.async {
+                self.sendImageToWeb(dataURL)
+                completion?(nil)
+            }
         }
     }
 
@@ -439,6 +460,28 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         picker.dismiss(animated: true)
         filePickerCompletion?(nil)
         filePickerCompletion = nil
+    }
+}
+
+extension ViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        let completion = filePickerCompletion
+        filePickerCompletion = nil
+        picker.dismiss(animated: true)
+        guard let provider = results.first?.itemProvider,
+              provider.canLoadObject(ofClass: UIImage.self) else {
+            completion?(nil)
+            return
+        }
+        sendImageLoadingToWeb()
+        // loadObject calls back on a background queue — encode there.
+        provider.loadObject(ofClass: UIImage.self) { object, _ in
+            let dataURL = (object as? UIImage).flatMap { ViewController.webDataURL(for: $0) }
+            DispatchQueue.main.async {
+                self.sendImageToWeb(dataURL)
+                completion?(nil)
+            }
+        }
     }
 }
 

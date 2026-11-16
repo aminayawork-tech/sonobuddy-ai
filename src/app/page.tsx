@@ -72,6 +72,10 @@ export default function HomePage() {
   const { user, profile } = useAuth();
   const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
   const [totalScans, setTotalScans] = useState<number | null>(null);
+  // Uses the device's clock — computing it during server rendering gave the server's time of day.
+  const [hello, setHello] = useState("");
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setHello(greeting()), []);
   const [thumbs, setThumbs] = useState<Record<string, StoredScanImage>>({});
 
   useEffect(() => {
@@ -105,8 +109,8 @@ export default function HomePage() {
       <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
         {/* ── Greeting ─────────────────────────────────────────── */}
         <div>
-          <p suppressHydrationWarning className="text-xs font-bold uppercase tracking-widest" style={{ color: "#7c3aed" }}>
-            {greeting()}
+          <p className="h-4 text-xs font-bold uppercase tracking-widest" style={{ color: "#7c3aed" }}>
+            {hello}
           </p>
           <h1 className="mt-1 text-[26px] font-extrabold leading-tight tracking-tight" style={{ color: "#0f172a" }}>
             Welcome back{firstName ? `, ${firstName}` : ""}
