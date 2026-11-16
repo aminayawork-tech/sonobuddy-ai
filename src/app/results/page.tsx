@@ -318,11 +318,11 @@ function ResultsContent() {
               <div className="absolute inset-0 pointer-events-none">
                 {analysis.labels.map((label) => (
                   <div key={label.id} className="absolute"
-                    style={{ left: `${label.x}%`, top: `${label.y}%`, transform: "translate(-50%,-50%)" }}>
-                    {/* Dot marker */}
-                    <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white"
+                    style={{ left: `${label.x}%`, top: `${label.y}%`, transform: "translateX(-50%)" }}>
+                    {/* Dot marker sits on the point; the name hangs just below it */}
+                    <div className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-white"
                       style={{ background: label.color }} />
-                    <div className="rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap shadow-lg mt-3"
+                    <div className="rounded-md px-2 py-1 text-xs font-bold whitespace-nowrap shadow-lg mt-2.5"
                       style={{ background: "rgba(0,0,0,0.80)", border: `1.5px solid ${label.color}`, color: label.color }}>
                       {label.name}
                     </div>
