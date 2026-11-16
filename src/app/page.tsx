@@ -19,6 +19,7 @@ import { FREE_SCAN_LIMIT } from "@/lib/plans";
 import { PROTOCOLS, CATEGORY_PILL } from "@/lib/protocols";
 import { CATEGORY_ICON } from "@/lib/categoryIcons";
 import { OPEN_ONBOARDING_EVENT } from "@/lib/onboarding";
+import { getScanImages, type StoredScanImage } from "@/lib/scanImages";
 
 const DEFAULT_QUICK_START = ["efast", "cardiac-plax", "ob-first-trimester", "renal", "dvt"];
 
@@ -71,6 +72,7 @@ export default function HomePage() {
   const { user, profile } = useAuth();
   const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
   const [totalScans, setTotalScans] = useState<number | null>(null);
+  const [thumbs, setThumbs] = useState<Record<string, StoredScanImage>>({});
 
   useEffect(() => {
     if (!user) { setRecentScans([]); setTotalScans(null); return; }
@@ -80,7 +82,11 @@ export default function HomePage() {
       .select("id, created_at, protocol_id, protocol_name, alert_level")
       .order("created_at", { ascending: false })
       .limit(3)
-      .then(({ data }) => setRecentScans((data as RecentScan[]) ?? []));
+      .then(({ data }) => {
+        const rows = (data as RecentScan[]) ?? [];
+        setRecentScans(rows);
+        getScanImages(rows.map((r) => r.id)).then(setThumbs);
+      });
     supabase
       .from("scan_history")
       .select("id", { count: "exact", head: true })
@@ -256,9 +262,14 @@ export default function HomePage() {
                     className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-slate-50"
                     style={i > 0 ? { borderTop: "1px solid #f1f5f9" } : undefined}
                   >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
-                      <Icon size={16} style={{ color: pill.text }} />
-                    </span>
+                    {thumbs[scan.id] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={thumbs[scan.id].dataUrl} alt="" className="h-9 w-9 shrink-0 rounded-xl object-cover" style={{ background: "#000" }} />
+                    ) : (
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
+                        <Icon size={16} style={{ color: pill.text }} />
+                      </span>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="truncate text-sm font-semibold" style={{ color: "#0f172a" }}>{scan.protocol_name}</p>
                       <p className="text-xs" style={{ color: "#94a3b8" }}>{relativeDate(scan.created_at)}</p>

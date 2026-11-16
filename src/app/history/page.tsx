@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info } from "lucide-react";
+import { Clock, ChevronDown, ChevronUp, Trash2, AlertTriangle, CheckCircle, Info, X } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import ProBanner from "@/components/ProBanner";
+import { PROTOCOLS, CATEGORY_PILL } from "@/lib/protocols";
+import { CATEGORY_ICON } from "@/lib/categoryIcons";
+import { deleteScanImage, getScanImages, type StoredScanImage } from "@/lib/scanImages";
 
 interface ScanRecord {
   id: string;
@@ -43,10 +46,63 @@ function relativeDate(iso: string) {
   return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
-function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }) {
+// Image with the AI's structure labels drawn at their approximate positions.
+function LabeledImage({ image, className }: { image: StoredScanImage; className?: string }) {
+  return (
+    <div className={`relative ${className ?? ""}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={image.dataUrl} alt="Saved ultrasound" className="block w-full object-contain" />
+      {image.labels.map((l) => (
+        <span key={l.name} className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white"
+          style={{ left: `${l.x}%`, top: `${l.y}%`, background: `${l.color}dd`, boxShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>
+          {l.name}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function ImageViewer({ image, title, onClose }: { image: StoredScanImage; title: string; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[150] flex flex-col" style={{ background: "#000" }} onClick={onClose}>
+      <div className="flex items-center justify-between px-4 pb-3" style={{ paddingTop: "calc(env(safe-area-inset-top) + 12px)" }}>
+        <p className="truncate text-sm font-semibold text-white">{title}</p>
+        <button onClick={onClose} aria-label="Close" className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.12)" }}>
+          <X size={18} className="text-white" />
+        </button>
+      </div>
+      <div className="flex flex-1 items-center justify-center px-2" onClick={(e) => e.stopPropagation()}>
+        <LabeledImage image={image} className="w-full max-w-2xl" />
+      </div>
+      <p className="px-6 pt-3 text-center text-[11px]" style={{ color: "#a1a1aa", paddingBottom: "calc(env(safe-area-inset-bottom) + 16px)" }}>
+        Label positions are approximate. Stored only on this device.
+      </p>
+    </div>
+  );
+}
+
+function ScanThumb({ scan, image }: { scan: ScanRecord; image?: StoredScanImage }) {
+  if (image) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={image.dataUrl} alt="" className="h-12 w-12 flex-shrink-0 rounded-xl object-cover" style={{ background: "#000" }} />
+    );
+  }
+  const proto = PROTOCOLS.find((p) => p.id === scan.protocol_id);
+  const pill = proto ? CATEGORY_PILL[proto.category] : { bg: "#f5f3ff", text: "#7c3aed" };
+  const Icon = proto ? CATEGORY_ICON[proto.category] : Clock;
+  return (
+    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
+      <Icon size={20} style={{ color: pill.text }} />
+    </span>
+  );
+}
+
+function ScanCard({ scan, image, onDelete }: { scan: ScanRecord; image?: StoredScanImage; onDelete: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
+  const [viewing, setViewing] = useState(false);
   const touchStartX = useRef(0);
   const alert = ALERT_STYLES[scan.alert_level] ?? ALERT_STYLES.none;
   const DELETE_WIDTH = 80;
@@ -55,6 +111,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
     setDeleting(true);
     const supabase = createClient();
     await supabase.from("scan_history").delete().eq("id", scan.id);
+    await deleteScanImage(scan.id);
     onDelete();
   }
 
@@ -76,6 +133,8 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
   }
 
   return (
+    <>
+    {viewing && image && <ImageViewer image={image} title={scan.protocol_name} onClose={() => setViewing(false)} />}
     <div className="relative rounded-2xl overflow-hidden" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
       {/* Swipe-to-delete background button */}
       <div
@@ -105,9 +164,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
           className="flex items-center gap-3 px-4 py-3.5 cursor-pointer"
           onClick={() => { setSwipeOffset(0); setExpanded((v) => !v); }}
         >
-          {scan.protocol_icon && (
-            <span className="text-2xl flex-shrink-0">{scan.protocol_icon}</span>
-          )}
+          <ScanThumb scan={scan} image={image} />
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-sm truncate" style={{ color: "#1e293b" }}>{scan.protocol_name}</p>
             <p className="text-xs mt-0.5" style={{ color: "#94a3b8" }}>{relativeDate(scan.created_at)}</p>
@@ -133,6 +190,14 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
         {/* Expanded detail */}
         {expanded && (
           <div style={{ borderTop: "1px solid #f1f5f9" }}>
+            {image && (
+              <button onClick={() => setViewing(true)} className="block w-full text-left" style={{ background: "#000" }}>
+                <LabeledImage image={image} />
+                <span className="block px-4 py-1.5 text-[11px]" style={{ background: "#0b0b0b", color: "#a1a1aa" }}>
+                  Tap to enlarge · labels are approximate
+                </span>
+              </button>
+            )}
             {scan.summary && (
               <div className="px-4 py-3" style={{ background: "#f8fafc" }}>
                 <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#94a3b8" }}>AI Summary</p>
@@ -204,6 +269,7 @@ function ScanCard({ scan, onDelete }: { scan: ScanRecord; onDelete: () => void }
         )}
       </div>
     </div>
+    </>
   );
 }
 
@@ -211,6 +277,7 @@ export default function HistoryPage() {
   const { user, loading } = useAuth();
   const [scans, setScans] = useState<ScanRecord[]>([]);
   const [fetching, setFetching] = useState(true);
+  const [images, setImages] = useState<Record<string, StoredScanImage>>({});
 
   useEffect(() => {
     if (!user) { setFetching(false); return; }
@@ -221,8 +288,10 @@ export default function HistoryPage() {
       .order("created_at", { ascending: false })
       .limit(50)
       .then(({ data }) => {
-        setScans((data as ScanRecord[]) ?? []);
+        const rows = (data as ScanRecord[]) ?? [];
+        setScans(rows);
         setFetching(false);
+        getScanImages(rows.map((r) => r.id)).then(setImages);
       });
   }, [user]);
 
@@ -254,7 +323,7 @@ export default function HistoryPage() {
         <div className="rounded-xl px-4 py-3 mb-5 flex items-start gap-2" style={{ background: "#f5f3ff", border: "1px solid #ddd6fe" }}>
           <CheckCircle size={15} color="#7c3aed" className="mt-0.5 flex-shrink-0" />
           <p className="text-xs" style={{ color: "#6d28d9" }}>
-            <strong>Privacy-first:</strong> Only AI analysis text is saved — no ultrasound images, no patient name or ID.
+            <strong>Privacy-first:</strong> Your AI study notes sync to your account. Scan images stay on this device only — never uploaded or stored on our servers.
           </p>
         </div>
 
@@ -279,6 +348,7 @@ export default function HistoryPage() {
               <ScanCard
                 key={scan.id}
                 scan={scan}
+                image={images[scan.id]}
                 onDelete={() => setScans((prev) => prev.filter((s) => s.id !== scan.id))}
               />
             ))}

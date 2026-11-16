@@ -11,7 +11,7 @@ export default function PrivacyPage() {
     <div className="min-h-screen pb-24 md:pb-8" style={{ background: "#f8fafc" }}>
       <div className="mx-auto max-w-2xl px-5 pt-8 pb-8">
         <h1 className="mb-1 text-3xl font-extrabold" style={{ color: "#1a2235" }}>Privacy Policy</h1>
-        <p className="mb-8 text-sm" style={{ color: "#94a3b8" }}>Last updated: May 2025</p>
+        <p className="mb-8 text-sm" style={{ color: "#94a3b8" }}>Last updated: November 2026</p>
 
         <Section title="1. Introduction">
           SonoBuddy AI ("we," "us," or "our") operates the SonoBuddy AI application and website at sonobuddyai.com. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. By using SonoBuddy AI, you agree to the terms of this policy.
@@ -66,6 +66,9 @@ export default function PrivacyPage() {
 
         <Section title="10. Your Rights">
           Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>.
+          <span id="scan-images" className="mt-3 block">
+            <strong>Scan images:</strong> images you analyze are sent to our AI provider to generate the study walkthrough and are not stored on our servers. If &ldquo;Keep scan images on this device&rdquo; is on (Account page), a redacted, reduced-size copy is saved only in the app&apos;s local storage on your device so you can view it in History. You can turn this off or remove saved images at any time, and deleting the app removes them.
+          </span>
           <span id="delete-account" className="mt-3 block">
             <strong>Deleting your account:</strong> in the app, open the menu (☰) on the Home screen, tap <strong>Account</strong>, then <strong>Delete account</strong> at the bottom. This immediately and permanently deletes your account, profile, and all saved scan history. You can also email <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a> from your account email and we will delete it within 30 days. App Store subscriptions must be canceled separately in your Apple ID settings.
           </span>

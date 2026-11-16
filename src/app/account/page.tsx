@@ -1,15 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CreditCard, Mail, Trash2, UserRound } from "lucide-react";
+import { ArrowLeft, CreditCard, ImageIcon, Mail, Trash2, UserRound } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
+import { clearScanImages, countScanImages, keepImagesEnabled, setKeepImagesEnabled } from "@/lib/scanImages";
 
 export default function AccountPage() {
   const { user, profile, signOut } = useAuth();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [keepImages, setKeepImages] = useState(true);
+  const [imageCount, setImageCount] = useState(0);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setKeepImages(keepImagesEnabled());
+    countScanImages().then(setImageCount);
+  }, []);
+
+  function toggleKeepImages() {
+    const next = !keepImages;
+    setKeepImages(next);
+    setKeepImagesEnabled(next);
+  }
+
+  async function handleClearImages() {
+    await clearScanImages();
+    setImageCount(0);
+  }
 
   // Required by App Store 5.1.1(v) / Google Play: in-app account deletion.
   async function handleDeleteAccount() {
@@ -22,6 +42,7 @@ export default function AccountPage() {
       setDeleting(false);
       return;
     }
+    await clearScanImages();
     await signOut();
     window.location.href = "/";
   }
@@ -64,6 +85,29 @@ export default function AccountPage() {
         <p className="mt-4 px-1 text-xs" style={{ color: "#94a3b8" }}>
           Subscriptions are managed in your Apple ID settings.
         </p>
+
+        <p className="mt-7 mb-2 px-1 text-xs font-semibold tracking-widest" style={{ color: "#94a3b8" }}>SCAN IMAGES</p>
+        <div className="overflow-hidden rounded-2xl" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+          <button onClick={toggleKeepImages} className="flex w-full items-center gap-3.5 px-4 py-4 text-left">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
+              <ImageIcon size={17} style={{ color: "#7c3aed" }} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-semibold" style={{ color: "#0f172a" }}>Keep scan images on this device</span>
+              <span className="block text-xs" style={{ color: "#94a3b8" }}>Shown in History. Never uploaded to our servers.</span>
+            </span>
+            <span role="switch" aria-checked={keepImages} className="relative h-7 w-12 shrink-0 rounded-full transition-colors"
+              style={{ background: keepImages ? "#7c3aed" : "#cbd5e1" }}>
+              <span className="absolute top-0.5 h-6 w-6 rounded-full bg-white shadow transition-all" style={{ left: keepImages ? 22 : 2 }} />
+            </span>
+          </button>
+          {imageCount > 0 && (
+            <button onClick={handleClearImages} className="w-full px-4 py-3.5 text-left text-sm font-semibold"
+              style={{ borderTop: "1px solid #f1f5f9", color: "#7c3aed" }}>
+              Remove {imageCount} saved image{imageCount === 1 ? "" : "s"} from this device
+            </button>
+          )}
+        </div>
 
         <button onClick={() => setConfirmDelete(true)}
           className="mx-auto mt-16 block text-xs underline" style={{ color: "#94a3b8" }}>

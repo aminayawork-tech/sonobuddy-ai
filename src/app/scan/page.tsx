@@ -21,6 +21,7 @@ import DisclaimerBanner from "@/components/DisclaimerBanner";
 import AuthModal from "@/components/AuthModal";
 import UpgradeModal from "@/components/UpgradeModal";
 import ProBanner from "@/components/ProBanner";
+import { saveScanImage } from "@/lib/scanImages";
 import { useAuth } from "@/components/AuthProvider";
 import { PROTOCOLS, getProtocolById } from "@/lib/protocols";
 import { FREE_SCAN_LIMIT } from "@/lib/plans";
@@ -332,16 +333,19 @@ function ScanContent() {
       if (compressedDataUrl) sessionStorage.setItem("lastImage", compressedDataUrl);
       else sessionStorage.removeItem("lastImage");
 
-      // Fire-and-forget: save AI result to history (no image, no PHI).
+      // Fire-and-forget: save AI result to history (text only — no image).
       // keepalive keeps the request alive through the router.push() below —
       // without it, some browsers can drop an in-flight fetch mid-navigation.
+      // The redacted image is kept on this device only, keyed by the new row id.
       fetch("/api/scans/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(analysis),
         keepalive: true,
       }).then(async (res) => {
-        if (!res.ok) console.error("[scans/save] failed:", res.status, await res.text());
+        if (!res.ok) { console.error("[scans/save] failed:", res.status, await res.text()); return; }
+        const { id } = await res.json().catch(() => ({}));
+        if (id && compressedDataUrl) await saveScanImage(id, compressedDataUrl, analysis.labels ?? []);
       }).catch((err) => console.error("[scans/save] network error:", err));
 
       refreshProfile();
