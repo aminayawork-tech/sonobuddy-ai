@@ -135,7 +135,8 @@ Where to find things:
     yearly auto-renewable subscriptions via Apple In-App Purchase, with
     Restore Purchases, Terms of Use and Privacy Policy links on the same
     screen.
-  • Account deletion: Home → menu (☰, top right) → Delete Account.
+  • Account deletion: Home → menu (☰, top right) → Account →
+    "Delete account" at the bottom of the page.
     Deletes the account, profile and all scan history immediately.
 
 

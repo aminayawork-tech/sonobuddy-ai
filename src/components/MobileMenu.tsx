@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type ReactNode, type ElementType } from "react";
+import type { ReactNode, ElementType } from "react";
 import Link from "next/link";
-import { X, LogIn, Trash2, CreditCard, Shield, FileText, ChevronRight, Upload, Zap, ClipboardList, Camera } from "lucide-react";
+import { X, LogIn, UserRound, CreditCard, Shield, FileText, ChevronRight, Upload, Zap, ClipboardList, Camera } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import ProBanner from "@/components/ProBanner";
 
@@ -47,24 +47,6 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
     window.location.href = "https://apps.apple.com/account/subscriptions";
   }
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-
-  async function handleDeleteAccount() {
-    setDeleting(true);
-    setDeleteError(null);
-    const res = await fetch("/api/account/delete", { method: "POST" });
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setDeleteError(body.error ?? "Could not delete account. Please try again.");
-      setDeleting(false);
-      return;
-    }
-    await signOut();
-    window.location.href = "/";
-  }
-
   async function handleSignOut() {
     await signOut();
     onClose();
@@ -89,10 +71,9 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
         <MenuSection title="ACCOUNT">
           {user ? (
             <>
-              <MenuItem icon={LogIn} label="Sign Out" sublabel={user.email ?? undefined}
-                onClick={handleSignOut} />
-              <MenuItem icon={Trash2} label="Delete Account" sublabel="Permanently remove your account and history"
-                iconColor="#dc2626" labelColor="#dc2626" onClick={() => setConfirmDelete(true)} />
+              <MenuItem icon={UserRound} label="Account" sublabel={user.email ?? undefined}
+                href="/account" onClose={onClose} />
+              <MenuItem icon={LogIn} label="Sign Out" onClick={handleSignOut} />
             </>
           ) : (
             <MenuItem icon={LogIn} label="Sign In" iconColor="#7c3aed" labelColor="#7c3aed"
@@ -151,33 +132,6 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
         </MenuSection>
 
       </div>
-
-      {confirmDelete && (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center px-6" style={{ background: "rgba(0,0,0,0.5)" }}>
-          <div className="w-full max-w-sm rounded-2xl p-6" style={{ background: "#ffffff" }}>
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "#fef2f2" }}>
-              <Trash2 size={20} style={{ color: "#dc2626" }} />
-            </div>
-            <h2 className="text-center text-lg font-bold" style={{ color: "#0f172a" }}>Delete your account?</h2>
-            <p className="mt-2 text-center text-sm" style={{ color: "#5a6a85" }}>
-              This permanently deletes your account and all scan history. It can&apos;t be undone.
-              An active App Store subscription must be canceled separately in your Apple ID settings.
-            </p>
-            {deleteError && (
-              <p className="mt-3 rounded-lg px-3 py-2 text-xs" style={{ background: "#fef2f2", color: "#dc2626" }}>{deleteError}</p>
-            )}
-            <button onClick={handleDeleteAccount} disabled={deleting}
-              className="mt-5 w-full rounded-xl py-3 text-sm font-bold text-white disabled:opacity-60"
-              style={{ background: "#dc2626" }}>
-              {deleting ? "Deleting…" : "Delete Account"}
-            </button>
-            <button onClick={() => setConfirmDelete(false)} disabled={deleting}
-              className="mt-2 w-full rounded-xl py-3 text-sm font-semibold" style={{ color: "#5a6a85" }}>
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Version footer */}
       <div className="py-5 text-center shrink-0">
