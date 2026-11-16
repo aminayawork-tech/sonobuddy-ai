@@ -58,7 +58,7 @@ export const PROTOCOLS: Protocol[] = [
       "Pelvis: probe suprapubic, marker toward head (sagittal), then rotate 90° (transverse). Look for fluid posterior to bladder/uterus.",
       "Subxiphoid cardiac: flat probe angle under xiphoid, marker to patient's right. Look for pericardial effusion and gross cardiac function.",
       "Bilateral lung bases: probe at 2nd–3rd ICS, mid-clavicular line, marker toward head. Confirm lung sliding (rules out pneumothorax).",
-      "Document each view. A positive eFAST (free fluid or absent sliding) warrants immediate surgical or clinical escalation.",
+      "Document each view. In practice, a positive eFAST (free fluid or absent lung sliding) is treated as an urgent finding — know what each positive view looks like.",
     ],
   },
 

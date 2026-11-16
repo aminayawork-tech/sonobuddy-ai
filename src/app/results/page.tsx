@@ -33,11 +33,11 @@ const ALERT_CONFIG: Record<string, {
   border: string; bg: string; labelBg: string; labelText: string;
   icon: React.ElementType; iconColor: string; label: string;
 }> = {
-  critical: { border: "#fca5a5", bg: "#fef2f2", labelBg: "#fee2e2", labelText: "#dc2626", icon: XCircle, iconColor: "#dc2626", label: "CRITICAL FINDING" },
-  high:     { border: "#fdba74", bg: "#fff7ed", labelBg: "#fed7aa", labelText: "#ea580c", icon: AlertTriangle, iconColor: "#ea580c", label: "SIGNIFICANT FINDING" },
-  moderate: { border: "#fcd34d", bg: "#fefce8", labelBg: "#fef9c3", labelText: "#ca8a04", icon: AlertTriangle, iconColor: "#ca8a04", label: "NOTABLE FINDING" },
+  critical: { border: "#fca5a5", bg: "#fef2f2", labelBg: "#fee2e2", labelText: "#dc2626", icon: XCircle, iconColor: "#dc2626", label: "KEY STUDY FINDING" },
+  high:     { border: "#fdba74", bg: "#fff7ed", labelBg: "#fed7aa", labelText: "#ea580c", icon: AlertTriangle, iconColor: "#ea580c", label: "IMPORTANT STUDY POINT" },
+  moderate: { border: "#fcd34d", bg: "#fefce8", labelBg: "#fef9c3", labelText: "#ca8a04", icon: AlertTriangle, iconColor: "#ca8a04", label: "STUDY POINT" },
   low:      { border: "#c4b5fd", bg: "#f5f3ff", labelBg: "#ede9fe", labelText: "#7c3aed", icon: Info, iconColor: "#7c3aed", label: "NOTE" },
-  none:     { border: "#6ee7b7", bg: "#f0fdf4", labelBg: "#d1fae5", labelText: "#059669", icon: CheckCircle, iconColor: "#059669", label: "NORMAL" },
+  none:     { border: "#6ee7b7", bg: "#f0fdf4", labelBg: "#d1fae5", labelText: "#059669", icon: CheckCircle, iconColor: "#059669", label: "TYPICAL APPEARANCE" },
 };
 
 const FINDING_STYLES: Record<string, { bg: string; border: string; label: string; value: string }> = {
@@ -423,7 +423,7 @@ function ResultsContent() {
 
         {/* Recommendations */}
         <Card className="mb-5">
-          <h2 className="mb-3 font-semibold" style={{ color: "#1a2235" }}>Recommendations</h2>
+          <h2 className="mb-3 font-semibold" style={{ color: "#1a2235" }}>Study Tips</h2>
           <ul className="space-y-2">
             {analysis.recommendations.map((rec, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: "#5a6a85" }}>
@@ -765,7 +765,7 @@ function ResultsContent() {
             style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
             <h3 className="mb-2 font-bold" style={{ color: "#1a2235" }}>Export Report</h3>
             <p className="mb-4 text-sm" style={{ color: "#5a6a85" }}>
-              Your PDF will include the annotated image, all findings, measurements, and the full clinical disclaimer.
+              Your PDF will include the annotated image, all findings, measurements, and the full educational disclaimer.
             </p>
             <div className="mb-4 flex items-start gap-2 rounded-xl border p-3 text-xs"
               style={{ borderColor: "#fcd34d", background: "#fefce8", color: "#92400e" }}>

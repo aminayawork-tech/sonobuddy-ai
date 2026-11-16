@@ -82,7 +82,7 @@ IMPORTANT: You are not FDA-cleared and do not provide medical advice, diagnosis,
 - Anomalies to detect: ${protocol.anomaliesDetected.join(", ")}
 - Common pitfalls: ${protocol.commonPitfalls.join(", ")}
 
-${hasImage ? "Analyze the provided ultrasound image carefully." : "No image was provided — generate a realistic normal-variant example analysis for this protocol for demonstration purposes."}
+${hasImage ? "Analyze the provided ultrasound image carefully." : "No image was provided — generate a realistic example teaching walkthrough of a typical (normal-variant) image for this protocol, for demonstration purposes."}
 
 Respond ONLY with a raw JSON object (no markdown, no backticks) in this exact shape:
 {
@@ -93,15 +93,15 @@ Respond ONLY with a raw JSON object (no markdown, no backticks) in this exact sh
   "imageQualityNote": "<1-2 sentence note on image quality, depth, gain, or acoustic windows>",
   "confidence": <integer 50-99>,
   "alertLevel": "<none|low|moderate|high|critical>",
-  "alertMessage": "<if alertLevel is not none: concise urgent clinical message, else omit this key>",
+  "alertMessage": "<if alertLevel is not none: one short study point starting with \"Study point:\" that names what is worth noticing, else omit this key>",
   "findings": [
     { "label": "<structure name>", "value": "<finding description>", "severity": "<normal|info|warning|critical>" }
   ],
   "measurements": [
     { "name": "<measurement name>", "value": "<value with unit>", "reference": "<normal range>", "status": "<normal|borderline|abnormal>" }
   ],
-  "summary": "<2-4 sentence clinical summary of key findings>",
-  "recommendations": ["<actionable recommendation>"],
+  "summary": "<2-4 sentence educational summary: what is visible and why it matters for learning>",
+  "recommendations": ["<study or scanning-technique tip>"],
   "nextViews": ["<next view to obtain>"],
   "labels": [
     { "id": "<short-id>", "name": "<structure label>", "x": <0-100>, "y": <0-100>, "color": "<hex color>" }
@@ -111,13 +111,14 @@ Respond ONLY with a raw JSON object (no markdown, no backticks) in this exact sh
 Rules:
 - findings: 3-6 items covering all major structures visible
 - measurements: 1-6 relevant measurements for this protocol
-- recommendations: 2-4 practical next steps
+- recommendations: 2-4 study or scanning-technique tips (which view to compare, how to optimize the image, what landmark to check). NEVER give treatment, management, referral, lab, medication or "seek care" advice.
 - nextViews: 2-3 views to obtain next
 - labels: 3-6 anatomical labels (x=0 left, x=100 right, y=0 top, y=100 bottom)
   CRITICAL: label names MUST be specific anatomical terms — e.g. "Gallbladder", "Liver", "Common Bile Duct", "Kidney", "Aorta", "IVC", "Bladder", "Uterus" etc.
   NEVER use generic names like "Structure 1", "Structure 2", "Region A". Always name the actual anatomy you see.
 - Label colors: normal structures #6ee7b7, abnormal #ef4444, info #a78bfa, uncertain #fbbf24
-- alertLevel: none=no abnormality, low=minor, moderate=clinically relevant, high=urgent, critical=immediate action`;
+- alertLevel (how important the teaching point is): none=typical appearance, low=a detail worth noticing, moderate=a notable finding to study, high=a significant classic finding, critical=a major classic finding. Phrase every level educationally.
+- Tone: write like an instructor explaining an image to a student. Describe appearances ("this pattern is typically seen with…", "appearance consistent with…") rather than stating diagnoses about a real patient, and never tell the reader to take any action regarding a patient.`;
 
     const messageContent: Anthropic.MessageParam["content"] = hasImage
       ? [
