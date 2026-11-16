@@ -61,6 +61,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UIDocumentInteract
     func initWebView() {
         SonoPilot.webView = createWebView(container: webviewView, WKSMH: self, WKND: self, NSO: self, VC: self)
         webviewView.addSubview(SonoPilot.webView);
+        SonoPilot.webView.hideInputAccessoryBar()
         
         SonoPilot.webView.uiDelegate = self;
         

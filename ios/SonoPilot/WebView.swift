@@ -441,3 +441,39 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         filePickerCompletion = nil
     }
 }
+
+// MARK: - Hide the keyboard's form accessory bar (the ⌃ ⌄ ✓ toolbar)
+//
+// WKWebView shows a "previous / next / done" bar above the keyboard for web
+// inputs, which overlaps our chat input. Swap the web content view's class for
+// a subclass whose inputAccessoryView is nil (same approach as Capacitor's and
+// Cordova's keyboard plugins).
+private final class NoInputAccessoryHelper: NSObject {
+    @objc var inputAccessoryView: AnyObject? { return nil }
+}
+
+extension WKWebView {
+    func hideInputAccessoryBar() {
+        guard let contentView = scrollView.subviews.first(where: {
+            String(describing: type(of: $0)).hasPrefix("WKContent")
+        }) else { return }
+
+        let subclassName = "\(type(of: contentView))_NoInputAccessory"
+        var subclass: AnyClass? = NSClassFromString(subclassName)
+        if subclass == nil, let baseClass = object_getClass(contentView) {
+            subclass = objc_allocateClassPair(baseClass, subclassName, 0)
+            guard let newClass = subclass,
+                  let method = class_getInstanceMethod(NoInputAccessoryHelper.self,
+                                                       #selector(getter: NoInputAccessoryHelper.inputAccessoryView))
+            else { return }
+            class_addMethod(newClass,
+                            #selector(getter: NoInputAccessoryHelper.inputAccessoryView),
+                            method_getImplementation(method),
+                            method_getTypeEncoding(method))
+            objc_registerClassPair(newClass)
+        }
+        if let newClass = subclass {
+            object_setClass(contentView, newClass)
+        }
+    }
+}

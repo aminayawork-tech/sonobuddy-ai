@@ -98,3 +98,22 @@ body {
     margin: 18mm 15mm;
   }
 }
+
+/* ── Keyboard-aware layout (see KeyboardWatcher) ───────────────────────── */
+/* Hide the bottom tab bar while typing so it never floats above the keyboard. */
+html[data-keyboard="open"] .bottom-nav { display: none; }
+
+/* Full-screen / centered overlays that contain text fields: size them to the
+   visible area so the focused field stays above the keyboard. */
+.keyboard-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--vv-top, 0px);
+  height: var(--app-height, 100dvh);
+  bottom: auto;
+}
+
+/* Bottom input bars: clear the home indicator, but not while the keyboard is up. */
+.input-bar { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+html[data-keyboard="open"] .input-bar { padding-bottom: 12px; }

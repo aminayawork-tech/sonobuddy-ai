@@ -3,6 +3,7 @@ import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import AuthGate from "@/components/AuthGate";
 import BottomNav from "@/components/BottomNav";
+import KeyboardWatcher from "@/components/KeyboardWatcher";
 import PwaInit from "@/components/PwaInit";
 import OnboardingFlow from "@/components/OnboardingFlow";
 
@@ -71,6 +72,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <PwaInit />
+          <KeyboardWatcher />
           <OnboardingFlow />
           <AuthGate>
             {children}

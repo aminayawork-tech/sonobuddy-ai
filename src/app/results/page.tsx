@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -156,9 +157,28 @@ function ResultsContent() {
   const [chatLoading, setChatLoading] = useState(false);
   const [chatExpanded, setChatExpanded] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const chatInputRef = useRef<HTMLInputElement>(null);
+  const chatExpandedEndRef = useRef<HTMLDivElement>(null);
   const chatExpandedInputRef = useRef<HTMLInputElement>(null);
   const chatSectionRef = useRef<HTMLDivElement>(null);
+
+  // Open the full-screen chat and focus its input inside the same tap so iOS
+  // shows the keyboard immediately.
+  function openChat() {
+    flushSync(() => setChatExpanded(true));
+    chatExpandedInputRef.current?.focus();
+  }
+
+  // Keep the page behind the full-screen chat from scrolling.
+  useEffect(() => {
+    if (!chatExpanded) return;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [chatExpanded]);
+
+  function scrollChatToEnd() {
+    chatEndRef.current?.parentElement?.scrollTo({ top: 1e6, behavior: "smooth" });
+    chatExpandedEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }
 
   async function sendChatMessage() {
     const question = chatInput.trim();
@@ -167,7 +187,7 @@ function ResultsContent() {
     const newHistory: ChatMessage[] = [...chatHistory, { role: "user", content: question }];
     setChatHistory(newHistory);
     setChatLoading(true);
-    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+    setTimeout(scrollChatToEnd, 50);
     try {
       const isFirst = chatHistory.length === 0;
       let imageBase64: string | null = null;
@@ -194,7 +214,7 @@ function ResultsContent() {
       setChatHistory([...newHistory, { role: "assistant", content: "Sorry, I couldn't connect. Please try again." }]);
     } finally {
       setChatLoading(false);
-      setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+      setTimeout(scrollChatToEnd, 50);
     }
   }
 
@@ -513,7 +533,7 @@ function ResultsContent() {
 
         {/* Follow-up chat — full-screen expanded modal */}
         {chatExpanded && (
-          <div className="fixed inset-0 z-50 flex flex-col" style={{ background: "#f8fafc" }}>
+          <div className="keyboard-overlay z-[120] flex flex-col" style={{ background: "#f8fafc" }}>
             {/* Header */}
             <div className="flex items-center gap-2.5 border-b px-4 py-3 shrink-0" style={{ borderColor: "#dde4ee", background: "#ffffff" }}>
               <MessageCircle size={16} style={{ color: "#7c3aed" }} />
@@ -527,7 +547,7 @@ function ResultsContent() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-3">
               {chatHistory.length === 0 && (
                 <div className="flex flex-wrap gap-2 pt-2">
                   {["What does this finding mean?", "Should I be concerned?", "What view should I get next?", "Explain the measurements"].map((q) => (
@@ -560,24 +580,27 @@ function ResultsContent() {
                   </div>
                 </div>
               )}
-              <div ref={chatEndRef} />
+              <div ref={chatExpandedEndRef} />
             </div>
 
-      {/* Input pinned at bottom — safe above keyboard and BottomNav */}
-            <div className="shrink-0 border-t px-4 py-3" style={{ borderColor: "#dde4ee", background: "#ffffff", paddingBottom: "max(env(safe-area-inset-bottom), 80px)" }}>
-              <div className="flex gap-2">
+            {/* Input pinned to the bottom of the visible area (above the keyboard) */}
+            <div className="input-bar shrink-0 border-t px-4 pt-3" style={{ borderColor: "#dde4ee", background: "#ffffff" }}>
+              <div className="flex items-center gap-2">
                 <input
                   ref={chatExpandedInputRef}
                   type="text"
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendChatMessage()}
+                  onFocus={() => setTimeout(() => chatExpandedEndRef.current?.scrollIntoView({ block: "end" }), 250)}
+                  enterKeyHint="send"
                   placeholder="Ask about findings, measurements…"
                   style={{ fontSize: "16px", borderColor: "#dde4ee", background: "#f8fafc", color: "#1a2235" }}
-                  className="flex-1 rounded-xl border px-4 py-3 outline-none transition-all"
+                  className="min-w-0 flex-1 rounded-full border px-4 py-3 outline-none transition-all focus:border-purple-400"
                 />
                 <button onClick={sendChatMessage} disabled={!chatInput.trim() || chatLoading}
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white transition-all hover:opacity-90 disabled:opacity-40"
+                  onMouseDown={(e) => e.preventDefault()}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white transition-all hover:opacity-90 disabled:opacity-40"
                   style={{ background: "#7c3aed" }}>
                   <Send size={16} />
                 </button>
@@ -644,7 +667,7 @@ function ResultsContent() {
                   "What view should I get next?",
                   "Explain the measurements",
                 ].map((q) => (
-                  <button key={q} onClick={() => setChatInput(q)}
+                  <button key={q} onClick={() => { setChatInput(q); openChat(); }}
                     className="rounded-full border px-3 py-1 text-xs font-medium transition-all hover:bg-purple-50"
                     style={{ borderColor: "#ddd6fe", color: "#7c3aed", background: "#f5f3ff" }}>
                     {q}
@@ -652,33 +675,23 @@ function ResultsContent() {
                 ))}
               </div>
             )}
-            <div className="flex gap-2">
-              <input
-                ref={chatInputRef}
-                type="text"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendChatMessage()}
-                onFocus={() => {
-                  setTimeout(() => chatSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 300);
-                }}
-                placeholder="Ask about findings, measurements, next steps..."
-                className="flex-1 rounded-xl border px-4 py-2.5 outline-none transition-all"
-                style={{ borderColor: "#dde4ee", background: "#f8fafc", color: "#1a2235", fontSize: "16px" }}
-              />
-              <button onClick={sendChatMessage} disabled={!chatInput.trim() || chatLoading}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white transition-all hover:opacity-90 disabled:opacity-40"
-                style={{ background: "#7c3aed" }}>
+            <button onClick={openChat}
+              className="flex w-full items-center gap-2 rounded-full border py-1.5 pl-4 pr-1.5 text-left transition-all hover:border-purple-300"
+              style={{ borderColor: "#dde4ee", background: "#f8fafc" }}>
+              <span className="flex-1 truncate text-[15px]" style={{ color: "#94a3b8" }}>
+                {chatInput || "Ask about findings, measurements, next steps..."}
+              </span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white" style={{ background: "#7c3aed" }}>
                 <Send size={15} />
-              </button>
-            </div>
+              </span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Report Error modal */}
       {showReportModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4"
+        <div className="keyboard-overlay z-[120] flex items-center justify-center overflow-y-auto px-4 py-6"
           style={{ background: "rgba(0,0,0,0.4)" }}>
           <div className="w-full max-w-sm rounded-2xl border p-6 shadow-xl"
             style={{ background: "#ffffff", borderColor: "#dde4ee" }}>

@@ -65,12 +65,12 @@ export default function AuthModal({ onClose, reason, initialMode = "signin" }: A
   return (
     /* Backdrop */
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      className="keyboard-overlay z-[120] flex items-center justify-center overflow-y-auto px-4 py-6"
       style={{ background: "rgba(0,0,0,0.45)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
 
       <div
-        className="relative w-full max-w-sm rounded-2xl border p-7 shadow-2xl"
+        className="relative m-auto w-full max-w-sm rounded-2xl border p-7 shadow-2xl"
         style={{ background: "#ffffff", borderColor: "#dde4ee" }}>
 
         {/* Close */}

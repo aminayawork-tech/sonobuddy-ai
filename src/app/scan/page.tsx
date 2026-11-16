@@ -66,7 +66,7 @@ function ProtocolSheet({
   return (
     /* Backdrop — mobile: align bottom; desktop: center */
     <div
-      className="fixed inset-0 z-[60] flex flex-col justify-end md:items-center md:justify-center md:px-4"
+      className="keyboard-overlay z-[120] flex flex-col justify-end md:items-center md:justify-center md:px-4"
       style={{ background: "rgba(0,0,0,0.45)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
 
@@ -77,7 +77,7 @@ function ProtocolSheet({
           md:rounded-2xl md:max-w-md"
         style={{
           background: "#ffffff",
-          maxHeight: "88vh",
+          maxHeight: "min(88vh, calc(var(--app-height, 100dvh) - 16px))",
           boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
           animation: "slideUp 0.22s cubic-bezier(0.32,0.72,0,1)",
         }}>
