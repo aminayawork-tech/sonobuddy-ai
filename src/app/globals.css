@@ -117,3 +117,10 @@ html[data-keyboard="open"] .bottom-nav { display: none; }
 /* Bottom input bars: clear the home indicator, but not while the keyboard is up. */
 .input-bar { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
 html[data-keyboard="open"] .input-bar { padding-bottom: 12px; }
+
+/* Onboarding step transition */
+@keyframes onb-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.onb-enter { animation: onb-enter 0.3s ease-out; }

@@ -18,8 +18,19 @@ import { createClient } from "@/lib/supabase/client";
 import { FREE_SCAN_LIMIT } from "@/lib/plans";
 import { PROTOCOLS, CATEGORY_PILL } from "@/lib/protocols";
 import { CATEGORY_ICON } from "@/lib/categoryIcons";
+import { OPEN_ONBOARDING_EVENT } from "@/lib/onboarding";
 
-const QUICK_START_IDS = ["efast", "cardiac-plax", "ob-first-trimester", "renal", "dvt"];
+const DEFAULT_QUICK_START = ["efast", "cardiac-plax", "ob-first-trimester", "renal", "dvt"];
+
+// Protocols from the learner's focus areas first (Basic before Advanced),
+// topped up with the defaults so the row is never short.
+function quickStartIds(focus: string[] | undefined) {
+  const rank = { Basic: 0, Intermediate: 1, Advanced: 2 } as const;
+  const picks = (focus ?? []).flatMap((c) =>
+    PROTOCOLS.filter((p) => p.category === c).sort((a, b) => rank[a.difficulty] - rank[b.difficulty]).slice(0, 2).map((p) => p.id),
+  );
+  return [...new Set([...picks, ...DEFAULT_QUICK_START])].slice(0, 6);
+}
 
 const ALERT_DOT: Record<string, string> = {
   critical: "#dc2626",
@@ -163,13 +174,15 @@ export default function HomePage() {
         {/* ── Quick start protocols ────────────────────────────── */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>Quick Start</h2>
+            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>
+              {profile?.focus_areas?.length ? "Recommended for you" : "Quick Start"}
+            </h2>
             <Link href="/protocols" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
               See all <ArrowRight size={12} />
             </Link>
           </div>
           <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
-            {QUICK_START_IDS.map((id) => {
+            {quickStartIds(profile?.focus_areas).map((id) => {
               const p = PROTOCOLS.find((x) => x.id === id);
               if (!p) return null;
               const pill = CATEGORY_PILL[p.category];
@@ -193,6 +206,24 @@ export default function HomePage() {
             })}
           </div>
         </section>
+
+        {/* Personalize prompt for people who skipped the questions */}
+        {profile && "onboarded_at" in profile && !profile.focus_areas?.length && (
+          <button
+            onClick={() => window.dispatchEvent(new Event(OPEN_ONBOARDING_EVENT))}
+            className="flex w-full items-center gap-3 rounded-2xl p-4 text-left transition-all active:scale-[0.99]"
+            style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
+              <Sparkles size={18} style={{ color: "#7c3aed" }} />
+            </span>
+            <span className="flex-1">
+              <span className="block text-sm font-bold" style={{ color: "#0f172a" }}>Personalize your Quick Start</span>
+              <span className="block text-xs" style={{ color: "#5a6a85" }}>Two quick questions about what you&apos;re studying</span>
+            </span>
+            <ChevronRight size={16} style={{ color: "#cbd5e1" }} />
+          </button>
+        )}
 
         {/* ── Recent activity ──────────────────────────────────── */}
         <section>

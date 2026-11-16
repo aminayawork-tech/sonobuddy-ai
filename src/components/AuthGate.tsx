@@ -7,6 +7,7 @@ import { CheckCircle, LogIn, Shield, UserPlus, Zap } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { supabaseConfigured } from "@/lib/supabase/client";
 import AuthModal from "@/components/AuthModal";
+import { OPEN_AUTH_EVENT } from "@/lib/onboarding";
 
 // Pages that must stay reachable without an account — legal pages Apple
 // requires to be viewable pre-login, and the auth flow's own callback routes.
@@ -24,6 +25,16 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signup");
   const [confirmed, setConfirmed] = useState(false);
+
+  // The onboarding's last step hands off to sign up / sign in here.
+  useEffect(() => {
+    function open(e: Event) {
+      setAuthMode((e as CustomEvent).detail === "signin" ? "signin" : "signup");
+      setAuthOpen(true);
+    }
+    window.addEventListener(OPEN_AUTH_EVENT, open);
+    return () => window.removeEventListener(OPEN_AUTH_EVENT, open);
+  }, []);
 
   // Arriving from a confirmation email in a browser that can't finish the
   // sign-in on its own: the email is verified, so go straight to Sign In.

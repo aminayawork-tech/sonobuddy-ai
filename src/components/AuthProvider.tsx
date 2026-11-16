@@ -19,6 +19,10 @@ export interface Profile {
   tier: "free" | "pro" | "clinic";
   scans_used_this_month: number;
   apple_original_transaction_id: string | null;
+  // Onboarding (migration 005) — undefined until that migration has been run.
+  role?: string | null;
+  focus_areas?: string[];
+  onboarded_at?: string | null;
 }
 
 interface AuthContextValue {
@@ -53,7 +57,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = useCallback(async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("id, email, full_name, tier, scans_used_this_month, apple_original_transaction_id")
+      // "*" so newer optional columns (e.g. onboarding) don't break older databases.
+      .select("*")
       .eq("id", uid)
       .single();
     if (data) setProfile(data as Profile);
