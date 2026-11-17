@@ -140,19 +140,22 @@ the email. Leave it on the **Free** plan so the reviewer can see the subscriptio
 
 ### App Privacy ("nutrition label")
 
-All data is **linked to the user** and **not used for tracking**:
+Answer **Yes, we collect data**. Every item has purpose **App Functionality** only and is
+**not used for tracking**:
 
-| Data type | Purpose |
+| Data type | Linked to user? |
 |---|---|
-| Contact Info → Email Address | App Functionality (account sign-in) |
-| Contact Info → Name | App Functionality (greeting) |
-| Identifiers → User ID | App Functionality (account) |
-| User Content → Other User Content | App Functionality (saved study notes / scan history text) |
-| Purchases → Purchase History | App Functionality (subscription status) |
+| Contact Info → Name | Yes |
+| Contact Info → Email Address | Yes |
+| User Content → Other User Content (study notes, chat questions) | Yes |
+| Identifiers → User ID | Yes |
+| Purchases → Purchase History | Yes |
+| User Content → Photos or Videos | **No** |
 
-**Photos: not collected.** Images are only processed to answer the request and aren't stored on our
-servers. Apple's definition of "collect" excludes data that is processed in real time and not kept.
-The app has no analytics, advertising or tracking SDKs.
+**Photos** are declared even though they aren't stored on our servers, because they are sent to the
+AI provider, which may keep API inputs briefly for abuse monitoring. They're sent without any
+account details, so they're "not linked". The app has no analytics, advertising or crash-reporting
+SDKs.
 
 ### Screenshots
 
