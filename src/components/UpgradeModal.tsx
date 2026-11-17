@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { PLANS, FREE_SCAN_LIMIT, YEARLY_SALE, planPrice, yearlySaleActive, type PlanKey } from "@/lib/plans";
 import { isAndroidApp } from "@/lib/platform";
+import type { PlayPlan } from "@/lib/googleBilling";
 
 interface UpgradeModalProps {
   onClose: () => void;
@@ -79,16 +80,34 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [planKey,  setPlanKey]  = useState<PlanKey>("pro_yearly");
   const [android,  setAndroid]  = useState(false);
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setAndroid(isAndroidApp()), []);
+  // Google Play prices (in the user's currency) once loaded on Android.
+  const [playPlans, setPlayPlans] = useState<Partial<Record<PlanKey, PlayPlan>> | null>(null);
+
+  useEffect(() => {
+    if (!isAndroidApp()) return;
+    setAndroid(true);
+    import("@/lib/googleBilling")
+      .then(({ loadPlayPlans }) => loadPlayPlans())
+      .then(setPlayPlans)
+      .catch((err) => {
+        console.error("[billing] loading plans failed", err);
+        setPlayPlans({});
+      });
+  }, []);
 
   const plan = PLANS[planKey];
-  const price = planPrice(planKey);
   const isYearly = planKey === "pro_yearly";
-  const onSale = yearlySaleActive();
-  const yearlyPrice = planPrice("pro_yearly");
-  const yearlyPerMonth = (dollars(yearlyPrice) / 12).toFixed(2);
-  const yearlySavings  = Math.floor((1 - dollars(yearlyPrice) / (dollars(MONTHLY.price) * 12)) * 100);
+  // Apple prices come from plans.ts (with the yearly sale); Google Play
+  // prices come from Play Console, so no sale is shown on Android.
+  const onSale = !android && yearlySaleActive();
+  const playPrice = (key: PlanKey) => playPlans?.[key]?.priceString ?? (playPlans ? "—" : "…");
+  const price = android ? playPrice(planKey) : planPrice(planKey);
+  const yearlyPrice = android ? playPrice("pro_yearly") : planPrice("pro_yearly");
+  const monthlyPrice = android ? playPrice("pro_monthly") : MONTHLY.price;
+  const yearlyNum = android ? playPlans?.pro_yearly?.price : dollars(yearlyPrice);
+  const monthlyNum = android ? playPlans?.pro_monthly?.price : dollars(MONTHLY.price);
+  const yearlySavings = yearlyNum && monthlyNum ? Math.floor((1 - yearlyNum / (monthlyNum * 12)) * 100) : 0;
+  const yearlyPerMonth = !android && yearlyNum ? `Just $${(yearlyNum / 12).toFixed(2)}/mo` : "12 months of Pro";
 
   // Shared by both a live purchase and a restore — both end with the native
   // side firing iap-purchase-complete/error once StoreKit resolves.
@@ -120,7 +139,46 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
     window.addEventListener("iap-purchase-error", onError);
   }
 
+  async function handleAndroidUpgrade() {
+    const playPlan = playPlans?.[planKey];
+    if (!playPlan) {
+      setErrorMsg("Subscriptions aren't available right now. Please check your connection and try again.");
+      return;
+    }
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const { buyPlayPlan } = await import("@/lib/googleBilling");
+      await buyPlayPlan(playPlan);
+      onClose();
+      window.location.reload();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      // Closing Google's payment sheet isn't an error worth showing.
+      if (!/cancel/i.test(msg)) setErrorMsg(msg);
+      setLoading(false);
+    }
+  }
+
+  async function handleAndroidRestore() {
+    setRestoring(true);
+    setErrorMsg(null);
+    try {
+      const { restorePlayPurchases } = await import("@/lib/googleBilling");
+      if (await restorePlayPurchases()) {
+        onClose();
+        window.location.reload();
+        return;
+      }
+      setErrorMsg("No active SonoBuddy AI subscription was found for this Google account.");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Restore failed. Please try again.");
+    }
+    setRestoring(false);
+  }
+
   function handleUpgrade() {
+    if (android) { void handleAndroidUpgrade(); return; }
     setLoading(true);
     setErrorMsg(null);
 
@@ -136,6 +194,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
   }
 
   function handleRestore() {
+    if (android) { void handleAndroidRestore(); return; }
     setRestoring(true);
     setErrorMsg(null);
 
@@ -220,21 +279,6 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
           ))}
         </div>
 
-        {android ? (
-          <div className="px-6 pt-6 pb-8 text-center">
-            <p className="text-sm font-semibold text-white">Pro is coming soon on Android.</p>
-            <p className="mt-1 text-xs" style={{ color: "#a1a1aa" }}>
-              Your free plan includes {FREE_SCAN_LIMIT} study sessions every month.
-            </p>
-            <button onClick={onClose}
-              className="mt-5 w-full rounded-2xl py-3.5 text-sm font-bold text-white"
-              style={{ background: "rgba(255,255,255,0.1)" }}>
-              Got it
-            </button>
-            <p className="mt-4 text-[11px]" style={{ color: "#71717a" }}>For educational use only. Not intended for diagnosis or clinical decisions.</p>
-          </div>
-        ) : (
-          <>
         {/* Plans */}
         <div className="mx-5 mt-6 space-y-3">
           <PlanOption
@@ -245,17 +289,17 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
             oldPrice={onSale ? YEARLY.price : undefined}
             period="year"
             note={onSale
-              ? `Just $${yearlyPerMonth}/mo · ${YEARLY_SALE.endsLabel}`
-              : `Just $${yearlyPerMonth}/mo, billed annually`}
+              ? `${yearlyPerMonth} · ${YEARLY_SALE.endsLabel}`
+              : `${yearlyPerMonth}, billed annually`}
             badge={onSale
               ? `${YEARLY_SALE.label} · SAVE ${yearlySavings}%`
-              : `BEST VALUE · SAVE ${yearlySavings}%`}
+              : yearlySavings > 0 ? `BEST VALUE · SAVE ${yearlySavings}%` : "BEST VALUE"}
           />
           <PlanOption
             selected={!isYearly}
             onSelect={() => setPlanKey("pro_monthly")}
             title="Monthly"
-            price={MONTHLY.price}
+            price={monthlyPrice}
             period="month"
             note="Billed monthly, cancel anytime"
           />
@@ -279,7 +323,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
               boxShadow: "0 8px 30px rgba(147,51,234,0.45)",
             }}>
             {loading && <Loader2 size={18} className="animate-spin" />}
-            {loading ? "Connecting to App Store…" : `Continue — ${price}/${plan.period}`}
+            {loading ? `Connecting to ${android ? "Google Play" : "App Store"}…` : `Continue — ${price}/${plan.period}`}
           </button>
         </div>
 
@@ -287,8 +331,9 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
         <div className="px-6 pt-4 pb-6 text-center text-[11px] leading-relaxed space-y-3" style={{ color: "#71717a" }}>
           <p>
             SonoBuddy AI {isYearly ? "Pro Yearly" : "Pro Monthly"} · {isYearly ? "1 year" : "1 month"} · {price}/{plan.period}.
-            Payment is charged to your Apple ID at confirmation. Subscription auto-renews unless canceled
-            at least 24 hours before the end of the current period. Manage or cancel in your App Store account settings.
+            {android
+              ? "Payment is charged to your Google Play account at confirmation. Subscription renews automatically unless canceled before the end of the current period. Manage or cancel anytime in Google Play → Payments & subscriptions."
+              : "Payment is charged to your Apple ID at confirmation. Subscription auto-renews unless canceled at least 24 hours before the end of the current period. Manage or cancel in your App Store account settings."}
           </p>
           <div className="flex items-center justify-center gap-3 text-xs font-medium" style={{ color: "#a1a1aa" }}>
             <button onClick={handleRestore} disabled={restoring || loading} className="underline disabled:opacity-60">
@@ -301,8 +346,6 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
           </div>
           <p>For educational use only. Not intended for diagnosis or clinical decisions.</p>
         </div>
-          </>
-        )}
       </div>
     </div>
   );

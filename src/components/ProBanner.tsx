@@ -38,21 +38,6 @@ export default function ProBanner({ compact = false }: { compact?: boolean }) {
 
   const left = Math.max(0, FREE_SCAN_LIMIT - profile.scans_used_this_month);
 
-  if (android) {
-    return (
-      <div className="flex items-center gap-3 rounded-2xl px-4 py-3"
-        style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
-        <span className="flex h-8 w-8 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
-          <Sparkles size={15} style={{ color: "#7c3aed" }} />
-        </span>
-        <p className="flex-1 text-sm font-semibold" style={{ color: "#0f172a" }}>
-          Free plan
-          <span className="ml-1.5 font-medium" style={{ color: "#5a6a85" }}>· {left} of {FREE_SCAN_LIMIT} sessions left this month</span>
-        </p>
-      </div>
-    );
-  }
-
   return (
     <>
       {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} limitReached={left === 0} />}
@@ -75,7 +60,7 @@ export default function ProBanner({ compact = false }: { compact?: boolean }) {
             Go <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg, #c4b5fd, #f0abfc)" }}>Pro</span>
           </span>
           <span className="block text-xs" style={{ color: "#c4b5fd" }}>
-            {yearlySaleActive()
+            {!android && yearlySaleActive()
               ? `Black Friday: Pro yearly ${YEARLY_SALE.price} · ${YEARLY_SALE.endsLabel}`
               : left === 0
                 ? "You're out of free sessions — unlock unlimited"

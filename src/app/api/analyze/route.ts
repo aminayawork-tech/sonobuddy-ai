@@ -29,6 +29,9 @@ export async function POST(req: NextRequest) {
     }
 
     userId = user.id;
+    // A lapsed Google Play subscription drops back to the free plan here.
+    const { refreshPlayEntitlement } = await import("@/lib/googlePlay");
+    await refreshPlayEntitlement(user.id);
     const service = createServiceClient();
     const { data: statusRaw, error: statusError } = await service.rpc(
       "check_scan_status",

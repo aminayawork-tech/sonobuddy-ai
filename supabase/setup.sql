@@ -1,7 +1,7 @@
 -- ============================================================
 -- SonoBuddy AI – complete database setup for a NEW Supabase project.
 -- Paste this whole file into: Supabase Dashboard → SQL Editor → Run.
--- It is the same as running migrations 001–005 in order.
+-- It is the same as running migrations 001–006 in order.
 -- ============================================================
 
 -- ============================================================
@@ -213,3 +213,13 @@ alter table public.profiles
 
 -- Users may edit their own onboarding answers (billing columns stay locked, see 004).
 grant update (role, focus_areas, onboarded_at) on public.profiles to authenticated;
+
+-- ============================================================
+-- Google Play subscriptions: the verified purchase token and when the
+-- current paid period ends (re-checked with Google after it passes).
+-- Written only by the server (service role); not user-editable (see 004).
+-- ============================================================
+
+alter table public.profiles
+  add column if not exists google_purchase_token text unique,
+  add column if not exists pro_expires_at        timestamptz;

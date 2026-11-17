@@ -178,7 +178,7 @@ See `store-assets/apple/`. Use the 6.3" set (1206 × 2622) for the "iPhone with 
 
 ### Full description (2805 / 4,000)
 
-This is the App Store text with the paid-plan section removed, because Pro isn't sold on Android yet.
+This is the App Store text with the Apple-specific subscription wording replaced by Google Play's.
 Google searches the full description, so it naturally repeats ultrasound, POCUS, sonography,
 anatomy and the protocol names.
 
@@ -213,8 +213,9 @@ PRIVACY BUILT IN
 • Images aren't stored on our servers; only your study notes sync to your account
 • Delete your account and data anytime from the app
 
-FREE TO USE
+FREE AND PRO
 Free accounts get 5 AI study sessions every month, with all 34 protocols.
+SonoBuddy AI Pro unlocks unlimited AI study sessions, monthly or yearly. Subscriptions are billed through Google Play, renew automatically, and can be canceled anytime in Google Play → Payments & subscriptions.
 
 MADE FOR LEARNERS
 Built for students in sonography (DMS) programs, medical students, residents and fellows, nurses, PAs and NPs adding ultrasound skills, and practicing sonographers cross-training into a new area.
@@ -232,6 +233,7 @@ Questions or feedback? Email hello@sonobuddy.com.
 Collected:
 - Email address, name and user IDs (account management)
 - App activity → Other user-generated content (study notes)
+- Financial info → Purchase history (Google Play subscription status)
 - Photos: **collected, processed ephemerally, not stored**. They are sent to our AI provider only to
   create the walkthrough; that's a service provider, so it isn't "shared".
 

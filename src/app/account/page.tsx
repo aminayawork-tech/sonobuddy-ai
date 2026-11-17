@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, CreditCard, ImageIcon, Mail, Trash2, UserRound } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { clearScanImages, countScanImages, keepImagesEnabled, setKeepImagesEnabled } from "@/lib/scanImages";
+import { isAndroidApp } from "@/lib/platform";
 
 export default function AccountPage() {
   const { user, profile, signOut } = useAuth();
@@ -13,10 +14,12 @@ export default function AccountPage() {
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [keepImages, setKeepImages] = useState(true);
   const [imageCount, setImageCount] = useState(0);
+  const [android, setAndroid] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setKeepImages(keepImagesEnabled());
+    setAndroid(isAndroidApp());
     countScanImages().then(setImageCount);
   }, []);
 
@@ -83,7 +86,9 @@ export default function AccountPage() {
         </div>
 
         <p className="mt-4 px-1 text-xs" style={{ color: "#94a3b8" }}>
-          Subscriptions are managed in your Apple ID settings.
+          {android
+            ? "Subscriptions are managed in Google Play → Payments & subscriptions."
+            : "Subscriptions are managed in your Apple ID settings."}
         </p>
 
         <p className="mt-7 mb-2 px-1 text-xs font-semibold tracking-widest" style={{ color: "#94a3b8" }}>SCAN IMAGES</p>

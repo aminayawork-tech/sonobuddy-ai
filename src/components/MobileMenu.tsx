@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, LogIn, UserRound, CreditCard, Shield, FileText, ChevronRight, Upload, Zap, ClipboardList, Camera } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import ProBanner from "@/components/ProBanner";
+import { isAndroidApp } from "@/lib/platform";
 
 interface Props {
   onSignIn: () => void;
@@ -42,9 +43,11 @@ export default function MobileMenu({ onSignIn, onClose }: Props) {
   const { user, profile, signOut } = useAuth();
 
   function handlePortal() {
-    // Subscriptions are managed through Apple, not a web billing portal.
+    // Subscriptions are managed by the store they were bought in.
     onClose();
-    window.location.href = "https://apps.apple.com/account/subscriptions";
+    window.location.href = isAndroidApp()
+      ? "https://play.google.com/store/account/subscriptions?package=app.sonobuddy.ai"
+      : "https://apps.apple.com/account/subscriptions";
   }
 
   async function handleSignOut() {
