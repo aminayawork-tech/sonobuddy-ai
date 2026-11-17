@@ -22,8 +22,7 @@ export const PLANS: Record<PlanKey, {
       "Full reference measurements",
       "AI chat",
       "PDF study export",
-      "PHI auto-redaction",
-      "Priority AI queue",
+      "Privacy redaction",
     ],
   },
   pro_yearly: {
@@ -38,8 +37,7 @@ export const PLANS: Record<PlanKey, {
       "Full reference measurements",
       "AI chat",
       "PDF study export",
-      "PHI auto-redaction",
-      "Priority AI queue",
+      "Privacy redaction",
     ],
   },
 };

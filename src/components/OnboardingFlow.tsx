@@ -424,7 +424,7 @@ export default function OnboardingFlow() {
             <Headline>Study without <Accent>limits.</Accent></Headline>
             <div className="mt-6 overflow-hidden rounded-[24px] p-5 text-white"
               style={{ background: "radial-gradient(140% 120% at 0% 0%, #4c1d95 0%, #1e1038 55%, #0b0718 100%)", boxShadow: "0 14px 34px -12px rgba(76,29,149,0.5)" }}>
-              {["Unlimited AI study sessions", "Unlimited follow-up questions", "PDF study export", "Priority AI queue"].map((f) => (
+              {["Unlimited AI study sessions", "All 34 protocols", "Follow-up questions on every scan", "PDF study export"].map((f) => (
                 <p key={f} className="flex items-center gap-2.5 py-1.5 text-[15px] font-semibold">
                   <Check size={16} style={{ color: "#c4b5fd" }} /> {f}
                 </p>

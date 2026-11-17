@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   BookOpen, Check, Crown, FileDown, Infinity as InfinityIcon, Loader2,
-  MessageSquare, Ruler, ShieldCheck, X, Zap,
+  MessageSquare, Ruler, ShieldCheck, X,
 } from "lucide-react";
 import { PLANS, FREE_SCAN_LIMIT, YEARLY_SALE, planPrice, yearlySaleActive, type PlanKey } from "@/lib/plans";
 import { isAndroidApp } from "@/lib/platform";
@@ -22,8 +22,7 @@ const FEATURES = [
   { icon: Ruler,          title: "Full reference measurements", sub: "Normal values for every structure" },
   { icon: MessageSquare,  title: "AI study chat",               sub: "Ask follow-up questions on any image" },
   { icon: FileDown,       title: "PDF study export",            sub: "Save walkthroughs for review" },
-  { icon: ShieldCheck,    title: "PHI auto-redaction",          sub: "Patient info stripped before analysis" },
-  { icon: Zap,            title: "Priority AI queue",           sub: "Faster walkthroughs, every time" },
+  { icon: ShieldCheck,    title: "Privacy redaction",           sub: "Top of the image blacked out before analysis" },
 ];
 
 const MONTHLY = PLANS.pro_monthly;
