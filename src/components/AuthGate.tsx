@@ -11,7 +11,7 @@ import { OPEN_AUTH_EVENT } from "@/lib/onboarding";
 
 // Pages that must stay reachable without an account — legal pages Apple
 // requires to be viewable pre-login, and the auth flow's own callback routes.
-const PUBLIC_PREFIXES = ["/privacy", "/terms", "/auth/"];
+const PUBLIC_PREFIXES = ["/privacy", "/terms", "/support", "/auth/"];
 
 const BG = "#f3f1ec";
 const INK = "#0a0a0a";

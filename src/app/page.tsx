@@ -337,6 +337,7 @@ export default function LandingPage() {
             <Link href="/app">Log in</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
+            <Link href="/support">Support</Link>
             <a href="mailto:hello@sonobuddy.com">hello@sonobuddy.com</a>
           </div>
         </div>

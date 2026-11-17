@@ -154,7 +154,7 @@ function PhoneIllustration() {
 export default function OnboardingFlow() {
   const { user, profile, loading, refreshProfile } = useAuth();
   const pathname = usePathname();
-  const onMarketingPage = pathname === "/" || pathname.startsWith("/privacy") || pathname.startsWith("/terms");
+  const onMarketingPage = pathname === "/" || pathname.startsWith("/privacy") || pathname.startsWith("/terms") || pathname.startsWith("/support");
   const [mode, setMode] = useState<"full" | "personalize" | null>(null);
   const [step, setStep] = useState<Step>("hook");
   const [answers, setAnswers] = useState<OnboardingAnswers>(EMPTY_ANSWERS);

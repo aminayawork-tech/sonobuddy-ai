@@ -19,7 +19,7 @@ export default function BottomNav() {
   const tabs = user ? ALL_TABS : ALL_TABS.filter((t) => !t.authOnly);
 
   // The marketing page at "/" has its own header and footer.
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname.startsWith("/support")) return null;
 
   return (
     <nav

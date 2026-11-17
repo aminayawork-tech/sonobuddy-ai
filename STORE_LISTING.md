@@ -27,7 +27,7 @@ rejected under): no "diagnose", "clinical", "detect" or "bedside", and nothing a
 | **Keywords** | `sonographer,student,anatomy,echo,efast,fast,scan,image,obgyn,vascular,lung,cardiac,abdomen,tutor,dms` | 100 / 100 |
 | **Primary category** | Education | |
 | **Secondary category** | Medical | |
-| **Support URL** | https://www.sonobuddyai.com | |
+| **Support URL** | https://www.sonobuddyai.com/support | |
 | **Marketing URL** | https://www.sonobuddyai.com | |
 | **Privacy Policy URL** | https://www.sonobuddyai.com/privacy | |
 | **Copyright** | 2026 SonoBuddy LLC | |
