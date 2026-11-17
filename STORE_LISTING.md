@@ -102,7 +102,7 @@ Need a quick reference in the scan room? Try SonoBuddy, our ultrasound reference
 EDUCATIONAL USE ONLY
 SonoBuddy AI is a study tool. It is not a medical device, is not FDA-cleared, and does not provide medical advice, diagnosis or treatment. Don't use it to make decisions about patient care. AI explanations can be wrong, and label positions are approximate.
 
-Questions or feedback? Email support@sonobuddyai.com.
+Questions or feedback? Email hello@sonobuddy.com.
 ```
 
 ### What's New (version 1.0)
@@ -169,7 +169,7 @@ See `store-assets/apple/`. Use the 6.3" set (1206 × 2622) for the "iPhone with 
 | **Short description** | `Snap an ultrasound image, get an AI study walkthrough. Built for students.` | 74 / 80 |
 | **Category** | Education | |
 | **Tags** | Education, Medical (choose what's offered) | |
-| **Contact email** | support@sonobuddyai.com | |
+| **Contact email** | hello@sonobuddy.com | |
 | **Website** | https://www.sonobuddyai.com | |
 | **Privacy policy** | https://www.sonobuddyai.com/privacy | |
 
@@ -221,7 +221,7 @@ Need a quick reference in the scan room? Try SonoBuddy, our ultrasound reference
 EDUCATIONAL USE ONLY
 SonoBuddy AI is a study tool. It is not a medical device, is not FDA-cleared, and does not provide medical advice, diagnosis or treatment. Don't use it to make decisions about patient care. AI explanations can be wrong, and label positions are approximate.
 
-Questions or feedback? Email support@sonobuddyai.com.
+Questions or feedback? Email hello@sonobuddy.com.
 ```
 
 ### Data safety form

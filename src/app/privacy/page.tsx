@@ -57,7 +57,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="8. HIPAA Notice">
-          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a> before proceeding.
+          SonoBuddy AI is not a HIPAA-covered entity. Do not upload protected health information (PHI) as defined under HIPAA. If your use case requires HIPAA compliance, please contact us at <a href="mailto:hello@sonobuddy.com" className="text-purple-600 underline">hello@sonobuddy.com</a> before proceeding.
         </Section>
 
         <Section title="9. Children's Privacy">
@@ -65,12 +65,12 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="10. Your Rights">
-          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>.
+          Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise any of these rights, please contact us at <a href="mailto:hello@sonobuddy.com" className="text-purple-600 underline">hello@sonobuddy.com</a>.
           <span id="scan-images" className="mt-3 block">
             <strong>Scan images:</strong> images you analyze are sent to our AI provider to generate the study walkthrough and are not stored on our servers. If &ldquo;Keep scan images on this device&rdquo; is on (Account page), a redacted, reduced-size copy is saved only in the app&apos;s local storage on your device so you can view it in History. You can turn this off or remove saved images at any time, and deleting the app removes them.
           </span>
           <span id="delete-account" className="mt-3 block">
-            <strong>Deleting your account:</strong> in the app, open the menu (☰) on the Home screen, tap <strong>Account</strong>, then <strong>Delete account</strong> at the bottom. This immediately and permanently deletes your account, profile, and all saved scan history. You can also email <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a> from your account email and we will delete it within 30 days. App Store subscriptions must be canceled separately in your Apple ID settings.
+            <strong>Deleting your account:</strong> in the app, open the menu (☰) on the Home screen, tap <strong>Account</strong>, then <strong>Delete account</strong> at the bottom. This immediately and permanently deletes your account, profile, and all saved scan history. You can also email <a href="mailto:hello@sonobuddy.com" className="text-purple-600 underline">hello@sonobuddy.com</a> from your account email and we will delete it within 30 days. App Store subscriptions must be canceled separately in your Apple ID settings.
           </span>
         </Section>
 
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
 
         <Section title="12. Contact Us">
           Questions about this Privacy Policy? Contact us at:<br />
-          <a href="mailto:support@sonobuddyai.com" className="text-purple-600 underline">support@sonobuddyai.com</a>
+          <a href="mailto:hello@sonobuddy.com" className="text-purple-600 underline">hello@sonobuddy.com</a>
         </Section>
 
         <div className="mt-10 text-center">

@@ -337,7 +337,7 @@ export default function LandingPage() {
             <Link href="/app">Log in</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
-            <a href="mailto:support@sonobuddyai.com">support@sonobuddyai.com</a>
+            <a href="mailto:hello@sonobuddy.com">hello@sonobuddy.com</a>
           </div>
         </div>
         <p className="pb-8 text-center text-xs" style={{ color: "#94a3b8" }}>© {new Date().getFullYear()} SonoBuddy LLC</p>
