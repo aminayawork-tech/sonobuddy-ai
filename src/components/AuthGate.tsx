@@ -47,7 +47,8 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const isPublicPath = PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
+  // The marketing page at "/" is public; the app itself lives at /app.
+  const isPublicPath = pathname === "/" || PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
 
   // Not configured yet (local dev without Supabase env vars) — don't gate.
   if (!supabaseConfigured || isPublicPath || loading || user) {

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type });
     if (!error) {
       // Recovery tokens must land on the reset-password form, not the home page
-      const destination = type === "recovery" ? "/auth/reset-password" : next ?? "/?welcome=1";
+      const destination = type === "recovery" ? "/auth/reset-password" : next ?? "/app?welcome=1";
       return NextResponse.redirect(`${origin}${destination}`);
     }
     return NextResponse.redirect(`${origin}/auth/error${type === "recovery" ? "?type=recovery" : ""}`);
@@ -35,9 +35,9 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(`${origin}${next ?? "/?welcome=1"}`);
+    if (!error) return NextResponse.redirect(`${origin}${next ?? "/app?welcome=1"}`);
     if (next === "/auth/reset-password") return NextResponse.redirect(`${origin}/auth/error?type=recovery`);
-    return NextResponse.redirect(`${origin}/?confirmed=1`);
+    return NextResponse.redirect(`${origin}/app?confirmed=1`);
   }
 
   return NextResponse.redirect(`${origin}/auth/error`);

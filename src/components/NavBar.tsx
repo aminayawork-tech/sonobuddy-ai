@@ -11,7 +11,7 @@ import AuthModal from "./AuthModal";
 import MobileMenu from "./MobileMenu";
 
 const desktopNavItems = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/app", label: "Home", icon: Home },
   { href: "/protocols", label: "Protocols", icon: Library },
 ];
 
@@ -21,7 +21,7 @@ function SonoLogo({ size = "md" }: { size?: "sm" | "md" }) {
     ? "text-2xl font-extrabold tracking-tight"
     : "text-xl font-extrabold tracking-tight";
   return (
-    <Link href="/" className="flex items-center gap-2 select-none leading-none">
+    <Link href="/app" className="flex items-center gap-2 select-none leading-none">
       <Image src="/sonobuddy-favicon.png" alt="" width={imgSize} height={imgSize} priority
         className="rounded-lg" style={{ objectFit: "contain" }} />
       <span>

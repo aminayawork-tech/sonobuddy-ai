@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
   server: {
     // Production Vercel deployment — all API routes and auth stay server-side.
     // Subscriptions are sold exclusively via Apple In-App Purchase (StoreKit).
-    url: 'https://www.sonobuddyai.com',
+    url: 'https://www.sonobuddyai.com/app',
     cleartext: false,
     androidScheme: 'https',
   },

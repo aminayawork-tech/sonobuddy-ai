@@ -57,7 +57,7 @@ export default function AccountPage() {
   return (
     <div className="min-h-screen pb-28" style={{ background: "#eef3f8" }}>
       <div className="mx-auto max-w-lg px-4 pt-8">
-        <Link href="/" className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "#5a6a85" }}>
+        <Link href="/app" className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "#5a6a85" }}>
           <ArrowLeft size={14} /> Home
         </Link>
 

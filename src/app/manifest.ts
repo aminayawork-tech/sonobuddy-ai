@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "SonoBuddy AI",
     short_name: "SonoBuddy AI",
     description: "AI-Guided Ultrasound Study Companion",
-    start_url: "/",
+    start_url: "/app",
     display: "standalone",
     background_color: "#eef3f8",
     theme_color: "#7c3aed",

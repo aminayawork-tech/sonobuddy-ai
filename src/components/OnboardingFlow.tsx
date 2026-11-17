@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import localFont from "next/font/local";
 import {
   Activity, ArrowLeft, BookOpen, Camera, Check, ChevronRight, FileText, GraduationCap,
@@ -152,6 +153,8 @@ function PhoneIllustration() {
 
 export default function OnboardingFlow() {
   const { user, profile, loading, refreshProfile } = useAuth();
+  const pathname = usePathname();
+  const onMarketingPage = pathname === "/" || pathname.startsWith("/privacy") || pathname.startsWith("/terms");
   const [mode, setMode] = useState<"full" | "personalize" | null>(null);
   const [step, setStep] = useState<Step>("hook");
   const [answers, setAnswers] = useState<OnboardingAnswers>(EMPTY_ANSWERS);
@@ -162,7 +165,7 @@ export default function OnboardingFlow() {
 
   // Decide whether to show anything, and sync saved answers to the profile.
   useEffect(() => {
-    if (typeof window === "undefined" || loading) return;
+    if (typeof window === "undefined" || loading || onMarketingPage) return;
     const params = new URLSearchParams(window.location.search);
     const local = getOnboarding();
     setAndroid(isAndroidApp());
@@ -195,7 +198,7 @@ export default function OnboardingFlow() {
       setMode("personalize");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, profile, loading]);
+  }, [user, profile, loading, onMarketingPage]);
 
   // Home's "Personalize" card reopens just the questions.
   useEffect(() => {
@@ -218,7 +221,7 @@ export default function OnboardingFlow() {
     return ["hook", "how", "role", "focus", "founder", "account"];
   }, [mode, user, isPaid, android]);
 
-  if (!mode) return null;
+  if (!mode || onMarketingPage) return null;
 
   const index = Math.max(0, steps.indexOf(step));
 

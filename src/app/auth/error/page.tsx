@@ -52,14 +52,14 @@ function AuthErrorContent() {
 
         <div className="flex flex-col gap-2">
           <a
-            href={isReset ? "/?auth=forgot" : "/?confirmed=1"}
+            href={isReset ? "/app?auth=forgot" : "/app?confirmed=1"}
             className="w-full rounded-xl py-2.5 text-sm font-bold text-white inline-block"
             style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)" }}
           >
             {isReset ? "Request a new reset link" : "Sign in"}
           </a>
           <a
-            href="/"
+            href="/app"
             className="w-full rounded-xl py-2.5 text-sm font-medium inline-block"
             style={{ color: "#64748b" }}
           >

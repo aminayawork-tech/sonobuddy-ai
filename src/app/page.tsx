@@ -1,320 +1,347 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
-  Activity,
-  ArrowRight,
-  Camera,
-  ChevronRight,
-  Clock,
-  Sparkles,
-  TrendingUp,
+  ArrowRight, BookOpen, Camera, Check, ChevronDown, ClipboardList, Clock, GraduationCap,
+  HeartPulse, Lock, MessageCircle, Sparkles, Stethoscope, Activity, type LucideIcon,
 } from "lucide-react";
-import NavBar from "@/components/NavBar";
-import ProBanner from "@/components/ProBanner";
-import { useAuth } from "@/components/AuthProvider";
-import { createClient } from "@/lib/supabase/client";
-import { FREE_SCAN_LIMIT } from "@/lib/plans";
-import { PROTOCOLS, CATEGORY_PILL } from "@/lib/protocols";
-import { CATEGORY_ICON } from "@/lib/categoryIcons";
-import { OPEN_ONBOARDING_EVENT } from "@/lib/onboarding";
-import { getScanImages, type StoredScanImage } from "@/lib/scanImages";
+import { PROTOCOLS } from "@/lib/protocols";
 
-const DEFAULT_QUICK_START = ["efast", "cardiac-plax", "ob-first-trimester", "renal", "dvt"];
-
-// Protocols from the learner's focus areas first (Basic before Advanced),
-// topped up with the defaults so the row is never short.
-function quickStartIds(focus: string[] | undefined) {
-  const rank = { Basic: 0, Intermediate: 1, Advanced: 2 } as const;
-  const picks = (focus ?? []).flatMap((c) =>
-    PROTOCOLS.filter((p) => p.category === c).sort((a, b) => rank[a.difficulty] - rank[b.difficulty]).slice(0, 2).map((p) => p.id),
-  );
-  return [...new Set([...picks, ...DEFAULT_QUICK_START])].slice(0, 6);
-}
-
-const ALERT_DOT: Record<string, string> = {
-  critical: "#dc2626",
-  high: "#ea580c",
-  moderate: "#ca8a04",
-  low: "#16a34a",
-  none: "#94a3b8",
+export const metadata: Metadata = {
+  title: "SonoBuddy AI — Learn to read ultrasound images",
+  description:
+    "An AI study companion for ultrasound. Snap or upload any ultrasound image and get a walkthrough with labeled structures, study points and answers to your follow-up questions.",
 };
 
-interface RecentScan {
-  id: string;
-  created_at: string;
-  protocol_id: string;
-  protocol_name: string;
-  alert_level: string;
-}
+// Set once SonoBuddy AI is live on the App Store.
+const APP_STORE_URL = "";
+const SONOBUDDY_URL = "https://apps.apple.com/us/app/sonobuddy-ultrasound-reference/id6761020726";
+const SONOPASS_URL = "https://sonopass.com";
 
-function relativeDate(iso: string) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-}
+const PURPLE = "#7c3aed";
+const INK = "#0f172a";
+const BODY = "#5a6a85";
 
-function greeting() {
-  const h = new Date().getHours();
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
-}
-
-export default function HomePage() {
-  const { user, profile } = useAuth();
-  const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
-  const [totalScans, setTotalScans] = useState<number | null>(null);
-  // Uses the device's clock — computing it during server rendering gave the server's time of day.
-  const [hello, setHello] = useState("");
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setHello(greeting()), []);
-  const [thumbs, setThumbs] = useState<Record<string, StoredScanImage>>({});
-
-  useEffect(() => {
-    if (!user) { setRecentScans([]); setTotalScans(null); return; }
-    const supabase = createClient();
-    supabase
-      .from("scan_history")
-      .select("id, created_at, protocol_id, protocol_name, alert_level")
-      .order("created_at", { ascending: false })
-      .limit(3)
-      .then(({ data }) => {
-        const rows = (data as RecentScan[]) ?? [];
-        setRecentScans(rows);
-        getScanImages(rows.map((r) => r.id)).then(setThumbs);
-      });
-    supabase
-      .from("scan_history")
-      .select("id", { count: "exact", head: true })
-      .then(({ count }) => setTotalScans(count ?? 0));
-  }, [user]);
-
-  const isPaid = profile?.tier === "pro" || profile?.tier === "clinic";
-  const scansUsed = profile?.scans_used_this_month ?? 0;
-  const firstName = profile?.full_name?.trim().split(" ")[0];
-  const usedPct = Math.min(100, (scansUsed / FREE_SCAN_LIMIT) * 100);
-
+function Wordmark({ light = false, size = "text-xl" }: { light?: boolean; size?: string }) {
   return (
-    <div className="min-h-screen pt-14 pb-24 md:pt-16 md:pb-8" style={{ background: "#eef3f8" }}>
-      <NavBar />
+    <span className={`${size} font-extrabold tracking-tight`}>
+      <span style={{ color: light ? "#ffffff" : INK }}>Sono</span>
+      <span style={{ color: light ? "#ddd6fe" : PURPLE }}>Buddy </span>
+      <span style={{ color: light ? "#f0abfc" : PURPLE, fontStyle: "italic" }}>ai</span>
+    </span>
+  );
+}
 
-      <main className="mx-auto max-w-4xl px-4 py-6 space-y-6">
-        {/* ── Greeting ─────────────────────────────────────────── */}
-        <div>
-          <p className="h-4 text-xs font-bold uppercase tracking-widest" style={{ color: "#7c3aed" }}>
-            {hello}
-          </p>
-          <h1 className="mt-1 text-[26px] font-extrabold leading-tight tracking-tight" style={{ color: "#0f172a" }}>
-            Welcome back{firstName ? `, ${firstName}` : ""}
-          </h1>
-          <p className="mt-1 text-sm" style={{ color: "#5a6a85" }}>
-            Ready for your next study session?
-          </p>
-        </div>
+function Phone({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+  return (
+    <div className={`rounded-[2.6rem] p-2.5 ${className}`}
+      style={{ background: "#0b0b10", boxShadow: "0 40px 80px -20px rgba(20,0,60,0.55), inset 0 0 0 2px #2a2a36" }}>
+      <div className="relative overflow-hidden rounded-[2.1rem]" style={{ background: "#eef3f8" }}>
+        <div className="absolute left-1/2 top-2 z-10 h-6 w-24 -translate-x-1/2 rounded-full bg-black" />
+        <Image src={src} alt={alt} width={780} height={1593} className="block h-auto w-full pt-9" />
+      </div>
+    </div>
+  );
+}
 
-        {/* ── Primary action ───────────────────────────────────── */}
-        <Link
-          href="/scan"
-          className="relative block overflow-hidden rounded-3xl p-6 transition-all hover:opacity-95 active:scale-[0.99]"
-          style={{
-            background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 45%, #6d28d9 100%)",
-            boxShadow: "0 14px 34px rgba(124,58,237,0.35)",
-          }}
-        >
-          {/* Decorative sound-wave rings */}
-          <span className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full" style={{ border: "1.5px solid rgba(255,255,255,0.14)" }} />
-          <span className="pointer-events-none absolute -right-2 -top-2 h-28 w-28 rounded-full" style={{ border: "1.5px solid rgba(255,255,255,0.18)" }} />
-          <span className="pointer-events-none absolute right-6 top-6 h-12 w-12 rounded-full" style={{ background: "rgba(255,255,255,0.12)" }} />
+function StoreBadge() {
+  const inner = (
+    <span className="flex items-center gap-3 rounded-2xl px-5 py-3 text-white" style={{ background: "#000", border: "1px solid rgba(255,255,255,0.25)" }}>
+      <svg width="22" height="26" viewBox="0 0 384 512" fill="#fff" aria-hidden="true">
+        <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
+      </svg>
+      <span className="leading-tight">
+        <span className="block text-[10px] font-medium opacity-80">{APP_STORE_URL ? "Download on the" : "Coming soon to the"}</span>
+        <span className="block text-lg font-semibold">App Store</span>
+      </span>
+    </span>
+  );
+  return APP_STORE_URL
+    ? <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">{inner}</a>
+    : <span aria-label="Coming soon to the App Store">{inner}</span>;
+}
 
-          <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: "rgba(255,255,255,0.2)" }}>
-            <Camera size={22} className="text-white" />
-          </div>
-          <p className="relative mt-4 text-xl font-extrabold text-white">Start a Study Session</p>
-          <p className="relative mt-1 text-sm" style={{ color: "#ede9fe" }}>
-            Snap or upload an ultrasound image for an AI walkthrough
-          </p>
-          <span className="relative mt-5 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold" style={{ color: "#6d28d9" }}>
-            Open camera <ArrowRight size={14} />
-          </span>
-        </Link>
+const STEPS = [
+  { icon: Camera, title: "Snap or upload", text: "Take a photo of any ultrasound screen or upload a saved image." },
+  { icon: Sparkles, title: "Get a walkthrough", text: "The main structures are labeled and the key points explained, with study tips." },
+  { icon: MessageCircle, title: "Ask anything", text: "Ask follow-up questions about the same image, in plain language." },
+];
 
-        {/* ── Premium ─────────────────────────────────────────── */}
-        <ProBanner />
+const FEATURES: { icon: LucideIcon; title: string; text: string; gradient: string }[] = [
+  { icon: Sparkles, title: "Structures labeled", text: "Liver, kidney, LV, aorta, gestational sac and more, marked on your own image.", gradient: "linear-gradient(135deg,#a78bfa,#7c3aed)" },
+  { icon: BookOpen, title: "Study points", text: "What's worth noticing on the image, and why it matters for learning.", gradient: "linear-gradient(135deg,#f0abfc,#c026d3)" },
+  { icon: MessageCircle, title: "Follow-up chat", text: "“Why does fluid collect here first?” Get an answer about your image.", gradient: "linear-gradient(135deg,#60a5fa,#2563eb)" },
+  { icon: ClipboardList, title: `${PROTOCOLS.length} protocols`, text: "How to get every view, what to look for, typical values and common mistakes.", gradient: "linear-gradient(135deg,#34d399,#059669)" },
+  { icon: Clock, title: "Your study library", text: "Every walkthrough saved to History, with images kept on your device.", gradient: "linear-gradient(135deg,#fbbf24,#d97706)" },
+  { icon: Lock, title: "Privacy built in", text: "Patient details at the top of the image are blacked out. Images aren't stored on our servers.", gradient: "linear-gradient(135deg,#94a3b8,#475569)" },
+];
 
-        {/* ── Stats ───────────────────────────────────────────── */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-2xl p-4" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
-            <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#f5f3ff" }}>
-                <Activity size={14} style={{ color: "#7c3aed" }} />
-              </span>
-              <p className="text-xs font-semibold" style={{ color: "#5a6a85" }}>This Month</p>
-            </div>
-            <p className="mt-3 text-2xl font-extrabold" style={{ color: "#0f172a" }}>
-              {isPaid ? "∞" : `${scansUsed}/${FREE_SCAN_LIMIT}`}
-            </p>
-            {isPaid ? (
-              <p className="text-xs" style={{ color: "#5a6a85" }}>Unlimited sessions</p>
-            ) : (
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: "#ede9fe" }}>
-                <div className="h-full rounded-full" style={{ width: `${usedPct}%`, background: "linear-gradient(90deg, #8b5cf6, #c026d3)" }} />
-              </div>
-            )}
-          </div>
-          <Link href="/history" className="rounded-2xl p-4 transition-all active:scale-[0.99]" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
-            <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: "#ecfdf5" }}>
-                <TrendingUp size={14} style={{ color: "#059669" }} />
-              </span>
-              <p className="text-xs font-semibold" style={{ color: "#5a6a85" }}>All Time</p>
-            </div>
-            <p className="mt-3 text-2xl font-extrabold" style={{ color: "#0f172a" }}>{totalScans ?? "–"}</p>
-            <p className="text-xs" style={{ color: "#5a6a85" }}>sessions studied</p>
+const ROLES: { icon: LucideIcon; label: string }[] = [
+  { icon: GraduationCap, label: "Sonography (DMS) students" },
+  { icon: BookOpen, label: "Medical students" },
+  { icon: Stethoscope, label: "Residents & fellows" },
+  { icon: HeartPulse, label: "Nurses, PAs & NPs" },
+  { icon: Activity, label: "Sonographers cross-training" },
+];
+
+const FAQ = [
+  { q: "Is SonoBuddy AI a diagnostic tool?", a: "No. SonoBuddy AI is a study tool for learning to read ultrasound images. It is not a medical device, is not FDA-cleared, and doesn't provide medical advice, diagnosis or treatment. Don't use it for patient care." },
+  { q: "What images can I use?", a: "Any ultrasound image: a photo of a machine screen, a textbook or lecture image, or a saved file. Avoid uploading anything that identifies a patient; the top of the image, where machines show patient details, is blacked out automatically." },
+  { q: "Are my images stored?", a: "No. Images are processed to create your walkthrough and aren't stored on our servers. A copy stays on your own device so you can see it in History, and you can turn that off anytime." },
+  { q: "What does it cost?", a: "Every account gets 5 AI study sessions a month for free, with all protocols. SonoBuddy AI Pro on iPhone unlocks unlimited sessions for $9.99/month or $69.99/year." },
+  { q: "Which devices does it work on?", a: "iPhone, and any modern web browser at sonobuddyai.com/app. Your study history syncs to your account." },
+];
+
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen overflow-x-hidden" style={{ background: "#eef3f8", color: INK }}>
+      {/* ── Header ───────────────────────────────────────────── */}
+      <header className="absolute inset-x-0 top-0 z-20">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
+          <Link href="/" className="flex items-center gap-2.5">
+            <Image src="/sonobuddy-favicon.png" alt="" width={34} height={34} className="rounded-xl" priority />
+            <Wordmark light />
           </Link>
+          <nav className="hidden items-center gap-7 text-sm font-semibold md:flex" style={{ color: "#ddd6fe" }}>
+            <a href="#features" className="hover:text-white">Features</a>
+            <a href="#protocols" className="hover:text-white">Protocols</a>
+            <a href="#pricing" className="hover:text-white">Pricing</a>
+            <a href="#faq" className="hover:text-white">FAQ</a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Link href="/app" className="rounded-full px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Log in</Link>
+            <Link href="/app" className="hidden rounded-full bg-white px-4 py-2 text-sm font-bold sm:block" style={{ color: PURPLE }}>Get started</Link>
+          </div>
         </div>
+      </header>
 
-        {/* ── Quick start protocols ────────────────────────────── */}
-        <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>
-              {profile?.focus_areas?.length ? "Recommended for you" : "Quick Start"}
-            </h2>
-            <Link href="/protocols" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
-              See all <ArrowRight size={12} />
-            </Link>
-          </div>
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
-            {quickStartIds(profile?.focus_areas).map((id) => {
-              const p = PROTOCOLS.find((x) => x.id === id);
-              if (!p) return null;
-              const pill = CATEGORY_PILL[p.category];
-              const Icon = CATEGORY_ICON[p.category];
-              return (
-                <Link
-                  key={id}
-                  href={`/scan?protocol=${id}`}
-                  className="flex shrink-0 flex-col gap-3 rounded-2xl p-4 transition-all active:scale-[0.98]"
-                  style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)", width: 136 }}
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
-                    <Icon size={19} style={{ color: pill.text }} />
-                  </span>
-                  <span>
-                    <span className="block text-sm font-bold leading-snug" style={{ color: "#0f172a" }}>{p.shortName}</span>
-                    <span className="block text-[11px] font-medium" style={{ color: "#94a3b8" }}>{p.category}</span>
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Personalize prompt for people who skipped the questions */}
-        {profile && "onboarded_at" in profile && !profile.focus_areas?.length && (
-          <button
-            onClick={() => window.dispatchEvent(new Event(OPEN_ONBOARDING_EVENT))}
-            className="flex w-full items-center gap-3 rounded-2xl p-4 text-left transition-all active:scale-[0.99]"
-            style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}
-          >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: "#f5f3ff" }}>
-              <Sparkles size={18} style={{ color: "#7c3aed" }} />
-            </span>
-            <span className="flex-1">
-              <span className="block text-sm font-bold" style={{ color: "#0f172a" }}>Personalize your Quick Start</span>
-              <span className="block text-xs" style={{ color: "#5a6a85" }}>Two quick questions about what you&apos;re studying</span>
-            </span>
-            <ChevronRight size={16} style={{ color: "#cbd5e1" }} />
-          </button>
-        )}
-
-        {/* ── Recent activity ──────────────────────────────────── */}
-        <section>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-base font-bold" style={{ color: "#0f172a" }}>Recent Activity</h2>
-            {recentScans.length > 0 && (
-              <Link href="/history" className="flex items-center gap-0.5 text-xs font-semibold" style={{ color: "#7c3aed" }}>
-                View all <ArrowRight size={12} />
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="relative pt-28 pb-20 md:pt-36 md:pb-28"
+        style={{ background: "radial-gradient(900px 600px at 85% 10%, rgba(240,171,252,.30), transparent 60%), radial-gradient(900px 700px at 0% 100%, rgba(96,165,250,.22), transparent 60%), linear-gradient(165deg, #1e0b4b 0%, #4c1d95 50%, #7c3aed 100%)" }}>
+        <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 md:grid-cols-2">
+          <div className="text-center md:text-left">
+            <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: "#c4b5fd" }}>AI study companion for ultrasound</p>
+            <h1 className="mt-4 text-[42px] font-extrabold leading-[1.04] tracking-[-0.03em] text-white md:text-6xl">
+              Learn to read ultrasound,{" "}
+              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg,#ddd6fe,#f0abfc)" }}>one image at a time.</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed md:mx-0" style={{ color: "#ddd6fe" }}>
+              Snap or upload any ultrasound image. SonoBuddy AI labels the structures, explains what&apos;s worth noticing and answers your follow-up questions.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:justify-start sm:justify-center">
+              <Link href="/app" className="flex items-center gap-2 rounded-2xl bg-white px-6 py-4 text-base font-bold transition-transform active:scale-[0.98]" style={{ color: PURPLE }}>
+                Start studying free <ArrowRight size={18} />
               </Link>
-            )}
+              <StoreBadge />
+            </div>
+            <p className="mt-4 text-sm" style={{ color: "#c4b5fd" }}>5 free AI study sessions every month · No credit card</p>
           </div>
+          <div className="relative mx-auto h-[560px] w-full max-w-[420px] md:h-[620px]">
+            <Phone src="/landing/results.webp" alt="SonoBuddy AI walkthrough with labeled structures" className="absolute left-0 top-0 w-[68%] rotate-[-4deg]" />
+            <Phone src="/landing/chat.webp" alt="Follow-up question chat" className="absolute right-0 top-16 w-[62%] rotate-[5deg]" />
+          </div>
+        </div>
+      </section>
 
-          {recentScans.length === 0 ? (
-            <div className="rounded-2xl p-6 text-center" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
-              <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full" style={{ background: "#f5f3ff" }}>
-                <Clock size={18} style={{ color: "#7c3aed" }} />
-              </span>
-              <p className="text-sm" style={{ color: "#5a6a85" }}>No study sessions yet — start your first one above</p>
+      {/* ── How it works ─────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-5 py-20">
+        <p className="text-center text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>How it works</p>
+        <h2 className="mt-3 text-center text-3xl font-extrabold tracking-tight md:text-4xl">Snap it. Understand it.</h2>
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {STEPS.map(({ icon: Icon, title, text }, i) => (
+            <div key={title} className="rounded-3xl bg-white p-7" style={{ boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl text-white" style={{ background: "linear-gradient(135deg,#8b5cf6,#6d28d9)" }}>
+                  <Icon size={20} />
+                </span>
+                <span className="text-sm font-bold" style={{ color: "#c4b5fd" }}>0{i + 1}</span>
+              </div>
+              <h3 className="mt-5 text-lg font-bold">{title}</h3>
+              <p className="mt-1.5 text-[15px] leading-relaxed" style={{ color: BODY }}>{text}</p>
             </div>
-          ) : (
-            <div className="overflow-hidden rounded-2xl" style={{ background: "#ffffff", boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
-              {recentScans.map((scan, i) => {
-                const proto = PROTOCOLS.find((x) => x.id === scan.protocol_id);
-                const pill = proto ? CATEGORY_PILL[proto.category] : { bg: "#f5f3ff", text: "#7c3aed" };
-                const Icon = proto ? CATEGORY_ICON[proto.category] : Sparkles;
-                return (
-                  <Link
-                    key={scan.id}
-                    href="/history"
-                    className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-slate-50"
-                    style={i > 0 ? { borderTop: "1px solid #f1f5f9" } : undefined}
-                  >
-                    {thumbs[scan.id] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={thumbs[scan.id].dataUrl} alt="" className="h-9 w-9 shrink-0 rounded-xl object-cover" style={{ background: "#000" }} />
-                    ) : (
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: pill.bg }}>
-                        <Icon size={16} style={{ color: pill.text }} />
-                      </span>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="truncate text-sm font-semibold" style={{ color: "#0f172a" }}>{scan.protocol_name}</p>
-                      <p className="text-xs" style={{ color: "#94a3b8" }}>{relativeDate(scan.created_at)}</p>
-                    </div>
-                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: ALERT_DOT[scan.alert_level] ?? ALERT_DOT.none }} />
-                    <ChevronRight size={16} style={{ color: "#cbd5e1" }} />
-                  </Link>
-                );
-              })}
+          ))}
+        </div>
+      </section>
+
+      {/* ── Features ─────────────────────────────────────────── */}
+      <section id="features" className="bg-white py-20">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>Features</p>
+          <h2 className="mt-3 text-center text-3xl font-extrabold tracking-tight md:text-4xl">Everything you need to study any scan</h2>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map(({ icon: Icon, title, text, gradient }) => (
+              <div key={title} className="rounded-3xl p-6" style={{ background: "#f8fafc", border: "1px solid #eef2f7" }}>
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl text-white" style={{ background: gradient }}>
+                  <Icon size={20} />
+                </span>
+                <h3 className="mt-4 text-lg font-bold">{title}</h3>
+                <p className="mt-1.5 text-[15px] leading-relaxed" style={{ color: BODY }}>{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Showcase ─────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-5 py-20">
+        <div className="grid items-center gap-12 md:grid-cols-2">
+          <Phone src="/landing/history.webp" alt="Scan history with saved images" className="mx-auto w-[78%] max-w-[300px]" />
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>Your study library</p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">Every scan you study, saved</h2>
+            <p className="mt-4 text-lg leading-relaxed" style={{ color: BODY }}>
+              Come back to any walkthrough with its labeled image and notes. Images stay on your device; only your study notes sync to your account.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {["Recommendations from the areas you choose to study", "Swipe to delete anything, anytime", "Works on iPhone and on the web"].map((t) => (
+                <li key={t} className="flex items-center gap-3 text-[15px] font-medium">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full" style={{ background: "#f5f3ff" }}>
+                    <Check size={14} style={{ color: PURPLE }} />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Protocols ────────────────────────────────────────── */}
+      <section id="protocols" className="bg-white py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-2">
+          <div className="md:order-2">
+            <Phone src="/landing/protocol-detail.webp" alt="Step-by-step eFAST protocol" className="mx-auto w-[78%] max-w-[300px]" />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>{PROTOCOLS.length} protocols</p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">Every protocol, step by step</h2>
+            <p className="mt-4 text-lg leading-relaxed" style={{ color: BODY }}>
+              How to get each view, what to look for, a measurement guide with typical values, and the mistakes everyone makes at first.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {["eFAST", "Echo", "Lung", "OB/GYN", "RUQ & gallbladder", "Renal", "Aorta", "DVT", "Carotid", "Thyroid", "Shoulder", "Optic nerve"].map((t) => (
+                <span key={t} className="rounded-full px-3.5 py-1.5 text-sm font-semibold" style={{ background: "#f5f3ff", color: "#6d28d9" }}>{t}</span>
+              ))}
             </div>
-          )}
-        </section>
+          </div>
+        </div>
+      </section>
 
-        {/* ── Cross-promo: SonoBuddy reference app ─────────────────── */}
-        <a
-          href="https://apps.apple.com/us/app/sonobuddy-ultrasound-reference/id6761020726"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-2xl p-5 transition-all hover:opacity-95"
-          style={{ background: "#0f172a" }}
-        >
-          <p className="text-xs font-bold uppercase tracking-wide" style={{ color: "#a78bfa" }}>
-            Need a quick reference?
-          </p>
-          <h3 className="mt-1 text-lg font-bold text-white">
-            Try Sono<span style={{ color: "#39a5e9" }}>Buddy</span>, our ultrasound reference app
-          </h3>
-          <p className="mt-1 text-sm" style={{ color: "#cbd5e1" }}>
-            Normal values, protocols, and calculators — a fast offline companion for the exam room.
-          </p>
-          <p className="mt-3 flex items-center gap-1 text-sm font-semibold" style={{ color: "#c4b5fd" }}>
-            Download on the App Store
-            <ArrowRight size={14} />
-          </p>
-        </a>
+      {/* ── Who it's for ─────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-5 py-20 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>Made for learners</p>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">Built for everyone learning ultrasound</h2>
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          {ROLES.map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-2.5 rounded-2xl bg-white px-5 py-3.5 text-[15px] font-semibold" style={{ boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+              <Icon size={18} style={{ color: PURPLE }} /> {label}
+            </span>
+          ))}
+        </div>
+      </section>
 
-        {/* ── Disclaimer ────────────────────────────────────────── */}
-        <p className="pt-2 text-center text-xs" style={{ color: "#94a3b8" }}>
-          Educational use only. SonoBuddy ai does not provide medical advice, diagnosis, or treatment.
-        </p>
-      </main>
+      {/* ── Pricing ──────────────────────────────────────────── */}
+      <section id="pricing" className="bg-white py-20">
+        <div className="mx-auto max-w-4xl px-5">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.16em]" style={{ color: PURPLE }}>Pricing</p>
+          <h2 className="mt-3 text-center text-3xl font-extrabold tracking-tight md:text-4xl">Start free. Go Pro when you&apos;re ready.</h2>
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            <div className="rounded-3xl p-8" style={{ background: "#f8fafc", border: "1px solid #eef2f7" }}>
+              <h3 className="text-lg font-bold">Free</h3>
+              <p className="mt-2"><span className="text-4xl font-extrabold">$0</span></p>
+              <ul className="mt-6 space-y-3 text-[15px]">
+                {["5 AI study sessions every month", `All ${PROTOCOLS.length} protocols`, "Follow-up questions", "Study history"].map((t) => (
+                  <li key={t} className="flex items-center gap-2.5"><Check size={16} style={{ color: "#059669" }} /> {t}</li>
+                ))}
+              </ul>
+              <Link href="/app" className="mt-8 block rounded-2xl py-3.5 text-center font-bold" style={{ background: "#ffffff", border: "1.5px solid #ddd6fe", color: PURPLE }}>
+                Create free account
+              </Link>
+            </div>
+            <div className="relative overflow-hidden rounded-3xl p-8 text-white"
+              style={{ background: "radial-gradient(140% 120% at 0% 0%, #4c1d95 0%, #1e1038 55%, #0b0718 100%)", boxShadow: "0 20px 50px -20px rgba(76,29,149,0.6)" }}>
+              <h3 className="text-lg font-bold">SonoBuddy AI Pro</h3>
+              <p className="mt-2"><span className="text-4xl font-extrabold">$9.99</span><span style={{ color: "#c4b5fd" }}> /month</span></p>
+              <p className="text-sm" style={{ color: "#c4b5fd" }}>or $69.99/year</p>
+              <ul className="mt-6 space-y-3 text-[15px]">
+                {["Unlimited AI study sessions", "Everything in Free", "Cancel anytime in your Apple ID settings"].map((t) => (
+                  <li key={t} className="flex items-center gap-2.5"><Check size={16} style={{ color: "#c4b5fd" }} /> {t}</li>
+                ))}
+              </ul>
+              <p className="mt-8 text-sm" style={{ color: "#c4b5fd" }}>Available as an in-app subscription in the iPhone app.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────── */}
+      <section id="faq" className="mx-auto max-w-3xl px-5 py-20">
+        <h2 className="text-center text-3xl font-extrabold tracking-tight md:text-4xl">Questions</h2>
+        <div className="mt-10 space-y-3">
+          {FAQ.map(({ q, a }) => (
+            <details key={q} className="group rounded-2xl bg-white px-6 py-5" style={{ boxShadow: "0 1px 3px rgba(15,23,42,0.06)" }}>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-bold">
+                {q}
+                <ChevronDown size={18} className="shrink-0 transition-transform group-open:rotate-180" style={{ color: "#94a3b8" }} />
+              </summary>
+              <p className="mt-3 text-[15px] leading-relaxed" style={{ color: BODY }}>{a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Family of apps ───────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-5 pb-20">
+        <div className="grid gap-5 md:grid-cols-2">
+          <a href={SONOBUDDY_URL} target="_blank" rel="noopener noreferrer" className="rounded-3xl p-7 transition-transform hover:-translate-y-0.5" style={{ background: "#0f172a" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.14em]" style={{ color: "#7dd3fc" }}>Quick reference</p>
+            <h3 className="mt-2 text-xl font-bold text-white">Sono<span style={{ color: "#39a5e9" }}>Buddy</span></h3>
+            <p className="mt-1.5 text-[15px]" style={{ color: "#cbd5e1" }}>Normal values, protocols and calculators for the scan room.</p>
+          </a>
+          <a href={SONOPASS_URL} target="_blank" rel="noopener noreferrer" className="rounded-3xl p-7 transition-transform hover:-translate-y-0.5" style={{ background: "#0f172a" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.14em]" style={{ color: "#86efac" }}>Registry exam prep</p>
+            <h3 className="mt-2 text-xl font-bold text-white">Sono<span style={{ color: "#2ea873" }}>Pass</span></h3>
+            <p className="mt-1.5 text-[15px]" style={{ color: "#cbd5e1" }}>Practice questions, mock exams and flashcards for your registry.</p>
+          </a>
+        </div>
+      </section>
+
+      {/* ── Final CTA ────────────────────────────────────────── */}
+      <section className="px-5 pb-20">
+        <div className="mx-auto max-w-4xl rounded-[2rem] px-6 py-14 text-center text-white"
+          style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)", boxShadow: "0 20px 50px -20px rgba(124,58,237,0.6)" }}>
+          <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">Your next scan is a lesson.</h2>
+          <p className="mx-auto mt-3 max-w-xl text-lg" style={{ color: "#ede9fe" }}>Create a free account and study your first image in under a minute.</p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href="/app" className="flex items-center gap-2 rounded-2xl bg-white px-6 py-4 font-bold" style={{ color: PURPLE }}>
+              Start studying free <ArrowRight size={18} />
+            </Link>
+            <StoreBadge />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer ───────────────────────────────────────────── */}
+      <footer className="border-t bg-white" style={{ borderColor: "#eef2f7" }}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 md:flex-row md:items-start md:justify-between">
+          <div className="max-w-md">
+            <div className="flex items-center gap-2.5">
+              <Image src="/sonobuddy-favicon.png" alt="" width={28} height={28} className="rounded-lg" />
+              <Wordmark size="text-lg" />
+            </div>
+            <p className="mt-3 text-xs leading-relaxed" style={{ color: "#94a3b8" }}>
+              For educational use only. SonoBuddy AI is not a medical device, is not FDA-cleared, and does not provide medical advice, diagnosis or treatment.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold" style={{ color: BODY }}>
+            <Link href="/app">Log in</Link>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+            <a href="mailto:support@sonobuddyai.com">support@sonobuddyai.com</a>
+          </div>
+        </div>
+        <p className="pb-8 text-center text-xs" style={{ color: "#94a3b8" }}>© {new Date().getFullYear()} SonoBuddy LLC</p>
+      </footer>
     </div>
   );
 }

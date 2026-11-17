@@ -4,6 +4,18 @@ const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export async function middleware(request: NextRequest) {
+  // The iOS / Android apps load the site root; "/" is now the marketing page,
+  // so send the native shells straight to the app (keeps existing builds working).
+  if (request.nextUrl.pathname === "/") {
+    const ua = request.headers.get("user-agent") ?? "";
+    const isNativeApp = ua.includes("PWAShell") || ua.includes("SonoBuddyAI-Android") || request.cookies.has("app-platform");
+    if (isNativeApp) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/app";
+      return NextResponse.redirect(url);
+    }
+  }
+
   // Skip session refresh if Supabase isn't configured yet
   if (!supabaseUrl || !supabaseAnon) {
     return NextResponse.next({ request });

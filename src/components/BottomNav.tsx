@@ -6,7 +6,7 @@ import { Home, Camera, ClipboardList, Clock } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 
 const ALL_TABS = [
-  { href: "/",          label: "Home",      Icon: Home,          authOnly: false },
+  { href: "/app",       label: "Home",      Icon: Home,          authOnly: false },
   { href: "/scan",      label: "Scan",      Icon: Camera,        authOnly: false },
   { href: "/protocols", label: "Protocols", Icon: ClipboardList, authOnly: false },
   { href: "/history",   label: "History",   Icon: Clock,         authOnly: true  },
@@ -17,6 +17,9 @@ export default function BottomNav() {
   const { user } = useAuth();
 
   const tabs = user ? ALL_TABS : ALL_TABS.filter((t) => !t.authOnly);
+
+  // The marketing page at "/" has its own header and footer.
+  if (pathname === "/") return null;
 
   return (
     <nav
