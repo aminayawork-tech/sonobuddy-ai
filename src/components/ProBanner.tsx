@@ -60,8 +60,10 @@ export default function ProBanner({ compact = false }: { compact?: boolean }) {
             Go <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(90deg, #c4b5fd, #f0abfc)" }}>Pro</span>
           </span>
           <span className="block text-xs" style={{ color: "#c4b5fd" }}>
-            {!android && yearlySaleActive()
-              ? `Black Friday: Pro yearly ${YEARLY_SALE.price} · ${YEARLY_SALE.endsLabel}`
+            {yearlySaleActive()
+              ? android
+                ? `Black Friday sale on Pro yearly · ${YEARLY_SALE.endsLabel}`
+                : `Black Friday: Pro yearly ${YEARLY_SALE.price} · ${YEARLY_SALE.endsLabel}`
               : left === 0
                 ? "You're out of free sessions — unlock unlimited"
                 : `${left} of ${FREE_SCAN_LIMIT} free sessions left · Unlock unlimited`}

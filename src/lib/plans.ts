@@ -46,9 +46,11 @@ export const PLANS: Record<PlanKey, {
 
 export const FREE_SCAN_LIMIT = 5;
 
-// Black Friday sale on the yearly plan. The app only displays this price —
+// Black Friday sale on the yearly plan (iPhone and Android). The app only displays this price —
 // Apple charges whatever App Store Connect has for sonobuddyai_pro_yearly, so
-// schedule the same $49.99 price there for the same dates.
+// schedule the same $49.99 price there for the same dates. On Android the
+// Pro screen shows Google Play's price, so set the sonobuddyai_pro_yearly
+// base plan to $49.99 in Play Console too, and back to $69.99 on Dec 1.
 export const YEARLY_SALE = {
   price: "$49.99",
   label: "BLACK FRIDAY",

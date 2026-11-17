@@ -97,9 +97,10 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
 
   const plan = PLANS[planKey];
   const isYearly = planKey === "pro_yearly";
-  // Apple prices come from plans.ts (with the yearly sale); Google Play
-  // prices come from Play Console, so no sale is shown on Android.
-  const onSale = !android && yearlySaleActive();
+  // Apple prices come from plans.ts. On Android the price itself comes from
+  // Play Console (set the yearly base plan to the sale price for the same
+  // dates); the app only adds the sale label there, not a struck-out price.
+  const onSale = yearlySaleActive();
   const playPrice = (key: PlanKey) => playPlans?.[key]?.priceString ?? (playPlans ? "—" : "…");
   const price = android ? playPrice(planKey) : planPrice(planKey);
   const yearlyPrice = android ? playPrice("pro_yearly") : planPrice("pro_yearly");
@@ -286,7 +287,7 @@ export default function UpgradeModal({ onClose, limitReached }: UpgradeModalProp
             onSelect={() => setPlanKey("pro_yearly")}
             title="Yearly"
             price={yearlyPrice}
-            oldPrice={onSale ? YEARLY.price : undefined}
+            oldPrice={onSale && !android ? YEARLY.price : undefined}
             period="year"
             note={onSale
               ? `${yearlyPerMonth} · ${YEARLY_SALE.endsLabel}`
