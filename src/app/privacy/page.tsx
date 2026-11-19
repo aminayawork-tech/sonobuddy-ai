@@ -44,8 +44,9 @@ export default function PrivacyPage() {
           We do not sell your personal information. We share data only with:<br /><br />
           <b>Anthropic:</b> Ultrasound images and related prompts are sent to Anthropic's API for AI processing. Anthropic's data practices are governed by their own privacy policy.<br /><br />
           <b>Supabase:</b> Manages user authentication and profile storage. Data is encrypted at rest and in transit.<br /><br />
-          <b>Apple (In-App Purchase):</b> Handles all payment processing and subscription entitlement management. Subject to Apple's privacy policy.<br /><br />
-          <b>Vercel:</b> Hosts the application. Processes request logs as part of hosting infrastructure.
+          <b>Apple (In-App Purchase) and Google Play Billing:</b> Handle subscription payments on iPhone and Android. Subject to their privacy policies.<br /><br />
+          <b>Vercel:</b> Hosts the application and processes request logs. We also use Vercel Web Analytics to count page views and see which features are used. It doesn't use cookies, doesn't identify you, and isn't linked to your account.<br /><br />
+          <b>Resend:</b> Sends account emails such as sign-up confirmation and password reset.
         </Section>
 
         <Section title="6. Data Retention">
