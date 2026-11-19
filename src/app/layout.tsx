@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import AuthGate from "@/components/AuthGate";
@@ -79,6 +80,7 @@ export default function RootLayout({
             <BottomNav />
           </AuthGate>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
